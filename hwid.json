@@ -1,7 +1,20 @@
 {
-  "allowed": [
-    "b894f1ca-adc9-4788-8f74-11ec0e9e9e14",
-    "abc123",
-    "test-hwid-999"
-  ]
+  "users": {
+    "b894f1ca-adc9-4788-8f74-11ec0e9e9e14": {
+      "name": "Thanakrit",
+      "uid": "1001",
+      "discord": "Thanakrit#0001",
+      "status": "VIP",
+      "role": "Premium",
+      "expire": "2026-12-31",
+      "created": "2026-01-01",
+      "last_login": "2026-05-01",
+      "usage_count": 152,
+      "ip": "127.0.0.1",
+      "country": "Thailand",
+      "device": "Windows 10",
+      "note": "ลูกค้าหลัก",
+      "banned": false
+    }
+  }
 }
