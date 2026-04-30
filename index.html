@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HWID Checker</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    textarea {
+      width: 400px;
+      height: 150px;
+      border-radius: 10px;
+      padding: 10px;
+      border: none;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+    .ok { color: #22c55e; }
+    .fail { color: #ef4444; }
+  </style>
+</head>
+<body>
+
+<h1>🔐 HWID Checker</h1>
+
+<textarea id="hwid" placeholder="ใส่หลายค่าได้ (ขึ้นบรรทัดใหม่)"></textarea><br>
+<button onclick="check()">Check</button>
+
+<div id="result"></div>
+
+<script>
+async function check() {
+  const input = document.getElementById("hwid").value;
+  const list = input.split("\n").map(x => x.trim()).filter(x => x);
+
+  const res = await fetch("hwid.json");
+  const data = await res.json();
+
+  let html = "";
+
+  list.forEach(hwid => {
+    if (data.allowed.includes(hwid)) {
+      html += `<p class="ok">${hwid} → WHITELISTED ✅</p>`;
+    } else {
+      html += `<p class="fail">${hwid} → NOT ALLOWED ❌</p>`;
+    }
+  });
+
+  document.getElementById("result").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
