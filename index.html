@@ -1,1 +1,602 @@
-%3C!DOCTYPE%20html%3E%0A%3Chtml%20lang%3D%22th%22%3E%0A%3Chead%3E%0A%3Cmeta%20charset%3D%22UTF-8%22%20%2F%3E%0A%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1.0%22%20%2F%3E%0A%3Ctitle%3E%E0%B8%A1%E0%B8%B2%E0%B8%AE%E0%B8%B4%E0%B8%A3%E0%B8%B8%20%E2%80%94%20Discord%20Bot%3C%2Ftitle%3E%0A%0A%3Clink%20href%3D%22https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DKanit%3Awght%40300%3B400%3B500%3B700%3B900%26display%3Dswap%22%20rel%3D%22stylesheet%22%3E%0A%0A%3Cstyle%3E%0A*%7B%0A%20%20%20%20margin%3A0%3B%0A%20%20%20%20padding%3A0%3B%0A%20%20%20%20box-sizing%3Aborder-box%3B%0A%7D%0A%0Ahtml%7B%0A%20%20%20%20scroll-behavior%3Asmooth%3B%0A%7D%0A%0Abody%7B%0A%20%20%20%20font-family%3A'Kanit'%2Csans-serif%3B%0A%20%20%20%20background%3A%230f172a%3B%0A%20%20%20%20color%3Awhite%3B%0A%20%20%20%20overflow-x%3Ahidden%3B%0A%7D%0A%0A%2F*%20BG%20*%2F%0A%0Abody%3A%3Abefore%7B%0A%20%20%20%20content%3A%22%22%3B%0A%20%20%20%20position%3Afixed%3B%0A%20%20%20%20inset%3A0%3B%0A%20%20%20%20background%3A%0A%20%20%20%20radial-gradient(circle%20at%20top%20left%2C%232563eb44%2Ctransparent%2030%25)%2C%0A%20%20%20%20radial-gradient(circle%20at%20bottom%20right%2C%237c3aed55%2Ctransparent%2030%25)%3B%0A%20%20%20%20z-index%3A-1%3B%0A%7D%0A%0A%2F*%20NAV%20*%2F%0A%0Anav%7B%0A%20%20%20%20width%3A100%25%3B%0A%20%20%20%20padding%3A18px%207%25%3B%0A%20%20%20%20display%3Aflex%3B%0A%20%20%20%20justify-content%3Aspace-between%3B%0A%20%20%20%20align-items%3Acenter%3B%0A%20%20%20%20position%3Asticky%3B%0A%20%20%20%20top%3A0%3B%0A%20%20%20%20backdrop-filter%3Ablur(14px)%3B%0A%20%20%20%20background%3Argba(15%2C23%2C42%2C.75)%3B%0A%20%20%20%20border-bottom%3A1px%20solid%20rgba(255%2C255%2C255%2C.08)%3B%0A%20%20%20%20z-index%3A999%3B%0A%7D%0A%0A.nav-logo%7B%0A%20%20%20%20display%3Aflex%3B%0A%20%20%20%20align-items%3Acenter%3B%0A%20%20%20%20gap%3A12px%3B%0A%20%20%20%20text-decoration%3Anone%3B%0A%20%20%20%20color%3Awhite%3B%0A%20%20%20%20font-size%3A1.3rem%3B%0A%20%20%20%20font-weight%3A700%3B%0A%7D%0A%0A.nav-logo%20img%7B%0A%20%20%20%20width%3A45px%3B%0A%20%20%20%20height%3A45px%3B%0A%20%20%20%20border-radius%3A50%25%3B%0A%7D%0A%0Anav%20ul%7B%0A%20%20%20%20display%3Aflex%3B%0A%20%20%20%20gap%3A25px%3B%0A%20%20%20%20list-style%3Anone%3B%0A%7D%0A%0Anav%20ul%20a%7B%0A%20%20%20%20color%3A%23dbeafe%3B%0A%20%20%20%20text-decoration%3Anone%3B%0A%20%20%20%20transition%3A.25s%3B%0A%7D%0A%0Anav%20ul%20a%3Ahover%7B%0A%20%20%20%20color%3A%2360a5fa%3B%0A%7D%0A%0A.nav-btn%7B%0A%20%20%20%20background%3Alinear-gradient(45deg%2C%233b82f6%2C%238b5cf6)%3B%0A%20%20%20%20padding%3A12px%2022px%3B%0A%20%20%20%20border-radius%3A14px%3B%0A%20%20%20%20text-decoration%3Anone%3B%0A%20%20%20%20color%3Awhite%3B%0A%20%20%20%20font-weight%3A600%3B%0A%20%20%20%20transition%3A.25s%3B%0A%7D%0A%0A.nav-btn%3Ahover%7B%0A%20%20%20%20transform%3AtranslateY(-2px)%3B%0A%7D%0A%0A%2F*%20HERO%20*%2F%0A%0A.hero%7B%0A%20%20%20%20min-height%3A100vh%3B%0A%20%20%20%20display%3Aflex%3B%0A%20%20%20%20align-items%3Acenter%3B%0A%20%20%20%20justify-content%3Acenter%3B%0A%20%20%20%20padding%3A80px%2020px%3B%0A%7D%0A%0A.hero-inner%7B%0A%20%20%20%20max-width%3A1200px%3B%0A%20%20%20%20width%3A100%25%3B%0A%20%20%20%20display%3Agrid%3B%0A%20%20%20%20grid-template-columns%3Arepeat(auto-fit%2Cminmax(320px%2C1fr))%3B%0A%20%20%20%20gap%3A50px%3B%0A%20%20%20%20align-items%3Acenter%3B%0A%7D%0A%0A.avatar-wrap%7B%0A%20%20%20%20position%3Arelative%3B%0A%20%20%20%20width%3A320px%3B%0A%20%20%20%20height%3A320px%3B%0A%20%20%20%20margin%3Aauto%3B%0A%7D%0A%0A.avatar-wrap%3A%3Abefore%7B%0A%20%20%20%20content%3A%22%22%3B%0A%20%20%20%20position%3Aabsolute%3B%0A%20%20%20%20inset%3A-15px%3B%0A%20%20%20%20border-radius%3A50%25%3B%0A%20%20%20%20background%3Alinear-gradient(45deg%2C%233b82f6%2C%238b5cf6%2C%23ec4899)%3B%0A%20%20%20%20animation%3Aspin%208s%20linear%20infinite%3B%0A%20%20%20%20z-index%3A-1%3B%0A%7D%0A%0A.avatar-wrap%20img%7B%0A%20%20%20%20width%3A100%25%3B%0A%20%20%20%20height%3A100%25%3B%0A%20%20%20%20object-fit%3Acover%3B%0A%20%20%20%20border-radius%3A50%25%3B%0A%20%20%20%20border%3A8px%20solid%20%230f172a%3B%0A%7D%0A%0A%40keyframes%20spin%7B%0A%20%20%20%20from%7Btransform%3Arotate(0deg)%3B%7D%0A%20%20%20%20to%7Btransform%3Arotate(360deg)%3B%7D%0A%7D%0A%0A.hero-tag%7B%0A%20%20%20%20display%3Ainline-block%3B%0A%20%20%20%20padding%3A8px%2014px%3B%0A%20%20%20%20background%3A%231e293b%3B%0A%20%20%20%20border%3A1px%20solid%20rgba(255%2C255%2C255%2C.1)%3B%0A%20%20%20%20border-radius%3A999px%3B%0A%20%20%20%20margin-bottom%3A18px%3B%0A%20%20%20%20color%3A%2393c5fd%3B%0A%7D%0A%0A.hero-title%7B%0A%20%20%20%20font-size%3A4rem%3B%0A%20%20%20%20line-height%3A1.1%3B%0A%20%20%20%20margin-bottom%3A15px%3B%0A%20%20%20%20font-weight%3A900%3B%0A%7D%0A%0A.hero-title%20span%7B%0A%20%20%20%20background%3Alinear-gradient(45deg%2C%2360a5fa%2C%23c084fc)%3B%0A%20%20%20%20-webkit-background-clip%3Atext%3B%0A%20%20%20%20-webkit-text-fill-color%3Atransparent%3B%0A%7D%0A%0A.hero-desc%7B%0A%20%20%20%20color%3A%23cbd5e1%3B%0A%20%20%20%20font-size%3A1.08rem%3B%0A%20%20%20%20line-height%3A1.8%3B%0A%20%20%20%20margin-bottom%3A25px%3B%0A%7D%0A%0A.hero-buttons%7B%0A%20%20%20%20display%3Aflex%3B%0A%20%20%20%20flex-wrap%3Awrap%3B%0A%20%20%20%20gap%3A15px%3B%0A%7D%0A%0A.btn%7B%0A%20%20%20%20padding%3A14px%2024px%3B%0A%20%20%20%20border-radius%3A14px%3B%0A%20%20%20%20text-decoration%3Anone%3B%0A%20%20%20%20font-weight%3A600%3B%0A%20%20%20%20transition%3A.25s%3B%0A%7D%0A%0A.btn-primary%7B%0A%20%20%20%20background%3Alinear-gradient(45deg%2C%233b82f6%2C%238b5cf6)%3B%0A%20%20%20%20color%3Awhite%3B%0A%7D%0A%0A.btn-secondary%7B%0A%20%20%20%20background%3A%231e293b%3B%0A%20%20%20%20color%3Awhite%3B%0A%20%20%20%20border%3A1px%20solid%20rgba(255%2C255%2C255%2C.08)%3B%0A%7D%0A%0A.btn%3Ahover%7B%0A%20%20%20%20transform%3AtranslateY(-3px)%3B%0A%7D%0A%0A%2F*%20SECTION%20*%2F%0A%0Asection%7B%0A%20%20%20%20padding%3A100px%207%25%3B%0A%7D%0A%0A.section-title%7B%0A%20%20%20%20text-align%3Acenter%3B%0A%20%20%20%20margin-bottom%3A60px%3B%0A%7D%0A%0A.section-title%20h2%7B%0A%20%20%20%20font-size%3A2.6rem%3B%0A%20%20%20%20margin-bottom%3A10px%3B%0A%7D%0A%0A.section-title%20p%7B%0A%20%20%20%20color%3A%2394a3b8%3B%0A%7D%0A%0A%2F*%20CARDS%20*%2F%0A%0A.grid%7B%0A%20%20%20%20display%3Agrid%3B%0A%20%20%20%20grid-template-columns%3Arepeat(auto-fit%2Cminmax(280px%2C1fr))%3B%0A%20%20%20%20gap%3A25px%3B%0A%7D%0A%0A.card%7B%0A%20%20%20%20background%3Argba(30%2C41%2C59%2C.8)%3B%0A%20%20%20%20border%3A1px%20solid%20rgba(255%2C255%2C255%2C.06)%3B%0A%20%20%20%20border-radius%3A24px%3B%0A%20%20%20%20padding%3A28px%3B%0A%20%20%20%20transition%3A.3s%3B%0A%20%20%20%20backdrop-filter%3Ablur(8px)%3B%0A%7D%0A%0A.card%3Ahover%7B%0A%20%20%20%20transform%3AtranslateY(-6px)%3B%0A%20%20%20%20border-color%3A%2360a5fa%3B%0A%7D%0A%0A.icon%7B%0A%20%20%20%20font-size%3A2.5rem%3B%0A%20%20%20%20margin-bottom%3A15px%3B%0A%7D%0A%0A.card%20h3%7B%0A%20%20%20%20margin-bottom%3A14px%3B%0A%7D%0A%0A.card%20p%7B%0A%20%20%20%20color%3A%23cbd5e1%3B%0A%20%20%20%20line-height%3A1.8%3B%0A%7D%0A%0A%2F*%20COMMAND%20*%2F%0A%0A.command%7B%0A%20%20%20%20margin-top%3A15px%3B%0A%20%20%20%20padding%3A14px%3B%0A%20%20%20%20background%3A%230f172a%3B%0A%20%20%20%20border-radius%3A14px%3B%0A%7D%0A%0A.command%20strong%7B%0A%20%20%20%20color%3A%2360a5fa%3B%0A%7D%0A%0A%2F*%20DEV%20*%2F%0A%0A.dev-box%7B%0A%20%20%20%20max-width%3A900px%3B%0A%20%20%20%20margin%3Aauto%3B%0A%20%20%20%20background%3Argba(30%2C41%2C59%2C.8)%3B%0A%20%20%20%20border-radius%3A30px%3B%0A%20%20%20%20padding%3A40px%3B%0A%20%20%20%20display%3Agrid%3B%0A%20%20%20%20grid-template-columns%3A260px%201fr%3B%0A%20%20%20%20gap%3A35px%3B%0A%20%20%20%20align-items%3Acenter%3B%0A%7D%0A%0A.dev-box%20img%7B%0A%20%20%20%20width%3A100%25%3B%0A%20%20%20%20border-radius%3A24px%3B%0A%7D%0A%0A.dev-name%7B%0A%20%20%20%20font-size%3A2rem%3B%0A%20%20%20%20margin-bottom%3A10px%3B%0A%7D%0A%0A.dev-role%7B%0A%20%20%20%20color%3A%2360a5fa%3B%0A%20%20%20%20margin-bottom%3A18px%3B%0A%7D%0A%0A.dev-desc%7B%0A%20%20%20%20color%3A%23cbd5e1%3B%0A%20%20%20%20line-height%3A1.8%3B%0A%7D%0A%0A%2F*%20FOOTER%20*%2F%0A%0Afooter%7B%0A%20%20%20%20text-align%3Acenter%3B%0A%20%20%20%20padding%3A35px%2020px%3B%0A%20%20%20%20background%3A%23020617%3B%0A%20%20%20%20color%3A%2394a3b8%3B%0A%7D%0A%0A%2F*%20MOBILE%20*%2F%0A%0A%40media(max-width%3A900px)%7B%0A%0A%20%20%20%20nav%20ul%7B%0A%20%20%20%20%20%20%20%20display%3Anone%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20.hero-title%7B%0A%20%20%20%20%20%20%20%20font-size%3A2.8rem%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20.dev-box%7B%0A%20%20%20%20%20%20%20%20grid-template-columns%3A1fr%3B%0A%20%20%20%20%20%20%20%20text-align%3Acenter%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20.avatar-wrap%7B%0A%20%20%20%20%20%20%20%20width%3A250px%3B%0A%20%20%20%20%20%20%20%20height%3A250px%3B%0A%20%20%20%20%7D%0A%7D%0A%3C%2Fstyle%3E%0A%3C%2Fhead%3E%0A%3Cbody%3E%0A%0A%3Cnav%3E%0A%20%20%20%20%3Ca%20class%3D%22nav-logo%22%20href%3D%22%23%22%3E%0A%20%20%20%20%20%20%20%20%3Cimg%20src%3D%22https%3A%2F%2Fs13.gifyu.com%2Fimages%2FbqNeL.gif%22%3E%0A%20%20%20%20%20%20%20%20%E0%B8%A1%E0%B8%B2%E0%B8%AE%E0%B8%B4%E0%B8%A3%E0%B8%B8%0A%20%20%20%20%3C%2Fa%3E%0A%0A%20%20%20%20%3Cul%3E%0A%20%20%20%20%20%20%20%20%3Cli%3E%3Ca%20href%3D%22%23features%22%3E%E0%B8%9F%E0%B8%B5%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%3C%2Fa%3E%3C%2Fli%3E%0A%20%20%20%20%20%20%20%20%3Cli%3E%3Ca%20href%3D%22%23commands%22%3E%E0%B8%84%E0%B8%B3%E0%B8%AA%E0%B8%B1%E0%B9%88%E0%B8%87%3C%2Fa%3E%3C%2Fli%3E%0A%20%20%20%20%20%20%20%20%3Cli%3E%3Ca%20href%3D%22%23developer%22%3EDeveloper%3C%2Fa%3E%3C%2Fli%3E%0A%20%20%20%20%3C%2Ful%3E%0A%0A%20%20%20%20%3Ca%20class%3D%22nav-btn%22%20target%3D%22_blank%22%0A%20%20%20%20href%3D%22https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D1427456585986211840%26scope%3Dbot%26permissions%3D27649060030%22%3E%0A%20%20%20%20%F0%9F%A4%96%20%E0%B9%80%E0%B8%8A%E0%B8%B4%E0%B8%8D%E0%B8%9A%E0%B8%AD%E0%B8%97%0A%20%20%20%20%3C%2Fa%3E%0A%3C%2Fnav%3E%0A%0A%3Csection%20class%3D%22hero%22%3E%0A%0A%3Cdiv%20class%3D%22hero-inner%22%3E%0A%0A%3Cdiv%20class%3D%22avatar-wrap%22%3E%0A%3Cimg%20src%3D%22https%3A%2F%2Fs13.gifyu.com%2Fimages%2FbqNeL.gif%22%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%3E%0A%3Cdiv%20class%3D%22hero-tag%22%3E%0A%E2%9C%A8%20Discord%20Bot%20Thailand%20%F0%9F%87%B9%F0%9F%87%AD%0A%3C%2Fdiv%3E%0A%0A%3Ch1%20class%3D%22hero-title%22%3E%0A%3Cspan%3EMahiru%3C%2Fspan%3E%3Cbr%3E%0ADiscord%20Bot%20%F0%9F%92%99%0A%3C%2Fh1%3E%0A%0A%3Cp%20class%3D%22hero-desc%22%3E%0A%E0%B8%9A%E0%B8%AD%E0%B8%97%20Discord%20%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%84%E0%B8%A3%E0%B8%9A%20%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%20%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%AA%E0%B9%81%E0%B8%9B%E0%B8%A1%0A%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%20Verify%20%2F%20Logs%20%2F%20Welcome%20%2F%20Anti%20Nuke%20%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%AD%E0%B8%B7%E0%B9%88%E0%B8%99%E0%B9%86%E0%B8%AD%E0%B8%B5%E0%B8%81%E0%B8%A1%E0%B8%B2%E0%B8%81%E0%B8%A1%E0%B8%B2%E0%B8%A2%0A%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%95%E0%B8%A5%E0%B8%AD%E0%B8%94%2024%20%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%A7%E0%B9%82%E0%B8%A1%E0%B8%87%0A%3C%2Fp%3E%0A%0A%3Cdiv%20class%3D%22hero-buttons%22%3E%0A%3Ca%20class%3D%22btn%20btn-primary%22%20target%3D%22_blank%22%0Ahref%3D%22https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D1427456585986211840%26scope%3Dbot%26permissions%3D27649060030%22%3E%0A%F0%9F%A4%96%20%E0%B9%80%E0%B8%8A%E0%B8%B4%E0%B8%8D%E0%B8%9A%E0%B8%AD%E0%B8%97%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%0A%3C%2Fa%3E%0A%0A%3Ca%20class%3D%22btn%20btn-secondary%22%20target%3D%22_blank%22%0Ahref%3D%22https%3A%2F%2Fdiscord.gg%2FGu8KjSH4Bu%22%3E%0A%F0%9F%92%99%20SUPPORT%0A%3C%2Fa%3E%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%3C%2Fsection%3E%0A%0A%3Csection%20id%3D%22features%22%3E%0A%0A%3Cdiv%20class%3D%22section-title%22%3E%0A%3Ch2%3E%F0%9F%9B%A1%EF%B8%8F%20%E0%B8%9F%E0%B8%B5%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%3C%2Fh2%3E%0A%3Cp%3E%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%9A%E0%B8%A7%E0%B8%87%E0%B8%88%E0%B8%A3%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22grid%22%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%9B%A1%EF%B8%8F%3C%2Fdiv%3E%0A%3Ch3%3EAnti%20Nuke%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A5%E0%B8%9A%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%20%E0%B9%80%E0%B8%95%E0%B8%B0%E0%B8%84%E0%B8%99%20%E0%B9%81%E0%B8%9A%E0%B8%99%E0%B8%84%E0%B8%99%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%E0%B9%81%E0%B8%81%E0%B9%89%E0%B9%84%E0%B8%82%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%9C%E0%B8%B4%E0%B8%94%E0%B8%9B%E0%B8%81%E0%B8%95%E0%B8%B4%0A%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%A5%E0%B8%87%E0%B9%82%E0%B8%97%E0%B8%A9%E0%B8%AD%E0%B8%B1%E0%B8%95%E0%B9%82%E0%B8%99%E0%B8%A1%E0%B8%B1%E0%B8%95%E0%B8%B4%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%94%90%3C%2Fdiv%3E%0A%3Ch3%3EVerify%20CAPTCHA%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%A2%E0%B8%B7%E0%B8%99%E0%B8%A2%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%B1%E0%B8%A7%E0%B8%95%E0%B8%99%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%0A%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%9A%E0%B8%AD%E0%B8%97%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9A%E0%B8%B1%E0%B8%8D%E0%B8%8A%E0%B8%B5%E0%B8%9B%E0%B8%A5%E0%B8%AD%E0%B8%A1%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%9A%AB%3C%2Fdiv%3E%0A%3Ch3%3EAnti%20Spam%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B9%81%E0%B8%9B%E0%B8%A1%20%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%E0%B8%AD%E0%B8%B1%E0%B8%99%E0%B8%95%E0%B8%A3%E0%B8%B2%E0%B8%A2%0A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%81%E0%B8%97%E0%B9%87%E0%B8%81%20everyone%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%E2%9A%A1%3C%2Fdiv%3E%0A%3Ch3%3EWhitelist%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%81%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%94%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B9%83%E0%B8%8A%E0%B9%89%20%E0%B8%A2%E0%B8%A8%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%0A%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%9B%E0%B8%A5%E0%B8%AD%E0%B8%94%E0%B8%A0%E0%B8%B1%E0%B8%A2%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%9A%AA%3C%2Fdiv%3E%0A%3Ch3%3EJoin%20Gate%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B8%88%E0%B8%B3%E0%B8%99%E0%B8%A7%E0%B8%99%E0%B8%A1%E0%B8%B2%E0%B8%81%0A%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%20Raid%20%E0%B8%AD%E0%B8%B1%E0%B8%95%E0%B9%82%E0%B8%99%E0%B8%A1%E0%B8%B1%E0%B8%95%E0%B8%B4%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%93%A6%3C%2Fdiv%3E%0A%3Ch3%3EWelcome%20System%3C%2Fh3%3E%0A%3Cp%3E%0A%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%20%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B9%81%E0%B8%9A%E0%B8%99%E0%B9%80%E0%B8%99%E0%B8%AD%E0%B8%A3%E0%B9%8C%0A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AD%E0%B8%B1%E0%B8%95%E0%B9%82%E0%B8%99%E0%B8%A1%E0%B8%B1%E0%B8%95%E0%B8%B4%0A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fsection%3E%0A%0A%3Csection%20id%3D%22commands%22%3E%0A%0A%3Cdiv%20class%3D%22section-title%22%3E%0A%3Ch2%3E%F0%9F%8E%AE%20Slash%20Commands%3C%2Fh2%3E%0A%3Cp%3E%E0%B8%84%E0%B8%B3%E0%B8%AA%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%9A%E0%B9%88%E0%B8%AD%E0%B8%A2%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22grid%22%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%93%A2%3C%2Fdiv%3E%0A%3Ch3%3E%2Fspeak%3C%2Fh3%3E%0A%3Cp%3E%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%9E%E0%B8%B9%E0%B8%94%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%9C%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%9A%E0%B8%AD%E0%B8%97%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%9B%A1%EF%B8%8F%3C%2Fdiv%3E%0A%3Ch3%3E%2Fsecurity%20panel%3C%2Fh3%3E%0A%3Cp%3E%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%9B%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%97%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%A1%E0%B8%94%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%94%90%3C%2Fdiv%3E%0A%3Ch3%3E%2Fverify%20panel%3C%2Fh3%3E%0A%3Cp%3E%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%88%E0%B8%B8%E0%B8%94%20Verify%20%E0%B8%A0%E0%B8%B2%E0%B8%A2%E0%B9%83%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%90%9F%3C%2Fdiv%3E%0A%3Ch3%3E%2Fwelcome%20panel%3C%2Fh3%3E%0A%3Cp%3E%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%8E%A3%3C%2Fdiv%3E%0A%3Ch3%3E%2Fgoodbye%20panel%3C%2Fh3%3E%0A%3Cp%3E%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22card%22%3E%0A%3Cdiv%20class%3D%22icon%22%3E%F0%9F%91%91%3C%2Fdiv%3E%0A%3Ch3%3E%2Fadmin%3C%2Fh3%3E%0A%3Cp%3E%E0%B9%81%E0%B8%9C%E0%B8%87%E0%B8%84%E0%B8%A7%E0%B8%9A%E0%B8%84%E0%B8%B8%E0%B8%A1%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%20Owner%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fsection%3E%0A%0A%3Csection%20id%3D%22developer%22%3E%0A%0A%3Cdiv%20class%3D%22section-title%22%3E%0A%3Ch2%3E%F0%9F%8C%9F%20Developer%3C%2Fh2%3E%0A%3Cp%3E%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%9E%E0%B8%B1%E0%B8%92%E0%B8%99%E0%B8%B2%E0%B8%9A%E0%B8%AD%E0%B8%97%20Mahiru%3C%2Fp%3E%0A%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22dev-box%22%3E%0A%0A%3Cimg%20src%3D%22https%3A%2F%2Fi.ibb.co%2FjvTL9CDv%2Fprofile.png%22%3E%0A%0A%3Cdiv%3E%0A%0A%3Cdiv%20class%3D%22dev-name%22%3E!%20%E0%B8%8A%E0%B8%AD%E0%B8%9A%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B9%81%E0%B8%A7%E0%B9%88%E0%B8%99%3C%2Fdiv%3E%0A%0A%3Cdiv%20class%3D%22dev-role%22%3E%0ADeveloper%20%C2%B7%20Mahiru%0A%3C%2Fdiv%3E%0A%0A%3Cp%20class%3D%22dev-desc%22%3E%0A%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%9E%E0%B8%B1%E0%B8%92%E0%B8%99%E0%B8%B2%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%20Discord%20Bot%20%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%80%E0%B8%99%E0%B9%89%E0%B8%99%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%AA%E0%B8%96%E0%B8%B5%E0%B8%A2%E0%B8%A3%20%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%9B%E0%B8%A5%E0%B8%AD%E0%B8%94%E0%B8%A0%E0%B8%B1%E0%B8%A2%0A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%AA%E0%B8%B9%E0%B8%87%20%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B2%E0%B8%A2%E0%B9%80%E0%B8%8B%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F%E0%B9%80%E0%B8%A7%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%81%E0%B8%B1%E0%B8%99%0A%E0%B8%9E%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%AD%E0%B8%B1%E0%B8%9B%E0%B9%80%E0%B8%94%E0%B8%95%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%95%E0%B9%88%E0%B8%AD%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%20%F0%9F%92%99%0A%3C%2Fp%3E%0A%0A%3Cbr%3E%0A%0A%3Cdiv%20class%3D%22hero-buttons%22%3E%0A%0A%3Ca%20class%3D%22btn%20btn-secondary%22%0Atarget%3D%22_blank%22%0Ahref%3D%22https%3A%2F%2Fdiscord.gg%2FVEfMATCCGB%22%3E%0A%F0%9F%92%99%20Rayzen%0A%3C%2Fa%3E%0A%0A%3Ca%20class%3D%22btn%20btn-primary%22%0Atarget%3D%22_blank%22%0Ahref%3D%22https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D1427456585986211840%26scope%3Dbot%26permissions%3D27649060030%22%3E%0A%F0%9F%A4%96%20%E0%B9%80%E0%B8%8A%E0%B8%B4%E0%B8%8D%E0%B8%9A%E0%B8%AD%E0%B8%97%0A%3C%2Fa%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fdiv%3E%0A%0A%3C%2Fsection%3E%0A%0A%3Cfooter%3E%0A%C2%A9%202026%20Mahiru%20Discord%20Bot%20%E2%80%94%20All%20rights%20reserved%20%F0%9F%92%99%0A%3C%2Ffooter%3E%0A%0A%3Cscript%3E%0Aconsole.log(%22Mahiru%20Loaded%22)%3B%0A%0Awindow.addEventListener(%22scroll%22%2C()%3D%3E%7B%0A%0Adocument.querySelectorAll(%22.card%22).forEach(card%3D%3E%7B%0A%0Aconst%20top%20%3D%20card.getBoundingClientRect().top%3B%0A%0Aif(top%20%3C%20window.innerHeight%20-%20100)%7B%0A%20%20%20%20card.style.opacity%3D%221%22%3B%0A%20%20%20%20card.style.transform%3D%22translateY(0px)%22%3B%0A%7D%0A%0A%7D)%3B%0A%0A%7D)%3B%0A%0Adocument.querySelectorAll(%22.card%22).forEach(card%3D%3E%7B%0A%20%20%20%20card.style.opacity%3D%220%22%3B%0A%20%20%20%20card.style.transform%3D%22translateY(40px)%22%3B%0A%20%20%20%20card.style.transition%3D%22.6s%22%3B%0A%7D)%3B%0A%3C%2Fscript%3E%0A%0A%3C%2Fbody%3E%0A%3C%2Fhtml%3E
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>มาฮิรุ — Discord Bot</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Kanit',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* BG */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,#2563eb44,transparent 30%),
+    radial-gradient(circle at bottom right,#7c3aed55,transparent 30%);
+    z-index:-1;
+}
+
+/* NAV */
+
+nav{
+    width:100%;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    backdrop-filter:blur(14px);
+    background:rgba(15,23,42,.75);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:999;
+}
+
+.nav-logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:white;
+    font-size:1.3rem;
+    font-weight:700;
+}
+
+.nav-logo img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+nav ul{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+nav ul a{
+    color:#dbeafe;
+    text-decoration:none;
+    transition:.25s;
+}
+
+nav ul a:hover{
+    color:#60a5fa;
+}
+
+.nav-btn{
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6);
+    padding:12px 22px;
+    border-radius:14px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:.25s;
+}
+
+.nav-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+}
+
+.hero-inner{
+    max-width:1200px;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:50px;
+    align-items:center;
+}
+
+.avatar-wrap{
+    position:relative;
+    width:320px;
+    height:320px;
+    margin:auto;
+}
+
+.avatar-wrap::before{
+    content:"";
+    position:absolute;
+    inset:-15px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6,#ec4899);
+    animation:spin 8s linear infinite;
+    z-index:-1;
+}
+
+.avatar-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    border:8px solid #0f172a;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.hero-tag{
+    display:inline-block;
+    padding:8px 14px;
+    background:#1e293b;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;
+    margin-bottom:18px;
+    color:#93c5fd;
+}
+
+.hero-title{
+    font-size:4rem;
+    line-height:1.1;
+    margin-bottom:15px;
+    font-weight:900;
+}
+
+.hero-title span{
+    background:linear-gradient(45deg,#60a5fa,#c084fc);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero-desc{
+    color:#cbd5e1;
+    font-size:1.08rem;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+.hero-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.btn{
+    padding:14px 24px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.25s;
+}
+
+.btn-primary{
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6);
+    color:white;
+}
+
+.btn-secondary{
+    background:#1e293b;
+    color:white;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+/* SECTION */
+
+section{
+    padding:100px 7%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.section-title h2{
+    font-size:2.6rem;
+    margin-bottom:10px;
+}
+
+.section-title p{
+    color:#94a3b8;
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:rgba(30,41,59,.8);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:24px;
+    padding:28px;
+    transition:.3s;
+    backdrop-filter:blur(8px);
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#60a5fa;
+}
+
+.icon{
+    font-size:2.5rem;
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:14px;
+}
+
+.card p{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+/* COMMAND */
+
+.command{
+    margin-top:15px;
+    padding:14px;
+    background:#0f172a;
+    border-radius:14px;
+}
+
+.command strong{
+    color:#60a5fa;
+}
+
+/* DEV */
+
+.dev-box{
+    max-width:900px;
+    margin:auto;
+    background:rgba(30,41,59,.8);
+    border-radius:30px;
+    padding:40px;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:35px;
+    align-items:center;
+}
+
+.dev-box img{
+    width:100%;
+    border-radius:24px;
+}
+
+.dev-name{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+.dev-role{
+    color:#60a5fa;
+    margin-bottom:18px;
+}
+
+.dev-desc{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:35px 20px;
+    background:#020617;
+    color:#94a3b8;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    nav ul{
+        display:none;
+    }
+
+    .hero-title{
+        font-size:2.8rem;
+    }
+
+    .dev-box{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .avatar-wrap{
+        width:250px;
+        height:250px;
+    }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a class="nav-logo" href="#">
+        <img src="https://s13.gifyu.com/images/bqNeL.gif">
+        มาฮิรุ
+    </a>
+
+    <ul>
+        <li><a href="#features">ฟีเจอร์</a></li>
+        <li><a href="#commands">คำสั่ง</a></li>
+        <li><a href="#developer">Developer</a></li>
+    </ul>
+
+    <a class="nav-btn" target="_blank"
+    href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+    🤖 เชิญบอท
+    </a>
+</nav>
+
+<section class="hero">
+
+<div class="hero-inner">
+
+<div class="avatar-wrap">
+<img src="https://s13.gifyu.com/images/bqNeL.gif">
+</div>
+
+<div>
+<div class="hero-tag">
+✨ Discord Bot Thailand 🇹🇭
+</div>
+
+<h1 class="hero-title">
+<span>Mahiru</span><br>
+Discord Bot 💙
+</h1>
+
+<p class="hero-desc">
+บอท Discord ระบบครบ ป้องกันเซิร์ฟเวอร์ ป้องกันสแปม
+ระบบ Verify / Logs / Welcome / Anti Nuke และอื่นๆอีกมากมาย
+พร้อมใช้งานตลอด 24 ชั่วโมง
+</p>
+
+<div class="hero-buttons">
+<a class="btn btn-primary" target="_blank"
+href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+🤖 เชิญบอทเข้าเซิร์ฟ
+</a>
+
+<a class="btn btn-secondary" target="_blank"
+href="https://discord.gg/Gu8KjSH4Bu">
+💙 SUPPORT
+</a>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<section id="features">
+
+<div class="section-title">
+<h2>🛡️ ฟีเจอร์หลัก</h2>
+<p>ระบบป้องกันและจัดการเซิร์ฟเวอร์ครบวงจร</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">🛡️</div>
+<h3>Anti Nuke</h3>
+<p>
+ตรวจจับการลบห้อง เตะคน แบนคน หรือแก้ไขเซิร์ฟเวอร์ผิดปกติ
+พร้อมลงโทษอัตโนมัติ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🔐</div>
+<h3>Verify CAPTCHA</h3>
+<p>
+ระบบยืนยันตัวตนก่อนเข้าเซิร์ฟเวอร์
+ป้องกันบอทและบัญชีปลอม
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🚫</div>
+<h3>Anti Spam</h3>
+<p>
+ป้องกันข้อความสแปม ลิงก์อันตราย
+และการแท็ก everyone
+</p>
+</div>
+
+<div class="card">
+<div class="icon">⚡</div>
+<h3>Whitelist</h3>
+<p>
+กำหนดผู้ใช้ ยศ หรือห้อง
+ให้ปลอดภัยจากระบบตรวจจับ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🚪</div>
+<h3>Join Gate</h3>
+<p>
+ตรวจจับการเข้าเซิร์ฟจำนวนมาก
+ป้องกันการ Raid อัตโนมัติ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">📦</div>
+<h3>Welcome System</h3>
+<p>
+ระบบต้อนรับ พร้อมแบนเนอร์
+และข้อความอัตโนมัติ
+</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="commands">
+
+<div class="section-title">
+<h2>🎮 Slash Commands</h2>
+<p>คำสั่งหลักที่ใช้งานบ่อย</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">📢</div>
+<h3>/speak</h3>
+<p>ระบบพูดข้อความผ่านบอท</p>
+</div>
+
+<div class="card">
+<div class="icon">🛡️</div>
+<h3>/security panel</h3>
+<p>ตั้งค่าระบบป้องกันทั้งหมด</p>
+</div>
+
+<div class="card">
+<div class="icon">🔐</div>
+<h3>/verify panel</h3>
+<p>สร้างจุด Verify ภายในเซิร์ฟเวอร์</p>
+</div>
+
+<div class="card">
+<div class="icon">🐟</div>
+<h3>/welcome panel</h3>
+<p>ตั้งค่าระบบต้อนรับ</p>
+</div>
+
+<div class="card">
+<div class="icon">🎣</div>
+<h3>/goodbye panel</h3>
+<p>ระบบข้อความออกจากเซิร์ฟ</p>
+</div>
+
+<div class="card">
+<div class="icon">👑</div>
+<h3>/admin</h3>
+<p>แผงควบคุมสำหรับ Owner</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="developer">
+
+<div class="section-title">
+<h2>🌟 Developer</h2>
+<p>ผู้พัฒนาบอท Mahiru</p>
+</div>
+
+<div class="dev-box">
+
+<img src="https://i.ibb.co/jvTL9CDv/profile.png">
+
+<div>
+
+<div class="dev-name">! ชอบสาวแว่น</div>
+
+<div class="dev-role">
+Developer · Mahiru
+</div>
+
+<p class="dev-desc">
+ผู้พัฒนาระบบ Discord Bot ที่เน้นความเสถียร ความปลอดภัย
+และประสิทธิภาพสูง รองรับการใช้งานหลายเซิร์ฟเวอร์พร้อมกัน
+พร้อมอัปเดตระบบใหม่อย่างต่อเนื่อง 💙
+</p>
+
+<br>
+
+<div class="hero-buttons">
+
+<a class="btn btn-secondary"
+target="_blank"
+href="https://discord.gg/VEfMATCCGB">
+💙 Rayzen
+</a>
+
+<a class="btn btn-primary"
+target="_blank"
+href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+🤖 เชิญบอท
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 Mahiru Discord Bot — All rights reserved 💙
+</footer>
+
+<script>
+console.log("Mahiru Loaded");
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".card").forEach(card=>{
+
+const top = card.getBoundingClientRect().top;
+
+if(top < window.innerHeight - 100){
+    card.style.opacity="1";
+    card.style.transform="translateY(0px)";
+}
+
+});
+
+});
+
+document.querySelectorAll(".card").forEach(card=>{
+    card.style.opacity="0";
+    card.style.transform="translateY(40px)";
+    card.style.transition=".6s";
+});
+</script>
+
+</body>
+</html>
