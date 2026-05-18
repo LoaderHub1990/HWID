@@ -1,274 +1,602 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>มาฮิรุ — ดูแลเซิร์ฟเวอร์ตลอด 24 ชั่วโมง</title>
-  <meta name="description" content="Mahiru เป็นบอทดิสคอร์ดที่มีระบบมากมายที่มีดีเยี่ยมและมีฟีเจอร์ที่ครบถ้วน" />
-  <link rel="icon" href="favicon.png" sizes="512x512" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&family=Itim&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>มาฮิรุ — Discord Bot</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Kanit',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* BG */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,#2563eb44,transparent 30%),
+    radial-gradient(circle at bottom right,#7c3aed55,transparent 30%);
+    z-index:-1;
+}
+
+/* NAV */
+
+nav{
+    width:100%;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    backdrop-filter:blur(14px);
+    background:rgba(15,23,42,.75);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:999;
+}
+
+.nav-logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:white;
+    font-size:1.3rem;
+    font-weight:700;
+}
+
+.nav-logo img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+nav ul{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+nav ul a{
+    color:#dbeafe;
+    text-decoration:none;
+    transition:.25s;
+}
+
+nav ul a:hover{
+    color:#60a5fa;
+}
+
+.nav-btn{
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6);
+    padding:12px 22px;
+    border-radius:14px;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:.25s;
+}
+
+.nav-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+}
+
+.hero-inner{
+    max-width:1200px;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:50px;
+    align-items:center;
+}
+
+.avatar-wrap{
+    position:relative;
+    width:320px;
+    height:320px;
+    margin:auto;
+}
+
+.avatar-wrap::before{
+    content:"";
+    position:absolute;
+    inset:-15px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6,#ec4899);
+    animation:spin 8s linear infinite;
+    z-index:-1;
+}
+
+.avatar-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    border:8px solid #0f172a;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.hero-tag{
+    display:inline-block;
+    padding:8px 14px;
+    background:#1e293b;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;
+    margin-bottom:18px;
+    color:#93c5fd;
+}
+
+.hero-title{
+    font-size:4rem;
+    line-height:1.1;
+    margin-bottom:15px;
+    font-weight:900;
+}
+
+.hero-title span{
+    background:linear-gradient(45deg,#60a5fa,#c084fc);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.hero-desc{
+    color:#cbd5e1;
+    font-size:1.08rem;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+.hero-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.btn{
+    padding:14px 24px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.25s;
+}
+
+.btn-primary{
+    background:linear-gradient(45deg,#3b82f6,#8b5cf6);
+    color:white;
+}
+
+.btn-secondary{
+    background:#1e293b;
+    color:white;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+/* SECTION */
+
+section{
+    padding:100px 7%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.section-title h2{
+    font-size:2.6rem;
+    margin-bottom:10px;
+}
+
+.section-title p{
+    color:#94a3b8;
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:rgba(30,41,59,.8);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:24px;
+    padding:28px;
+    transition:.3s;
+    backdrop-filter:blur(8px);
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#60a5fa;
+}
+
+.icon{
+    font-size:2.5rem;
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:14px;
+}
+
+.card p{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+/* COMMAND */
+
+.command{
+    margin-top:15px;
+    padding:14px;
+    background:#0f172a;
+    border-radius:14px;
+}
+
+.command strong{
+    color:#60a5fa;
+}
+
+/* DEV */
+
+.dev-box{
+    max-width:900px;
+    margin:auto;
+    background:rgba(30,41,59,.8);
+    border-radius:30px;
+    padding:40px;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:35px;
+    align-items:center;
+}
+
+.dev-box img{
+    width:100%;
+    border-radius:24px;
+}
+
+.dev-name{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+.dev-role{
+    color:#60a5fa;
+    margin-bottom:18px;
+}
+
+.dev-desc{
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:35px 20px;
+    background:#020617;
+    color:#94a3b8;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    nav ul{
+        display:none;
+    }
+
+    .hero-title{
+        font-size:2.8rem;
+    }
+
+    .dev-box{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .avatar-wrap{
+        width:250px;
+        height:250px;
+    }
+}
+</style>
 </head>
 <body>
 
-<div class="bg-shapes" id="bgShapes"></div>
-
 <nav>
-  <a href="#" class="nav-logo">
-    <img src="https://s13.gifyu.com/images/bqNeL.gif" class="nav-logo-img">
-    มาฮิรุ
-  </a>
-  <ul>
-    <li><a href="#features">ฟีเจอร์</a></li>
-    <li><a href="#commands">คำสั่ง</a></li>
-    <li><a href="#dev">Developer</a></li>
-  </ul>
-  <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="nav-cta" target="_blank">🤖 เชิญบอท</a>
+    <a class="nav-logo" href="#">
+        <img src="https://s13.gifyu.com/images/bqNeL.gif">
+        มาฮิรุ
+    </a>
+
+    <ul>
+        <li><a href="#features">ฟีเจอร์</a></li>
+        <li><a href="#commands">คำสั่ง</a></li>
+        <li><a href="#developer">Developer</a></li>
+    </ul>
+
+    <a class="nav-btn" target="_blank"
+    href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+    🤖 เชิญบอท
+    </a>
 </nav>
 
 <section class="hero">
-  <div class="hero-inner">
-    <div class="avatar-area">
-      <div class="avatar-wrap">
-        <div class="av-blob-ring"></div>
-        <div class="av-blob-ring2"></div>
-        <div class="av-star">✨</div>
-        <div class="av-star">⭐</div>
-        <div class="av-star">🌟</div>
-        <div class="av-star">💫</div>
-        <div class="avatar-img-wrap">
-          <img src="https://s13.gifyu.com/images/bqNeL.gif" alt="มาฮิรุ" class="avatar-img"
-               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
-        </div>
-      </div>
-      <div class="avatar-status">
-        <div class="dot-online"></div>
-        Online · Mahiru      </div>
-    </div>
-    <div class="hero-text">
-      <div class="hero-tag">✨ Discord Bot · Thailand 🇹🇭</div>
-      <h1 class="hero-title">
-        <span class="t1">มาฮิรุ</span>
-        <span class="t2">Discord Bot 💙</span>
-      </h1>
-      <span id="typed"></span><span class="cursor">|</span>
-      <div class="hero-stats">
-        <div class="stat-pill"><div class="num">24/7</div><div class="lbl">Online</div></div>
-        <div class="stat-pill"><div class="num">v1 and v2</div><div class="lbl">System</div></div>
-        <div class="stat-pill"><div class="num">51</div><div class="lbl">Commands</div></div>
-        <div class="stat-pill"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
-      </div>
-      <div class="hero-btns">
-        <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
-        <a href="https://discord.gg/Gu8KjSH4Bu" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="wavy">
-  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
-  </svg>
+<div class="hero-inner">
+
+<div class="avatar-wrap">
+<img src="https://s13.gifyu.com/images/bqNeL.gif">
 </div>
+
+<div>
+<div class="hero-tag">
+✨ Discord Bot Thailand 🇹🇭
+</div>
+
+<h1 class="hero-title">
+<span>Mahiru</span><br>
+Discord Bot 💙
+</h1>
+
+<p class="hero-desc">
+บอท Discord ระบบครบ ป้องกันเซิร์ฟเวอร์ ป้องกันสแปม
+ระบบ Verify / Logs / Welcome / Anti Nuke และอื่นๆอีกมากมาย
+พร้อมใช้งานตลอด 24 ชั่วโมง
+</p>
+
+<div class="hero-buttons">
+<a class="btn btn-primary" target="_blank"
+href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+🤖 เชิญบอทเข้าเซิร์ฟ
+</a>
+
+<a class="btn btn-secondary" target="_blank"
+href="https://discord.gg/Gu8KjSH4Bu">
+💙 SUPPORT
+</a>
+</div>
+
+</div>
+
+</div>
+</section>
 
 <section id="features">
-  <div class="container">
-    <div class="sec-header reveal">
-      <div class="sec-tag">🛠️ Bot user manual</div>
-      <h2 class="sec-title">คู่มือการใช้งาน  <span class="accent">บอท</span></h2>
-      <p class="sec-sub">คำแนะนำในการใช้งานบอทอย่างละเอียด 🌸</p>
-    </div>
 
-    <div class="features-grid">
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🛡️</div>
-        <h3>ป้องกันการโจมตีเซิร์ฟเวอร์</h3>
-        </p>ระบบ Anti Nuke</p>
-        <p>• ตรวจจับการทำงานผิดปกติภายในเซิร์ฟ</p>
-        <p>• จัดการคนที่ลบห้อง หรือเตะคนรัวๆ</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🔐</div>
-        <h3>Verify System - CAPTCHA</h3>
-        </p>ระบบ Verify</p>
-        <p>• ใช้ระบบ CAPTCHA ยืนยันตัวตนคนเข้าเซิร์ฟ</p>
-        <p>• ตั้งค่าหน้าต่าง Panel V2 ได้เอง</p>
-        <p>• แจ้งเตือนลงห้อง Log ให้แอดมินทราบ</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🚫</div>
-        <h3>ป้องกันข้อความสแปม</h3>
-        </p>ระบบ Anti Spam</p>
-        <p>• ตรวจจับการพิมพ์ข้อความเร็วเกิน</p>
-        <p>• ป้องกันการแท็ก @everyone / @here</p>
-        <p>• ป้องกันการส่งลิงก์อันตราย</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">⚡</div>
-        <h3>ป้องกันไม่ให้โดนตรวจจับ</h3>
-        </p>ระบบ Whitelist</p>
-        <p>• เพิ่มผู้ใช้/ยศ/ช่อง ให้อยู่ในโหมดปลอดภัย</p>
-        <p>• ดูรายการทั้งหมดได้ผ่านคำสั่ง /whitelist</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🚪</div>
-        <h3>ป้องกันบอทเข้าเซิร์ฟเวอร์</h3>
-        </p>ระบบ Join Gate</p>
-        <p>• จัดการกลุ่มคนที่เข้ามาพร้อมกันจำนวนมาก</p>
-        <p>• สามารถตั้งค่าให้ เตะ/แบน อัตโนมัติ</p>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">⚙️</div>
-        <h3>คำสั่งที่แอดมินต้องรู้</h3>
-        </p>การตั้งค่าเริ่มต้น</p>
-        <p>• /security panel - ตั้งค่าระบบป้องกันทั้งหมด</p>
-        <p>• /verify panel - ตั้งค่าระบบยืนยันตัวตน</p>
-        <p>• /welcome panel - ตั้งค่าห้องต้อนรับ</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="wavy">
-  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0 40 C240 0 480 80 720 40 C960 0 1200 80 1440 40 L1440 80 L0 80 Z" fill="#fdf0f8"/>
-  </svg>
+<div class="section-title">
+<h2>🛡️ ฟีเจอร์หลัก</h2>
+<p>ระบบป้องกันและจัดการเซิร์ฟเวอร์ครบวงจร</p>
 </div>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">🛡️</div>
+<h3>Anti Nuke</h3>
+<p>
+ตรวจจับการลบห้อง เตะคน แบนคน หรือแก้ไขเซิร์ฟเวอร์ผิดปกติ
+พร้อมลงโทษอัตโนมัติ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🔐</div>
+<h3>Verify CAPTCHA</h3>
+<p>
+ระบบยืนยันตัวตนก่อนเข้าเซิร์ฟเวอร์
+ป้องกันบอทและบัญชีปลอม
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🚫</div>
+<h3>Anti Spam</h3>
+<p>
+ป้องกันข้อความสแปม ลิงก์อันตราย
+และการแท็ก everyone
+</p>
+</div>
+
+<div class="card">
+<div class="icon">⚡</div>
+<h3>Whitelist</h3>
+<p>
+กำหนดผู้ใช้ ยศ หรือห้อง
+ให้ปลอดภัยจากระบบตรวจจับ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🚪</div>
+<h3>Join Gate</h3>
+<p>
+ตรวจจับการเข้าเซิร์ฟจำนวนมาก
+ป้องกันการ Raid อัตโนมัติ
+</p>
+</div>
+
+<div class="card">
+<div class="icon">📦</div>
+<h3>Welcome System</h3>
+<p>
+ระบบต้อนรับ พร้อมแบนเนอร์
+และข้อความอัตโนมัติ
+</p>
+</div>
+
+</div>
+
+</section>
 
 <section id="commands">
-  <div class="container">
-    <div class="sec-header reveal">
-      <div class="sec-tag">🎮 Main commands</div>
-      <h2 class="sec-title"><span class="accent">Slash</span> Commands</h2>
-      <p class="sec-sub">คำสั่งหลักๆที่ใช้งาน🎀</p>
-    </div>
-    <div class="cmd-list">
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">📢</div>
-        <div class="cmd-name">/speak </div>
-        <div class="cmd-desc">ระบบพูดข้อความ</div>
-        <span class="cmd-badge badge-all">ทุกคน</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/security panel</div>
-        <div class="cmd-desc">ตั้งค่าระบบป้องกันทั้งหมด</div>
-        <div class="cmd-desc">(Anti Nuke, Anti Raid, Logs, Join Gate)</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/whitelist</div>
-        <div class="cmd-desc">จัดการระบบไวท์ลิสต์</div>
-        <div class="cmd-desc">(เพิ่ม/ลบ ผู้ใช้, ยศ, ช่อง เพื่อให้ไม่โดนจับผิด)</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/anti_webhook</div>
-        <div class="cmd-desc">การป้องกันสแปม เว็ปฮุกทั้งเซิฟเวอร์</div>
-        <div class="cmd-desc">anti_webhook, ลบเว็ปฮุกทั้งเซิฟ, ตั้งค่าการลงโทษ</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">📦</div>
-        <div class="cmd-name">/verify panel</div>
-        <div class="cmd-desc">สร้างจุดยืนยันตัวตนสำหรับคนเข้าเซิร์ฟใหม่</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🐟</div>
-        <div class="cmd-name">/welcome panel</div>
-        <div class="cmd-desc">ตั้งค่าแบนเนอร์และข้อความต้อนรับคนเข้า</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🎣</div>
-        <div class="cmd-name">/goodbye panel</div>
-        <div class="cmd-desc">ตั้งค่าข้อความบอกลาตอนคนออก</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🍕</div>
-        <div class="cmd-name">/boost panel</div>
-        <div class="cmd-desc">แผงควบคุมระบบแจ้งเตือนบูสต์เซิร์ฟเวอร์</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🍔</div>
-        <div class="cmd-name">/sticky</div>
-        <div class="cmd-desc">ตั้งค่าระบบปักหมุด</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-            <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">👑</div>
-        <div class="cmd-name">/admin</div>
-        <div class="cmd-desc">แผงควบคุมผู้ดูแลระบบ</div>
-        <span class="cmd-badge badge-owner">Owner</span>
-      </div>
-          </div>
-  </div>
-</section>
 
-<div class="wavy">
-  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
-  </svg>
+<div class="section-title">
+<h2>🎮 Slash Commands</h2>
+<p>คำสั่งหลักที่ใช้งานบ่อย</p>
 </div>
 
-<section id="dev">
-  <div class="container">
-    <div class="sec-header reveal">
-      <div class="sec-tag">🌟 Developer</div>
-      <h2 class="sec-title">About The <span class="accent">Developer</span></h2>
-      <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ 💜</p>
-    </div>
-    <div class="dev-card reveal">
-      <div class="dev-avatar-outer">
-        <div class="dev-crown">👑</div>
-        <div class="dev-blob-ring"></div>
-        <div class="dev-blob-ring2"></div>
-        <div class="dev-img-wrap">
-          <img src="https://i.ibb.co/jvTL9CDv/profile.png" alt="bpxz_store_x2" class="dev-img"
-               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
-        </div>
-      </div>
-      <div class="dev-info">
-        <div class="dev-label">✦ BOT OWNER</div>
-        <div class="dev-name">! ชอบสาวแว่น</div>
-        <div class="dev-role">Developer · ! ชอบสาวแว่น</div>
-        <p class="dev-desc">
-          ผู้พัฒนา มาฮิรุ มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง
-          มีระบบความปลอดภัยแข็งแกร่ง รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙
-        </p>
-        <div class="dev-btns">
-          <a href="https://discord.gg/VEfMATCCGB" class="btn btn-soft" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">💙 Rayzen</a>
-          <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030" class="btn btn-primary" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">🤖 เชิญบอท</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid">
+
+<div class="card">
+<div class="icon">📢</div>
+<h3>/speak</h3>
+<p>ระบบพูดข้อความผ่านบอท</p>
+</div>
+
+<div class="card">
+<div class="icon">🛡️</div>
+<h3>/security panel</h3>
+<p>ตั้งค่าระบบป้องกันทั้งหมด</p>
+</div>
+
+<div class="card">
+<div class="icon">🔐</div>
+<h3>/verify panel</h3>
+<p>สร้างจุด Verify ภายในเซิร์ฟเวอร์</p>
+</div>
+
+<div class="card">
+<div class="icon">🐟</div>
+<h3>/welcome panel</h3>
+<p>ตั้งค่าระบบต้อนรับ</p>
+</div>
+
+<div class="card">
+<div class="icon">🎣</div>
+<h3>/goodbye panel</h3>
+<p>ระบบข้อความออกจากเซิร์ฟ</p>
+</div>
+
+<div class="card">
+<div class="icon">👑</div>
+<h3>/admin</h3>
+<p>แผงควบคุมสำหรับ Owner</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="developer">
+
+<div class="section-title">
+<h2>🌟 Developer</h2>
+<p>ผู้พัฒนาบอท Mahiru</p>
+</div>
+
+<div class="dev-box">
+
+<img src="https://i.ibb.co/jvTL9CDv/profile.png">
+
+<div>
+
+<div class="dev-name">! ชอบสาวแว่น</div>
+
+<div class="dev-role">
+Developer · Mahiru
+</div>
+
+<p class="dev-desc">
+ผู้พัฒนาระบบ Discord Bot ที่เน้นความเสถียร ความปลอดภัย
+และประสิทธิภาพสูง รองรับการใช้งานหลายเซิร์ฟเวอร์พร้อมกัน
+พร้อมอัปเดตระบบใหม่อย่างต่อเนื่อง 💙
+</p>
+
+<br>
+
+<div class="hero-buttons">
+
+<a class="btn btn-secondary"
+target="_blank"
+href="https://discord.gg/VEfMATCCGB">
+💙 Rayzen
+</a>
+
+<a class="btn btn-primary"
+target="_blank"
+href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030">
+🤖 เชิญบอท
+</a>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
 <footer>
-  <div class="footer-logo">Mahiru Copyright 2021-2030</div>
-  <div class="footer-links">
-    <a href="https://discord.gg/VEfMATCCGB"  target="_blank">Rayzen</a>
-    <a href="https://discord.gg/Gu8KjSH4Bu" target="_blank">SUPPORT</a>
-    <a href="https://discord.com/oauth2/authorize?client_id=1427456585986211840&scope=bot&permissions=27649060030"  target="_blank">INVITE BOT</a>
-  </div>
-  <div class="footer-copy">© 2026 Rayzen · Mahiru · All rights reserved 💙</div>
+© 2026 Mahiru Discord Bot — All rights reserved 💙
 </footer>
 
-<script src="script.js"></script>
+<script>
+console.log("Mahiru Loaded");
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".card").forEach(card=>{
+
+const top = card.getBoundingClientRect().top;
+
+if(top < window.innerHeight - 100){
+    card.style.opacity="1";
+    card.style.transform="translateY(0px)";
+}
+
+});
+
+});
+
+document.querySelectorAll(".card").forEach(card=>{
+    card.style.opacity="0";
+    card.style.transform="translateY(40px)";
+    card.style.transition=".6s";
+});
+</script>
+
 </body>
 </html>
