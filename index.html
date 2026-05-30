@@ -3,153 +3,125 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ariea — ดูแลเซิร์ฟเวอร์ตลอด 24 ชั่วโมง</title>
-  <meta name="description" content="Ariea เป็นบอทดิสคอร์ดที่มีระบบมากมายที่มีดีเยี่ยมและมีฟีเจอร์ที่ครบถ้วน" />
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <title>Ariea — Discord Bot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --pink: #f2a7c9;
-      --pink-light: #fce4f0;
-      --pink-soft: #fdf0f8;
-      --blue: #a7c8f2;
-      --blue-light: #deeeff;
-      --blue-soft: #e8f3ff;
       --purple: #c4a7f2;
-      --purple-light: #ede0ff;
-      --white: #fff;
+      --blue: #a7c8f2;
       --text: #5a3e6b;
       --text-soft: #9b7db5;
-      --card-bg: rgba(255,255,255,0.75);
-      --shadow: 0 8px 40px rgba(200,160,220,0.18);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Kanit', sans-serif;
-      background: linear-gradient(135deg, #fce8f6 0%, #e8f0ff 40%, #f5e8ff 70%, #fce8f6 100%);
+      background: linear-gradient(135deg, #fce8f6 0%, #e8f0ff 50%, #f5e8ff 100%);
       color: var(--text);
-      overflow-x: hidden;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ─── Floating shapes bg ─── */
-    .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .bg-shapes span {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.13;
-      animation: floatUp 18s infinite ease-in-out;
+    /* BG blobs */
+    .blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .blobs span {
+      position: absolute; border-radius: 50%; opacity: 0.12;
+      animation: bob 16s ease-in-out infinite;
     }
-    .bg-shapes span:nth-child(1)  { width:320px;height:320px;background:var(--pink);  top:10%;  left:5%;   animation-delay:0s;   }
-    .bg-shapes span:nth-child(2)  { width:200px;height:200px;background:var(--blue);  top:55%;  left:75%;  animation-delay:-4s;  }
-    .bg-shapes span:nth-child(3)  { width:260px;height:260px;background:var(--purple);top:30%;  left:60%;  animation-delay:-8s;  }
-    .bg-shapes span:nth-child(4)  { width:150px;height:150px;background:var(--pink);  top:75%;  left:20%;  animation-delay:-12s; }
-    .bg-shapes span:nth-child(5)  { width:180px;height:180px;background:var(--blue);  top:5%;   left:85%;  animation-delay:-3s;  }
-    @keyframes floatUp {
-      0%,100% { transform: translateY(0) scale(1); }
-      50%      { transform: translateY(-40px) scale(1.05); }
-    }
+    .blobs span:nth-child(1){ width:340px;height:340px;background:#f2a7c9;top:5%;left:3%;animation-delay:0s; }
+    .blobs span:nth-child(2){ width:220px;height:220px;background:#a7c8f2;top:60%;left:78%;animation-delay:-5s; }
+    .blobs span:nth-child(3){ width:280px;height:280px;background:#c4a7f2;top:35%;left:65%;animation-delay:-9s; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-35px)} }
 
-    /* ─── Nav ─── */
+    /* Nav */
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: .85rem 2.5rem;
-      background: rgba(255,255,255,0.72);
-      backdrop-filter: blur(18px);
-      border-bottom: 1.5px solid rgba(200,170,230,0.2);
-      box-shadow: 0 2px 24px rgba(200,160,220,0.10);
+      padding: .8rem 2rem;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,170,230,0.2);
     }
-    .nav-logo {
-      display: flex; align-items: center; gap: .6rem;
-      text-decoration: none; font-weight: 700; font-size: 1.18rem; color: var(--text);
-    }
-    .nav-logo-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
-    nav ul { display: flex; gap: 2rem; list-style: none; }
-    nav ul a { text-decoration: none; color: var(--text-soft); font-weight: 500; font-size: .95rem; transition: color .2s; }
-    nav ul a:hover { color: var(--pink); }
+    .nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 800; font-size: 1.15rem; color: var(--text); }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--pink); object-fit: cover; }
     .nav-cta {
-      background: linear-gradient(135deg, var(--pink), var(--purple));
+      background: linear-gradient(135deg, #f27cba, #c47ef2);
       color: #fff; text-decoration: none; border-radius: 50px;
-      padding: .5rem 1.3rem; font-size: .9rem; font-weight: 700;
-      box-shadow: 0 4px 18px rgba(200,140,210,0.3);
+      padding: .5rem 1.4rem; font-size: .88rem; font-weight: 700;
+      box-shadow: 0 4px 18px rgba(200,120,200,0.3);
       transition: transform .2s, box-shadow .2s;
     }
-    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,140,210,0.45); }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,120,200,0.5); }
 
-    /* ─── Hero ─── */
+    /* Hero */
     .hero {
       position: relative; z-index: 1;
-      padding: 4rem 2rem 2rem;
-    }
-    .hero-inner {
       max-width: 1100px; margin: 0 auto;
+      padding: 4rem 2rem 2rem;
       display: flex; align-items: center; gap: 4rem; flex-wrap: wrap;
     }
 
     /* Avatar */
     .avatar-area { display: flex; flex-direction: column; align-items: center; gap: .8rem; flex-shrink: 0; }
     .avatar-wrap { position: relative; width: 170px; height: 170px; }
-    .av-blob-ring, .av-blob-ring2 {
+    .ring1, .ring2 {
       position: absolute; inset: -10px; border-radius: 50%;
-      border: 2.5px dashed var(--pink); animation: spin 12s linear infinite;
+      border: 2px dashed var(--pink); animation: spin 14s linear infinite;
     }
-    .av-blob-ring2 { inset: -18px; border-color: var(--blue); animation-direction: reverse; animation-duration: 18s; }
+    .ring2 { inset: -20px; border-color: var(--blue); animation-direction: reverse; animation-duration: 20s; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .av-star {
-      position: absolute; font-size: 1rem; animation: orbit 6s linear infinite;
-    }
-    .av-star:nth-child(3) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: 0s; }
-    .av-star:nth-child(4) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -1.5s; }
-    .av-star:nth-child(5) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -3s; }
-    .av-star:nth-child(6) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -4.5s; }
-    @keyframes orbit { to { transform: rotate(360deg); } }
-    .avatar-img-wrap {
+    .avatar-img-box {
       width: 170px; height: 170px; border-radius: 50%; overflow: hidden;
       border: 4px solid #fff;
-      box-shadow: 0 8px 40px rgba(200,140,210,0.35), 0 0 0 4px var(--pink-light);
+      box-shadow: 0 8px 40px rgba(200,140,210,0.4), 0 0 0 4px rgba(242,167,201,0.3);
+      position: relative; z-index: 1;
     }
-    .avatar-img { width: 100%; height: 100%; object-fit: cover; }
-    .avatar-status {
+    .avatar-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .status-pill {
       display: flex; align-items: center; gap: .45rem;
-      background: rgba(255,255,255,0.8); border-radius: 50px;
-      padding: .3rem 1rem; font-size: .82rem; font-weight: 600; color: var(--text-soft);
+      background: rgba(255,255,255,0.85); border-radius: 50px;
+      padding: .3rem 1rem; font-size: .8rem; font-weight: 600; color: var(--text-soft);
       box-shadow: 0 2px 12px rgba(200,160,220,0.2);
     }
-    .dot-online { width: 9px; height: 9px; border-radius: 50%; background: #5fe083; box-shadow: 0 0 8px #5fe083; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #5fe083; box-shadow: 0 0 8px #5fe083; }
 
     /* Hero text */
     .hero-text { flex: 1; min-width: 280px; }
-    .hero-tag {
-      display: inline-block; background: linear-gradient(90deg,#fce0f0,#dce8ff);
-      border-radius: 50px; padding: .3rem 1rem; font-size: .82rem; font-weight: 600;
+    .tag {
+      display: inline-block;
+      background: linear-gradient(90deg, #fce0f0, #dce8ff);
+      border-radius: 50px; padding: .3rem 1rem; font-size: .8rem; font-weight: 600;
       color: var(--text-soft); margin-bottom: 1rem;
       border: 1.5px solid rgba(200,170,230,0.3);
     }
-    .hero-title { margin-bottom: .5rem; line-height: 1.1; }
-    .t1 { display: block; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900;
-          background: linear-gradient(135deg, #f27cba, #a78cf2, #7cbff2);
-          -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .t2 { display: block; font-size: clamp(1.1rem, 3vw, 1.7rem); font-weight: 600; color: var(--text-soft); margin-top: .2rem; }
+    .hero-title { line-height: 1.1; margin-bottom: .5rem; }
+    .t1 {
+      display: block; font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 900;
+      background: linear-gradient(135deg, #f27cba, #a78cf2, #7cbff2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .t2 { display: block; font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 600; color: var(--text-soft); margin-top: .3rem; }
 
-    #typed { font-size: 1rem; color: var(--text-soft); font-weight: 400; min-height: 1.4rem; }
-    .cursor { animation: blink .7s step-end infinite; font-weight: 300; color: var(--pink); }
+    .typed-wrap { min-height: 1.5rem; margin: .6rem 0; }
+    #typed { font-size: .98rem; color: var(--text-soft); }
+    .cursor { animation: blink .7s step-end infinite; color: var(--pink); }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     /* Stats */
-    .hero-stats { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.4rem 0; }
-    .stat-pill {
-      background: rgba(255,255,255,0.8); border-radius: 16px;
+    .stats { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.4rem 0; }
+    .stat {
+      background: rgba(255,255,255,0.82); border-radius: 16px;
       padding: .6rem 1.2rem; text-align: center;
       box-shadow: 0 4px 16px rgba(200,160,220,0.18);
       border: 1.5px solid rgba(200,170,230,0.25);
-      min-width: 70px;
+      min-width: 72px;
     }
-    .stat-pill .num { font-size: 1.1rem; font-weight: 800; color: var(--text); }
-    .stat-pill .lbl { font-size: .72rem; color: var(--text-soft); margin-top: .1rem; }
+    .stat .num { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .stat .lbl { font-size: .7rem; color: var(--text-soft); margin-top: .1rem; }
 
     /* Buttons */
-    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.6rem; }
+    .btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.6rem; }
     .btn {
       text-decoration: none; border-radius: 50px; padding: .75rem 1.8rem;
       font-size: .95rem; font-weight: 700; font-family: 'Kanit', sans-serif;
@@ -159,7 +131,7 @@
       background: linear-gradient(135deg, #f27cba, #c47ef2);
       color: #fff; box-shadow: 0 6px 24px rgba(200,120,200,0.35);
     }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(200,120,200,0.5); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(200,120,200,0.55); }
     .btn-soft {
       background: rgba(255,255,255,0.85); color: var(--text);
       border: 1.5px solid rgba(200,170,230,0.4);
@@ -167,382 +139,291 @@
     }
     .btn-soft:hover { transform: translateY(-2px); background: #fff; }
 
-    /* ─── Banner 16:9 ─── */
-    .banner-section {
-      position: relative; z-index: 1; padding: 2rem 2rem 0;
-    }
-    .banner-wrap {
-      max-width: 1100px; margin: 0 auto;
+    /* Banner */
+    .banner-section { position: relative; z-index: 1; padding: 2rem 2rem 0; max-width: 1100px; margin: 0 auto; }
+    .banner-frame {
       border-radius: 24px; overflow: hidden;
-      box-shadow: 0 12px 60px rgba(200,140,210,0.25);
-      border: 3px solid rgba(255,255,255,0.7);
+      box-shadow: 0 12px 60px rgba(200,140,210,0.3);
+      border: 3px solid rgba(255,255,255,0.75);
       aspect-ratio: 16/9;
     }
-    .banner-wrap img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
+    .banner-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* ─── Wavy ─── */
-    .wavy { position: relative; z-index: 1; line-height: 0; }
-    .wavy svg { width: 100%; display: block; }
+    /* Wave */
+    .wave { line-height: 0; position: relative; z-index: 1; }
+    .wave svg { width: 100%; display: block; }
 
-    /* ─── Section commons ─── */
-    section { position: relative; z-index: 1; padding: 4rem 2rem; }
-    #features { background: transparent; }
-    #commands { background: var(--pink-soft); }
-    #dev { background: transparent; }
-
+    /* Features */
+    #features { position: relative; z-index: 1; padding: 4rem 2rem; }
     .container { max-width: 1100px; margin: 0 auto; }
-    .sec-header { text-align: center; margin-bottom: 3rem; }
+    .sec-head { text-align: center; margin-bottom: 2.5rem; }
     .sec-tag {
       display: inline-block; background: linear-gradient(90deg,#fce0f0,#dce8ff);
-      border-radius: 50px; padding: .28rem .9rem; font-size: .78rem; font-weight: 700;
-      color: var(--text-soft); margin-bottom: .8rem;
-      border: 1.5px solid rgba(200,170,230,0.3);
+      border-radius: 50px; padding: .28rem .9rem; font-size: .76rem; font-weight: 700;
+      color: var(--text-soft); margin-bottom: .7rem; border: 1.5px solid rgba(200,170,230,0.3);
     }
-    .sec-title { font-size: clamp(1.7rem,4vw,2.4rem); font-weight: 900; color: var(--text); }
-    .sec-title .accent { background: linear-gradient(135deg,#f27cba,#a78cf2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .sec-sub { font-size: .95rem; color: var(--text-soft); margin-top: .5rem; }
+    .sec-title { font-size: clamp(1.7rem,4vw,2.3rem); font-weight: 900; color: var(--text); }
+    .sec-title .acc { background: linear-gradient(135deg,#f27cba,#a78cf2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .sec-sub { font-size: .92rem; color: var(--text-soft); margin-top: .4rem; }
 
-    /* ─── Feature cards ─── */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5rem;
-    }
-    .feat-card {
-      background: var(--card-bg); border-radius: 20px;
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(285px,1fr)); gap: 1.5rem; }
+    .card {
+      background: rgba(255,255,255,0.76); border-radius: 20px;
       padding: 1.6rem 1.5rem;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 40px rgba(200,160,220,0.18);
       border: 1.5px solid rgba(200,170,230,0.2);
       backdrop-filter: blur(10px);
       transition: transform .25s, box-shadow .25s;
     }
-    .feat-card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(200,150,220,0.28); }
-    .feat-icon-wrap { font-size: 1.9rem; margin-bottom: .8rem; }
-    .feat-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .55rem; }
-    .feat-card p { font-size: .84rem; color: var(--text-soft); line-height: 1.65; margin-top: .2rem; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(200,150,220,0.3); }
+    .card-icon { font-size: 1.9rem; margin-bottom: .8rem; }
+    .card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
+    .card p { font-size: .83rem; color: var(--text-soft); line-height: 1.65; }
 
-    /* ─── Commands ─── */
-    .cmd-list {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.2rem;
-    }
-    .cmd-card {
-      background: var(--card-bg); border-radius: 18px;
+    /* Commands */
+    #commands { position: relative; z-index: 1; padding: 4rem 2rem; background: #fdf0f8; }
+    .cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.2rem; }
+    .cmd {
+      background: rgba(255,255,255,0.78); border-radius: 18px;
       padding: 1.3rem 1.2rem;
       box-shadow: 0 4px 22px rgba(200,150,220,0.13);
       border: 1.5px solid rgba(200,170,230,0.2);
       backdrop-filter: blur(10px);
       transition: transform .22s;
-      position: relative; overflow: hidden;
     }
-    .cmd-card:hover { transform: translateY(-4px); }
-    .cmd-icon-wrap { font-size: 1.5rem; margin-bottom: .6rem; }
-    .cmd-name { font-size: .93rem; font-weight: 700; color: var(--text); font-family: 'Kanit', monospace; }
-    .cmd-desc { font-size: .78rem; color: var(--text-soft); margin-top: .3rem; line-height: 1.5; }
-    .cmd-badge {
+    .cmd:hover { transform: translateY(-4px); }
+    .cmd-icon { font-size: 1.4rem; margin-bottom: .5rem; }
+    .cmd-name { font-size: .92rem; font-weight: 700; color: var(--text); }
+    .cmd-desc { font-size: .77rem; color: var(--text-soft); margin-top: .3rem; line-height: 1.5; }
+    .badge {
       display: inline-block; border-radius: 50px; padding: .18rem .7rem;
-      font-size: .7rem; font-weight: 700; margin-top: .6rem;
+      font-size: .68rem; font-weight: 700; margin-top: .55rem;
     }
-    .badge-all    { background: #d9f0e6; color: #2e7d5a; }
-    .badge-admin  { background: #dde8ff; color: #3a5fcc; }
-    .badge-owner  { background: #fff0cc; color: #a07000; }
+    .b-all   { background: #d9f0e6; color: #2e7d5a; }
+    .b-admin { background: #dde8ff; color: #3a5fcc; }
+    .b-owner { background: #fff0cc; color: #a07000; }
 
-    /* ─── Dev ─── */
+    /* Dev */
+    #dev { position: relative; z-index: 1; padding: 4rem 2rem; }
     .dev-card {
-      max-width: 720px; margin: 0 auto;
-      background: var(--card-bg); border-radius: 28px;
+      max-width: 700px; margin: 0 auto;
+      background: rgba(255,255,255,0.78); border-radius: 28px;
       padding: 2.5rem 2rem; display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap;
-      box-shadow: 0 12px 50px rgba(200,150,220,0.2);
+      box-shadow: 0 12px 50px rgba(200,150,220,0.22);
       border: 1.5px solid rgba(200,170,230,0.25);
       backdrop-filter: blur(12px);
     }
-    .dev-avatar-outer { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
-    .dev-crown { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 1.6rem; z-index: 2; }
-    .dev-blob-ring, .dev-blob-ring2 {
+    .dev-av { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+    .dev-crown { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; z-index: 2; }
+    .dr1, .dr2 {
       position: absolute; inset: -8px; border-radius: 50%;
       border: 2px dashed var(--pink); animation: spin 14s linear infinite;
     }
-    .dev-blob-ring2 { inset: -14px; border-color: var(--purple); animation-direction: reverse; }
-    .dev-img-wrap {
+    .dr2 { inset: -14px; border-color: var(--purple); animation-direction: reverse; }
+    .dev-img-box {
       width: 130px; height: 130px; border-radius: 50%; overflow: hidden;
       border: 3px solid #fff; box-shadow: 0 6px 30px rgba(200,140,210,0.3);
+      position: relative; z-index: 1;
     }
-    .dev-img { width: 100%; height: 100%; object-fit: cover; }
-    .dev-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; color: var(--text-soft); margin-bottom: .3rem; }
+    .dev-img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .dev-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; color: var(--text-soft); margin-bottom: .3rem; }
     .dev-name { font-size: 1.5rem; font-weight: 900; color: var(--text); }
-    .dev-role { font-size: .82rem; color: var(--text-soft); margin: .2rem 0 .8rem; }
-    .dev-desc { font-size: .88rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 1.2rem; }
+    .dev-role { font-size: .8rem; color: var(--text-soft); margin: .2rem 0 .8rem; }
+    .dev-desc { font-size: .87rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 1.2rem; }
     .dev-btns { display: flex; flex-wrap: wrap; gap: .8rem; }
 
-    /* ─── Footer ─── */
+    /* Footer */
     footer {
       position: relative; z-index: 1;
       background: linear-gradient(135deg, rgba(240,220,255,0.6), rgba(220,235,255,0.6));
-      backdrop-filter: blur(10px);
       text-align: center; padding: 2.5rem 1rem;
       border-top: 1.5px solid rgba(200,170,230,0.2);
     }
-    .footer-logo { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: .8rem; }
-    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .8rem; flex-wrap: wrap; }
-    .footer-links a { text-decoration: none; color: var(--text-soft); font-size: .85rem; font-weight: 600; transition: color .2s; }
-    .footer-links a:hover { color: var(--pink); }
-    .footer-copy { font-size: .78rem; color: var(--text-soft); }
+    .foot-logo { font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: .7rem; }
+    .foot-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .7rem; flex-wrap: wrap; }
+    .foot-links a { text-decoration: none; color: var(--text-soft); font-size: .84rem; font-weight: 600; transition: color .2s; }
+    .foot-links a:hover { color: var(--pink); }
+    .foot-copy { font-size: .76rem; color: var(--text-soft); }
 
-    /* ─── Reveal animation ─── */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.vis { opacity: 1; transform: none; }
 
-    /* ─── Responsive ─── */
-    @media(max-width:768px) {
-      nav ul { display: none; }
-      .hero-inner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+    @media(max-width:700px) {
+      .hero { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .dev-card { flex-direction: column; align-items: center; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-<div class="bg-shapes">
-  <span></span><span></span><span></span><span></span><span></span>
-</div>
+<div class="blobs"><span></span><span></span><span></span></div>
 
+<!-- Nav -->
 <nav>
   <a href="#" class="nav-logo">
-    <img src="https://i.ibb.co/0jBgdZH/profile.png" class="nav-logo-img"
+    <img src="https://img1.pic.in.th/images/ChatGPT-Image-30-..-2569-16_54_14.png" alt="Ariea"
          onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
     Ariea
   </a>
-  <ul>
-    <li><a href="#features">ฟีเจอร์</a></li>
-    <li><a href="#commands">คำสั่ง</a></li>
-    <li><a href="#dev">Developer</a></li>
-  </ul>
   <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="nav-cta" target="_blank">🤖 เชิญบอท</a>
 </nav>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="avatar-area">
-      <div class="avatar-wrap">
-        <div class="av-blob-ring"></div>
-        <div class="av-blob-ring2"></div>
-        <div class="av-star">✨</div>
-        <div class="av-star">⭐</div>
-        <div class="av-star">🌟</div>
-        <div class="av-star">💫</div>
-        <div class="avatar-img-wrap">
-          <!-- Profile image (round) -->
-          <img id="profileImg" alt="Ariea" class="avatar-img"/>
-        </div>
-      </div>
-      <div class="avatar-status">
-        <div class="dot-online"></div>
-        Online · Ariea
+<!-- Hero -->
+<div class="hero">
+  <div class="avatar-area">
+    <div class="avatar-wrap">
+      <div class="ring1"></div>
+      <div class="ring2"></div>
+      <div class="avatar-img-box">
+        <img src="https://img1.pic.in.th/images/ChatGPT-Image-30-..-2569-16_54_14.png" alt="Ariea"
+             onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
       </div>
     </div>
-
-    <div class="hero-text">
-      <div class="hero-tag">✨ Discord Bot · Thailand 🇹🇭</div>
-      <h1 class="hero-title">
-        <span class="t1">Ariea</span>
-        <span class="t2">Discord Bot 💙</span>
-      </h1>
-      <span id="typed"></span><span class="cursor">|</span>
-      <div class="hero-stats">
-        <div class="stat-pill"><div class="num">24/7</div><div class="lbl">Online</div></div>
-        <div class="stat-pill"><div class="num">v1 & v2</div><div class="lbl">System</div></div>
-        <div class="stat-pill"><div class="num">51</div><div class="lbl">Commands</div></div>
-        <div class="stat-pill"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
-      </div>
-      <div class="hero-btns">
-        <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
-        <a href="https://discord.gg/Gu8KjSH4Bu" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
-      </div>
-    </div>
+    <div class="status-pill"><div class="dot"></div> Online · Ariea</div>
   </div>
-</section>
 
-<!-- 16:9 Banner -->
-<div class="banner-section">
-  <div class="banner-wrap">
-    <img id="bannerImg" alt="https://img2.pic.in.th/ChatGPT-Image-30-..-2569-16_51_48.png"/>
+  <div class="hero-text">
+    <div class="tag">✨ Discord Bot · Thailand 🇹🇭</div>
+    <h1 class="hero-title">
+      <span class="t1">Ariea</span>
+      <span class="t2">Discord Bot 💙</span>
+    </h1>
+    <div class="typed-wrap"><span id="typed"></span><span class="cursor">|</span></div>
+    <div class="stats">
+      <div class="stat"><div class="num">24/7</div><div class="lbl">Online</div></div>
+      <div class="stat"><div class="num">v1 & v2</div><div class="lbl">System</div></div>
+      <div class="stat"><div class="num">51</div><div class="lbl">Commands</div></div>
+      <div class="stat"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
+    </div>
+    <div class="btns">
+      <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
+      <a href="https://discord.gg/Gu8KjSH4Bu" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
+    </div>
   </div>
 </div>
 
-<div class="wavy">
+<!-- Banner 16:9 -->
+<div class="banner-section">
+  <div class="banner-frame">
+    <img src="https://img2.pic.in.th/ChatGPT-Image-30-..-2569-16_51_48.png" alt="Ariea Banner"
+         onerror="this.style.background='linear-gradient(135deg,#fce8f6,#e8f0ff)'">
+  </div>
+</div>
+
+<!-- Wave down -->
+<div class="wave">
   <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
     <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
   </svg>
 </div>
 
+<!-- Features -->
 <section id="features">
   <div class="container">
-    <div class="sec-header reveal">
+    <div class="sec-head reveal">
       <div class="sec-tag">🛠️ Bot user manual</div>
-      <h2 class="sec-title">คู่มือการใช้งาน <span class="accent">บอท</span></h2>
+      <h2 class="sec-title">คู่มือการใช้งาน <span class="acc">บอท</span></h2>
       <p class="sec-sub">คำแนะนำในการใช้งานบอทอย่างละเอียด 🌸</p>
     </div>
-    <div class="features-grid">
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🛡️</div>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="card-icon">🛡️</div>
         <h3>ป้องกันการโจมตีเซิร์ฟเวอร์</h3>
-        <p>ระบบ Anti Nuke</p>
-        <p>• ตรวจจับการทำงานผิดปกติภายในเซิร์ฟ</p>
-        <p>• จัดการคนที่ลบห้อง หรือเตะคนรัวๆ</p>
+        <p>ระบบ Anti Nuke<br>• ตรวจจับการทำงานผิดปกติภายในเซิร์ฟ<br>• จัดการคนที่ลบห้อง หรือเตะคนรัวๆ</p>
       </div>
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🔐</div>
+      <div class="card reveal">
+        <div class="card-icon">🔐</div>
         <h3>Verify System - CAPTCHA</h3>
-        <p>ระบบ Verify</p>
-        <p>• ใช้ระบบ CAPTCHA ยืนยันตัวตนคนเข้าเซิร์ฟ</p>
-        <p>• ตั้งค่าหน้าต่าง Panel V2 ได้เอง</p>
-        <p>• แจ้งเตือนลงห้อง Log ให้แอดมินทราบ</p>
+        <p>ระบบ Verify<br>• ใช้ระบบ CAPTCHA ยืนยันตัวตนคนเข้าเซิร์ฟ<br>• ตั้งค่าหน้าต่าง Panel V2 ได้เอง<br>• แจ้งเตือนลงห้อง Log ให้แอดมินทราบ</p>
       </div>
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🚫</div>
+      <div class="card reveal">
+        <div class="card-icon">🚫</div>
         <h3>ป้องกันข้อความสแปม</h3>
-        <p>ระบบ Anti Spam</p>
-        <p>• ตรวจจับการพิมพ์ข้อความเร็วเกิน</p>
-        <p>• ป้องกันการแท็ก @everyone / @here</p>
-        <p>• ป้องกันการส่งลิงก์อันตราย</p>
+        <p>ระบบ Anti Spam<br>• ตรวจจับการพิมพ์ข้อความเร็วเกิน<br>• ป้องกันการแท็ก @everyone / @here<br>• ป้องกันการส่งลิงก์อันตราย</p>
       </div>
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">⚡</div>
+      <div class="card reveal">
+        <div class="card-icon">⚡</div>
         <h3>ป้องกันไม่ให้โดนตรวจจับ</h3>
-        <p>ระบบ Whitelist</p>
-        <p>• เพิ่มผู้ใช้/ยศ/ช่อง ให้อยู่ในโหมดปลอดภัย</p>
-        <p>• ดูรายการทั้งหมดได้ผ่านคำสั่ง /whitelist</p>
+        <p>ระบบ Whitelist<br>• เพิ่มผู้ใช้/ยศ/ช่อง ให้อยู่ในโหมดปลอดภัย<br>• ดูรายการทั้งหมดได้ผ่านคำสั่ง /whitelist</p>
       </div>
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">🚪</div>
+      <div class="card reveal">
+        <div class="card-icon">🚪</div>
         <h3>ป้องกันบอทเข้าเซิร์ฟเวอร์</h3>
-        <p>ระบบ Join Gate</p>
-        <p>• จัดการกลุ่มคนที่เข้ามาพร้อมกันจำนวนมาก</p>
-        <p>• สามารถตั้งค่าให้ เตะ/แบน อัตโนมัติ</p>
+        <p>ระบบ Join Gate<br>• จัดการกลุ่มคนที่เข้ามาพร้อมกันจำนวนมาก<br>• สามารถตั้งค่าให้ เตะ/แบน อัตโนมัติ</p>
       </div>
-      <div class="feat-card reveal">
-        <div class="feat-icon-wrap">⚙️</div>
+      <div class="card reveal">
+        <div class="card-icon">⚙️</div>
         <h3>คำสั่งที่แอดมินต้องรู้</h3>
-        <p>การตั้งค่าเริ่มต้น</p>
-        <p>• /security panel - ตั้งค่าระบบป้องกันทั้งหมด</p>
-        <p>• /verify panel - ตั้งค่าระบบยืนยันตัวตน</p>
-        <p>• /welcome panel - ตั้งค่าห้องต้อนรับ</p>
+        <p>การตั้งค่าเริ่มต้น<br>• /security panel - ตั้งค่าระบบป้องกันทั้งหมด<br>• /verify panel - ตั้งค่าระบบยืนยันตัวตน<br>• /welcome panel - ตั้งค่าห้องต้อนรับ</p>
       </div>
     </div>
   </div>
 </section>
 
-<div class="wavy">
+<!-- Wave up -->
+<div class="wave">
   <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
     <path d="M0 40 C240 0 480 80 720 40 C960 0 1200 80 1440 40 L1440 80 L0 80 Z" fill="#fdf0f8"/>
   </svg>
 </div>
 
+<!-- Commands -->
 <section id="commands">
   <div class="container">
-    <div class="sec-header reveal">
+    <div class="sec-head reveal">
       <div class="sec-tag">🎮 Main commands</div>
-      <h2 class="sec-title"><span class="accent">Slash</span> Commands</h2>
+      <h2 class="sec-title"><span class="acc">Slash</span> Commands</h2>
       <p class="sec-sub">คำสั่งหลักๆที่ใช้งาน 🎀</p>
     </div>
-    <div class="cmd-list">
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">📢</div>
-        <div class="cmd-name">/speak</div>
-        <div class="cmd-desc">ระบบพูดข้อความ</div>
-        <span class="cmd-badge badge-all">ทุกคน</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/security panel</div>
-        <div class="cmd-desc">ตั้งค่าระบบป้องกันทั้งหมด (Anti Nuke, Anti Raid, Logs, Join Gate)</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/whitelist</div>
-        <div class="cmd-desc">จัดการระบบไวท์ลิสต์ (เพิ่ม/ลบ ผู้ใช้, ยศ, ช่อง เพื่อให้ไม่โดนจับผิด)</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🛡️</div>
-        <div class="cmd-name">/anti_webhook</div>
-        <div class="cmd-desc">การป้องกันสแปม เว็ปฮุกทั้งเซิฟเวอร์</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">📦</div>
-        <div class="cmd-name">/verify panel</div>
-        <div class="cmd-desc">สร้างจุดยืนยันตัวตนสำหรับคนเข้าเซิร์ฟใหม่</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🐟</div>
-        <div class="cmd-name">/welcome panel</div>
-        <div class="cmd-desc">ตั้งค่าแบนเนอร์และข้อความต้อนรับคนเข้า</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🎣</div>
-        <div class="cmd-name">/goodbye panel</div>
-        <div class="cmd-desc">ตั้งค่าข้อความบอกลาตอนคนออก</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🍕</div>
-        <div class="cmd-name">/boost panel</div>
-        <div class="cmd-desc">แผงควบคุมระบบแจ้งเตือนบูสต์เซิร์ฟเวอร์</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">🍔</div>
-        <div class="cmd-name">/sticky</div>
-        <div class="cmd-desc">ตั้งค่าระบบปักหมุด</div>
-        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
-      </div>
-      <div class="cmd-card reveal">
-        <div class="cmd-icon-wrap">👑</div>
-        <div class="cmd-name">/admin</div>
-        <div class="cmd-desc">แผงควบคุมผู้ดูแลระบบ</div>
-        <span class="cmd-badge badge-owner">Owner</span>
-      </div>
+    <div class="cmd-grid">
+      <div class="cmd reveal"><div class="cmd-icon">📢</div><div class="cmd-name">/speak</div><div class="cmd-desc">ระบบพูดข้อความ</div><span class="badge b-all">ทุกคน</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🛡️</div><div class="cmd-name">/security panel</div><div class="cmd-desc">ตั้งค่าระบบป้องกันทั้งหมด (Anti Nuke, Anti Raid, Logs, Join Gate)</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🛡️</div><div class="cmd-name">/whitelist</div><div class="cmd-desc">จัดการระบบไวท์ลิสต์ (เพิ่ม/ลบ ผู้ใช้, ยศ, ช่อง เพื่อให้ไม่โดนจับผิด)</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🛡️</div><div class="cmd-name">/anti_webhook</div><div class="cmd-desc">การป้องกันสแปม เว็ปฮุกทั้งเซิฟเวอร์</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">📦</div><div class="cmd-name">/verify panel</div><div class="cmd-desc">สร้างจุดยืนยันตัวตนสำหรับคนเข้าเซิร์ฟใหม่</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🐟</div><div class="cmd-name">/welcome panel</div><div class="cmd-desc">ตั้งค่าแบนเนอร์และข้อความต้อนรับคนเข้า</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🎣</div><div class="cmd-name">/goodbye panel</div><div class="cmd-desc">ตั้งค่าข้อความบอกลาตอนคนออก</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🍕</div><div class="cmd-name">/boost panel</div><div class="cmd-desc">แผงควบคุมระบบแจ้งเตือนบูสต์เซิร์ฟเวอร์</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">🍔</div><div class="cmd-name">/sticky</div><div class="cmd-desc">ตั้งค่าระบบปักหมุด</div><span class="badge b-admin">แอดมินเซิร์ฟ</span></div>
+      <div class="cmd reveal"><div class="cmd-icon">👑</div><div class="cmd-name">/admin</div><div class="cmd-desc">แผงควบคุมผู้ดูแลระบบ</div><span class="badge b-owner">Owner</span></div>
     </div>
   </div>
 </section>
 
-<div class="wavy">
+<!-- Wave -->
+<div class="wave">
   <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
     <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
   </svg>
 </div>
 
+<!-- Dev -->
 <section id="dev">
   <div class="container">
-    <div class="sec-header reveal">
+    <div class="sec-head reveal">
       <div class="sec-tag">🌟 Developer</div>
-      <h2 class="sec-title">About The <span class="accent">Developer</span></h2>
+      <h2 class="sec-title">About The <span class="acc">Developer</span></h2>
       <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ 💜</p>
     </div>
     <div class="dev-card reveal">
-      <div class="dev-avatar-outer">
+      <div class="dev-av">
         <div class="dev-crown">👑</div>
-        <div class="dev-blob-ring"></div>
-        <div class="dev-blob-ring2"></div>
-        <div class="dev-img-wrap">
-          <img src="https://i.ibb.co/jvTL9CDv/profile.png" alt="Developer" class="dev-img"
-               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
+        <div class="dr1"></div>
+        <div class="dr2"></div>
+        <div class="dev-img-box">
+          <img src="https://i.ibb.co/jvTL9CDv/profile.png" alt="Developer"
+               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
         </div>
       </div>
-      <div class="dev-info">
+      <div>
         <div class="dev-label">✦ BOT OWNER</div>
         <div class="dev-name">! ชอบสาวแว่น</div>
         <div class="dev-role">Developer · Ariea Bot</div>
-        <p class="dev-desc">
-          ผู้พัฒนา Ariea มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง
-          มีระบบความปลอดภัยแข็งแกร่ง รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙
-        </p>
+        <p class="dev-desc">ผู้พัฒนา Ariea มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง มีระบบความปลอดภัยแข็งแกร่ง รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙</p>
         <div class="dev-btns">
-          <a href="https://discord.gg/VEfMATCCGB" class="btn btn-soft" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">💙 Rayzen</a>
-          <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">🤖 เชิญบอท</a>
+          <a href="https://discord.gg/VEfMATCCGB" class="btn btn-soft" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">💙 Rayzen</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">🤖 เชิญบอท</a>
         </div>
       </div>
     </div>
@@ -550,52 +431,33 @@
 </section>
 
 <footer>
-  <div class="footer-logo">Ariea Copyright 2021-2030</div>
-  <div class="footer-links">
+  <div class="foot-logo">Ariea Copyright 2021–2030</div>
+  <div class="foot-links">
     <a href="https://discord.gg/VEfMATCCGB" target="_blank">Rayzen</a>
     <a href="https://discord.gg/Gu8KjSH4Bu" target="_blank">SUPPORT</a>
     <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" target="_blank">INVITE BOT</a>
   </div>
-  <div class="footer-copy">© 2026 Rayzen · Ariea · All rights reserved 💙</div>
+  <div class="foot-copy">© 2026 Rayzen · Ariea · All rights reserved 💙</div>
 </footer>
 
 <script>
-  // ── Load uploaded images as base64 ──
-  // Profile image (round) — image 1
-  // Banner image (16:9)  — image 2
-  // Since we're in a static HTML file, we embed them via fetch from same-origin or use data URLs.
-  // The images need to be placed next to this HTML file.
-  // Names: profile.png (round) and banner.png (16:9)
-  document.getElementById('profileImg').src = 'profile.png';
-  document.getElementById('bannerImg').src  = 'banner.png';
-
-  // ── Typed text ──
-  const texts = [
-    'มีอะไรให้ Ariea ช่วยมั้ยคะ 💙',
-    'ระบบป้องกันครบ ✨',
-    'ดูแลเซิร์ฟ 24 ชั่วโมง 🛡️',
-    'พร้อมใช้งานทันที 🚀',
-  ];
-  let ti = 0, ci = 0, del = false;
-  const el = document.getElementById('typed');
-  function type() {
-    const cur = texts[ti];
-    if (!del) {
-      el.textContent = cur.slice(0, ++ci);
-      if (ci === cur.length) { del = true; setTimeout(type, 2000); return; }
-    } else {
-      el.textContent = cur.slice(0, --ci);
-      if (ci === 0) { del = false; ti = (ti+1) % texts.length; }
-    }
-    setTimeout(type, del ? 45 : 70);
+  // Typed animation
+  const texts = ['มีอะไรให้ Ariea ช่วยมั้ยคะ 💙','ระบบป้องกันครบ ✨','ดูแลเซิร์ฟ 24 ชั่วโมง 🛡️','พร้อมใช้งานทันที 🚀'];
+  let ti=0,ci=0,del=false;
+  const el=document.getElementById('typed');
+  function type(){
+    const cur=texts[ti];
+    if(!del){ el.textContent=cur.slice(0,++ci); if(ci===cur.length){del=true;setTimeout(type,2000);return;} }
+    else{ el.textContent=cur.slice(0,--ci); if(ci===0){del=false;ti=(ti+1)%texts.length;} }
+    setTimeout(type,del?45:70);
   }
   type();
 
-  // ── Reveal on scroll ──
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
