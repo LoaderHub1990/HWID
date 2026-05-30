@@ -1,1396 +1,601 @@
-Script
-bash
-
-cat > /mnt/user-data/outputs/discord-bot-checker.html << 'HTMLEOF'
 <!DOCTYPE html>
-<html lang="th" data-theme="dark">
+<html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discord Bot Account Checker</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:      #080b12;
-  --bg2:     #0d1120;
-  --bg3:     #111827;
-  --card:    #141b2d;
-  --card2:   #1a2340;
-  --border:  rgba(99,120,255,0.1);
-  --border2: rgba(99,120,255,0.22);
-  --t:       #e8ecff;
-  --tm:      #7b88c0;
-  --ts:      #3d4870;
-  --p:       #5865f2;
-  --pa:      #8b95ff;
-  --s:       #23d18b;
-  --d:       #f04747;
-  --w:       #faa61a;
-  --cyan:    #00d4ff;
-  --mono:    'JetBrains Mono', monospace;
-  --display: 'Syne', sans-serif;
-  --sans:    'Noto Sans Thai', sans-serif;
-  --r:       10px;
-  --r2:      16px;
-  --r3:      22px;
-}
-[data-theme="light"] {
-  --bg:   #f0f2ff;
-  --bg2:  #e8ebff;
-  --bg3:  #dce0ff;
-  --card: #fff;
-  --card2:#f4f6ff;
-  --border: rgba(88,101,242,0.1);
-  --border2: rgba(88,101,242,0.22);
-  --t:    #0d1020;
-  --tm:   #4a5080;
-  --ts:   #9098c8;
-}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ariea — ดูแลเซิร์ฟเวอร์ตลอด 24 ชั่วโมง</title>
+  <meta name="description" content="Ariea เป็นบอทดิสคอร์ดที่มีระบบมากมายที่มีดีเยี่ยมและมีฟีเจอร์ที่ครบถ้วน" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pink: #f2a7c9;
+      --pink-light: #fce4f0;
+      --pink-soft: #fdf0f8;
+      --blue: #a7c8f2;
+      --blue-light: #deeeff;
+      --blue-soft: #e8f3ff;
+      --purple: #c4a7f2;
+      --purple-light: #ede0ff;
+      --white: #fff;
+      --text: #5a3e6b;
+      --text-soft: #9b7db5;
+      --card-bg: rgba(255,255,255,0.75);
+      --shadow: 0 8px 40px rgba(200,160,220,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, #fce8f6 0%, #e8f0ff 40%, #f5e8ff 70%, #fce8f6 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--t);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at -10% -10%,rgba(88,101,242,0.18) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 40% at 110% 110%,rgba(0,212,255,0.08) 0%,transparent 55%),
-    radial-gradient(ellipse 40% 30% at 50% 50%,rgba(88,101,242,0.04) 0%,transparent 60%);
-  pointer-events:none;z-index:0;
-}
+    /* ─── Floating shapes bg ─── */
+    .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .bg-shapes span {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.13;
+      animation: floatUp 18s infinite ease-in-out;
+    }
+    .bg-shapes span:nth-child(1)  { width:320px;height:320px;background:var(--pink);  top:10%;  left:5%;   animation-delay:0s;   }
+    .bg-shapes span:nth-child(2)  { width:200px;height:200px;background:var(--blue);  top:55%;  left:75%;  animation-delay:-4s;  }
+    .bg-shapes span:nth-child(3)  { width:260px;height:260px;background:var(--purple);top:30%;  left:60%;  animation-delay:-8s;  }
+    .bg-shapes span:nth-child(4)  { width:150px;height:150px;background:var(--pink);  top:75%;  left:20%;  animation-delay:-12s; }
+    .bg-shapes span:nth-child(5)  { width:180px;height:180px;background:var(--blue);  top:5%;   left:85%;  animation-delay:-3s;  }
+    @keyframes floatUp {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-40px) scale(1.05); }
+    }
 
-/* GRID PATTERN */
-body::after{
-  content:'';
-  position:fixed;inset:0;
-  background-image:linear-gradient(rgba(88,101,242,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(88,101,242,0.03) 1px,transparent 1px);
-  background-size:40px 40px;
-  pointer-events:none;z-index:0;
-}
+    /* ─── Nav ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 2.5rem;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(18px);
+      border-bottom: 1.5px solid rgba(200,170,230,0.2);
+      box-shadow: 0 2px 24px rgba(200,160,220,0.10);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: .6rem;
+      text-decoration: none; font-weight: 700; font-size: 1.18rem; color: var(--text);
+    }
+    .nav-logo-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+    nav ul { display: flex; gap: 2rem; list-style: none; }
+    nav ul a { text-decoration: none; color: var(--text-soft); font-weight: 500; font-size: .95rem; transition: color .2s; }
+    nav ul a:hover { color: var(--pink); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff; text-decoration: none; border-radius: 50px;
+      padding: .5rem 1.3rem; font-size: .9rem; font-weight: 700;
+      box-shadow: 0 4px 18px rgba(200,140,210,0.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,140,210,0.45); }
 
-/* NAV */
-nav{
-  position:sticky;top:0;z-index:200;
-  height:60px;
-  border-bottom:1px solid var(--border);
-  background:rgba(8,11,18,0.9);
-  backdrop-filter:blur(24px);
-  display:flex;align-items:center;
-  padding:0 28px;gap:16px;
-}
-[data-theme="light"] nav{background:rgba(240,242,255,0.92);}
-.nav-logo{
-  display:flex;align-items:center;gap:12px;
-  font-family:var(--display);font-weight:800;font-size:16px;color:var(--t);
-  letter-spacing:-0.3px;
-}
-.nav-icon{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,#5865f2,#8b95ff);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
-.nav-sp{flex:1;}
-.nav-pill{
-  padding:5px 14px;border-radius:999px;
-  background:rgba(88,101,242,0.12);
-  border:1px solid var(--border2);
-  font-family:var(--mono);font-size:11px;
-  font-weight:700;color:var(--pa);
-  letter-spacing:0.5px;
-}
-.nav-btn{
-  padding:7px 16px;border:1px solid var(--border2);
-  border-radius:var(--r);background:var(--card);
-  color:var(--tm);font-size:12px;font-family:var(--sans);
-  cursor:pointer;transition:all .2s;font-weight:500;
-}
-.nav-btn:hover{color:var(--t);border-color:var(--pa);}
+    /* ─── Hero ─── */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 4rem 2rem 2rem;
+    }
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; gap: 4rem; flex-wrap: wrap;
+    }
 
-/* MAIN WRAP */
-.wrap{
-  position:relative;z-index:1;
-  max-width:1280px;margin:0 auto;
-  padding:32px 24px 80px;
-}
+    /* Avatar */
+    .avatar-area { display: flex; flex-direction: column; align-items: center; gap: .8rem; flex-shrink: 0; }
+    .avatar-wrap { position: relative; width: 170px; height: 170px; }
+    .av-blob-ring, .av-blob-ring2 {
+      position: absolute; inset: -10px; border-radius: 50%;
+      border: 2.5px dashed var(--pink); animation: spin 12s linear infinite;
+    }
+    .av-blob-ring2 { inset: -18px; border-color: var(--blue); animation-direction: reverse; animation-duration: 18s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .av-star {
+      position: absolute; font-size: 1rem; animation: orbit 6s linear infinite;
+    }
+    .av-star:nth-child(3) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: 0s; }
+    .av-star:nth-child(4) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -1.5s; }
+    .av-star:nth-child(5) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -3s; }
+    .av-star:nth-child(6) { top: -10px; left: 50%; transform-origin: 0 95px; animation-delay: -4.5s; }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    .avatar-img-wrap {
+      width: 170px; height: 170px; border-radius: 50%; overflow: hidden;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 40px rgba(200,140,210,0.35), 0 0 0 4px var(--pink-light);
+    }
+    .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-status {
+      display: flex; align-items: center; gap: .45rem;
+      background: rgba(255,255,255,0.8); border-radius: 50px;
+      padding: .3rem 1rem; font-size: .82rem; font-weight: 600; color: var(--text-soft);
+      box-shadow: 0 2px 12px rgba(200,160,220,0.2);
+    }
+    .dot-online { width: 9px; height: 9px; border-radius: 50%; background: #5fe083; box-shadow: 0 0 8px #5fe083; }
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:48px 0 40px;
-  max-width:640px;margin:0 auto;
-}
-.hero-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 16px;border-radius:999px;
-  background:rgba(88,101,242,0.1);
-  border:1px solid var(--border2);
-  font-size:12px;font-weight:600;
-  color:var(--pa);font-family:var(--mono);
-  margin-bottom:20px;letter-spacing:0.5px;
-}
-.dot-live{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--s);
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(35,209,139,0.4)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(35,209,139,0)}}
-.hero h1{
-  font-family:var(--display);font-weight:800;
-  font-size:clamp(28px,5vw,46px);line-height:1.1;
-  color:var(--t);letter-spacing:-1px;margin-bottom:14px;
-}
-.hero h1 span{color:var(--pa);}
-.hero p{
-  font-size:15px;color:var(--tm);line-height:1.7;
-  max-width:480px;margin:0 auto;
-}
+    /* Hero text */
+    .hero-text { flex: 1; min-width: 280px; }
+    .hero-tag {
+      display: inline-block; background: linear-gradient(90deg,#fce0f0,#dce8ff);
+      border-radius: 50px; padding: .3rem 1rem; font-size: .82rem; font-weight: 600;
+      color: var(--text-soft); margin-bottom: 1rem;
+      border: 1.5px solid rgba(200,170,230,0.3);
+    }
+    .hero-title { margin-bottom: .5rem; line-height: 1.1; }
+    .t1 { display: block; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900;
+          background: linear-gradient(135deg, #f27cba, #a78cf2, #7cbff2);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .t2 { display: block; font-size: clamp(1.1rem, 3vw, 1.7rem); font-weight: 600; color: var(--text-soft); margin-top: .2rem; }
 
-/* TOKEN INPUT AREA */
-.token-card{
-  background:var(--card);
-  border:1px solid var(--border2);
-  border-radius:var(--r3);
-  padding:28px;
-  max-width:680px;margin:0 auto 32px;
-  position:relative;overflow:hidden;
-}
-.token-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--p),var(--cyan),var(--pa));
-  border-radius:var(--r3) var(--r3) 0 0;
-}
-.token-label{
-  font-family:var(--mono);font-size:11px;font-weight:700;
-  color:var(--ts);letter-spacing:1.2px;text-transform:uppercase;
-  margin-bottom:12px;display:flex;align-items:center;gap:8px;
-}
-.token-label::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--p);}
-.token-inp-row{display:flex;gap:10px;}
-.token-inp{
-  flex:1;
-  padding:14px 18px 14px 48px;
-  border:1.5px solid var(--border);
-  border-radius:var(--r2);
-  background:var(--bg3);
-  color:var(--t);
-  font-family:var(--mono);font-size:13px;
-  outline:none;transition:all .2s;
-  position:relative;
-}
-.token-inp:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(88,101,242,0.12);}
-.token-inp::placeholder{color:var(--ts);font-family:var(--sans);font-size:13px;}
-.token-wrap{position:relative;flex:1;}
-.token-ico{
-  position:absolute;left:16px;top:50%;transform:translateY(-50%);
-  font-size:16px;pointer-events:none;
-}
-.btn-check{
-  padding:14px 28px;border:none;
-  border-radius:var(--r2);
-  background:linear-gradient(135deg,#5865f2,#7b85f7);
-  color:#fff;font-family:var(--display);font-size:14px;
-  font-weight:700;cursor:pointer;
-  transition:all .2s;white-space:nowrap;
-  display:flex;align-items:center;gap:8px;
-  letter-spacing:0.3px;
-}
-.btn-check:hover:not(:disabled){
-  background:linear-gradient(135deg,#4752c4,#6670e8);
-  transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(88,101,242,0.5);
-}
-.btn-check:disabled{opacity:.5;cursor:not-allowed;}
-.token-hint{
-  margin-top:12px;
-  font-size:11px;color:var(--ts);
-  display:flex;align-items:center;gap:8px;line-height:1.6;
-}
+    #typed { font-size: 1rem; color: var(--text-soft); font-weight: 400; min-height: 1.4rem; }
+    .cursor { animation: blink .7s step-end infinite; font-weight: 300; color: var(--pink); }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-/* STATUS BAR */
-.status-bar{
-  display:none;
-  padding:12px 16px;border-radius:var(--r);
-  margin-top:14px;font-size:12px;font-weight:500;
-  align-items:center;gap:10px;
-}
-.status-bar.checking{display:flex;background:rgba(88,101,242,0.1);border:1px solid rgba(88,101,242,0.2);color:var(--pa);}
-.status-bar.ok{display:flex;background:rgba(35,209,139,0.08);border:1px solid rgba(35,209,139,0.2);color:var(--s);}
-.status-bar.err{display:flex;background:rgba(240,71,71,0.08);border:1px solid rgba(240,71,71,0.2);color:var(--d);}
+    /* Stats */
+    .hero-stats { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.4rem 0; }
+    .stat-pill {
+      background: rgba(255,255,255,0.8); border-radius: 16px;
+      padding: .6rem 1.2rem; text-align: center;
+      box-shadow: 0 4px 16px rgba(200,160,220,0.18);
+      border: 1.5px solid rgba(200,170,230,0.25);
+      min-width: 70px;
+    }
+    .stat-pill .num { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .stat-pill .lbl { font-size: .72rem; color: var(--text-soft); margin-top: .1rem; }
 
-/* MULTI BOTS LIST */
-.added-bots{
-  max-width:680px;margin:0 auto 32px;
-  display:flex;flex-direction:column;gap:8px;
-}
-.added-bot-row{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r2);padding:12px 16px;
-  display:flex;align-items:center;gap:12px;
-  transition:all .2s;cursor:pointer;
-}
-.added-bot-row:hover{border-color:var(--border2);background:var(--card2);}
-.added-bot-row.active{border-color:var(--p);}
-.ab-avatar{
-  width:38px;height:38px;border-radius:50%;
-  object-fit:cover;flex-shrink:0;background:var(--bg3);
-  display:flex;align-items:center;justify-content:center;font-size:18px;
-}
-.ab-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-.ab-info{flex:1;min-width:0;}
-.ab-name{font-size:13px;font-weight:600;color:var(--t);}
-.ab-id{font-size:11px;color:var(--ts);font-family:var(--mono);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.ab-badge{
-  padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;
-  font-family:var(--mono);flex-shrink:0;
-}
-.ab-badge.online{background:rgba(35,209,139,0.15);color:var(--s);}
-.ab-badge.offline{background:rgba(120,120,140,0.15);color:var(--tm);}
-.ab-del{
-  width:28px;height:28px;border-radius:50%;border:none;
-  background:rgba(240,71,71,0.1);color:var(--d);
-  cursor:pointer;font-size:13px;transition:all .2s;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.ab-del:hover{background:rgba(240,71,71,0.25);}
+    /* Buttons */
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.6rem; }
+    .btn {
+      text-decoration: none; border-radius: 50px; padding: .75rem 1.8rem;
+      font-size: .95rem; font-weight: 700; font-family: 'Kanit', sans-serif;
+      transition: transform .2s, box-shadow .2s; display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #f27cba, #c47ef2);
+      color: #fff; box-shadow: 0 6px 24px rgba(200,120,200,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(200,120,200,0.5); }
+    .btn-soft {
+      background: rgba(255,255,255,0.85); color: var(--text);
+      border: 1.5px solid rgba(200,170,230,0.4);
+      box-shadow: 0 4px 14px rgba(200,160,220,0.15);
+    }
+    .btn-soft:hover { transform: translateY(-2px); background: #fff; }
 
-/* RESULT SECTION */
-#resultSection{display:none;}
-.result-grid{
-  display:grid;
-  grid-template-columns:340px 1fr;
-  gap:20px;align-items:start;
-}
-@media(max-width:920px){.result-grid{grid-template-columns:1fr;}}
+    /* ─── Banner 16:9 ─── */
+    .banner-section {
+      position: relative; z-index: 1; padding: 2rem 2rem 0;
+    }
+    .banner-wrap {
+      max-width: 1100px; margin: 0 auto;
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 12px 60px rgba(200,140,210,0.25);
+      border: 3px solid rgba(255,255,255,0.7);
+      aspect-ratio: 16/9;
+    }
+    .banner-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
 
-/* PROFILE CARD */
-.profile-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r3);overflow:hidden;
-  position:sticky;top:80px;
-}
-.profile-banner{
-  height:100px;
-  background:linear-gradient(135deg,#5865f2 0%,#8b95ff 50%,#00d4ff 100%);
-  position:relative;
-}
-.profile-banner-custom{
-  width:100%;height:100%;object-fit:cover;
-}
-.profile-avatar-wrap{
-  position:absolute;bottom:-38px;left:24px;
-}
-.profile-avatar{
-  width:76px;height:76px;border-radius:50%;
-  border:4px solid var(--card);
-  background:var(--bg3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:32px;overflow:hidden;
-}
-.profile-avatar img{width:100%;height:100%;object-fit:cover;}
-.profile-body{padding:52px 24px 24px;}
-.profile-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
-.profile-name{
-  font-family:var(--display);font-size:22px;
-  font-weight:800;color:var(--t);letter-spacing:-0.5px;
-}
-.bot-tag{
-  padding:3px 10px;border-radius:6px;
-  background:rgba(88,101,242,0.2);color:var(--pa);
-  font-size:10px;font-weight:700;font-family:var(--mono);
-  letter-spacing:0.5px;
-}
-.verified-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 10px;border-radius:999px;
-  background:rgba(0,212,255,0.1);color:var(--cyan);
-  font-size:10px;font-weight:700;font-family:var(--mono);
-  border:1px solid rgba(0,212,255,0.2);
-}
-.profile-discriminator{
-  font-family:var(--mono);font-size:13px;color:var(--tm);margin-bottom:14px;
-}
-.profile-id-box{
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--r);padding:10px 14px;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;
-}
-.profile-id-label{font-size:10px;color:var(--ts);font-family:var(--mono);font-weight:700;letter-spacing:0.8px;text-transform:uppercase;}
-.profile-id-val{font-family:var(--mono);font-size:12px;color:var(--pa);font-weight:500;}
-.copy-btn{
-  padding:4px 10px;border:1px solid var(--border2);
-  border-radius:6px;background:transparent;
-  color:var(--tm);font-size:10px;cursor:pointer;
-  font-family:var(--mono);transition:all .2s;
-}
-.copy-btn:hover{color:var(--pa);border-color:var(--pa);}
-.profile-flags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-.flag-badge{
-  padding:4px 10px;border-radius:999px;
-  font-size:10px;font-weight:600;font-family:var(--mono);
-  border:1px solid;letter-spacing:0.3px;
-  display:flex;align-items:center;gap:5px;
-}
-.profile-created{
-  font-size:11px;color:var(--tm);
-  display:flex;align-items:center;gap:8px;
-  padding-top:14px;border-top:1px solid var(--border);
-}
+    /* ─── Wavy ─── */
+    .wavy { position: relative; z-index: 1; line-height: 0; }
+    .wavy svg { width: 100%; display: block; }
 
-/* INFO CARDS */
-.info-col{display:flex;flex-direction:column;gap:16px;}
-.section-hd{
-  font-family:var(--mono);font-size:10px;font-weight:700;
-  color:var(--ts);letter-spacing:1.4px;text-transform:uppercase;
-  margin-bottom:14px;display:flex;align-items:center;gap:10px;
-}
-.section-hd::after{content:'';flex:1;height:1px;background:var(--border);}
+    /* ─── Section commons ─── */
+    section { position: relative; z-index: 1; padding: 4rem 2rem; }
+    #features { background: transparent; }
+    #commands { background: var(--pink-soft); }
+    #dev { background: transparent; }
 
-/* STAT GRID */
-.stat-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;margin-bottom:6px;
-}
-.stat-box{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r2);padding:16px;
-  transition:border-color .2s;
-}
-.stat-box:hover{border-color:var(--border2);}
-.stat-ico{font-size:20px;margin-bottom:8px;}
-.stat-val{
-  font-family:var(--display);font-size:24px;
-  font-weight:800;color:var(--t);letter-spacing:-0.5px;
-  line-height:1;margin-bottom:4px;
-}
-.stat-lbl{font-size:11px;color:var(--tm);}
+    .container { max-width: 1100px; margin: 0 auto; }
+    .sec-header { text-align: center; margin-bottom: 3rem; }
+    .sec-tag {
+      display: inline-block; background: linear-gradient(90deg,#fce0f0,#dce8ff);
+      border-radius: 50px; padding: .28rem .9rem; font-size: .78rem; font-weight: 700;
+      color: var(--text-soft); margin-bottom: .8rem;
+      border: 1.5px solid rgba(200,170,230,0.3);
+    }
+    .sec-title { font-size: clamp(1.7rem,4vw,2.4rem); font-weight: 900; color: var(--text); }
+    .sec-title .accent { background: linear-gradient(135deg,#f27cba,#a78cf2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .sec-sub { font-size: .95rem; color: var(--text-soft); margin-top: .5rem; }
 
-/* INFO TABLE */
-.info-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r2);padding:20px;
-}
-.info-row{
-  display:flex;align-items:flex-start;justify-content:space-between;
-  padding:10px 0;border-bottom:1px solid var(--border);
-  gap:16px;
-}
-.info-row:last-child{border-bottom:none;padding-bottom:0;}
-.info-row:first-child{padding-top:0;}
-.info-key{font-size:12px;color:var(--tm);font-weight:500;white-space:nowrap;flex-shrink:0;}
-.info-val{
-  font-family:var(--mono);font-size:12px;color:var(--pa);
-  font-weight:500;text-align:right;word-break:break-all;
-}
-.info-val.norm{font-family:var(--sans);color:var(--t);font-weight:400;}
-.info-val.green{color:var(--s);}
-.info-val.red{color:var(--d);}
-.info-val.yellow{color:var(--w);}
+    /* ─── Feature cards ─── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.5rem;
+    }
+    .feat-card {
+      background: var(--card-bg); border-radius: 20px;
+      padding: 1.6rem 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1.5px solid rgba(200,170,230,0.2);
+      backdrop-filter: blur(10px);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .feat-card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(200,150,220,0.28); }
+    .feat-icon-wrap { font-size: 1.9rem; margin-bottom: .8rem; }
+    .feat-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .55rem; }
+    .feat-card p { font-size: .84rem; color: var(--text-soft); line-height: 1.65; margin-top: .2rem; }
 
-/* GUILDS LIST */
-.guild-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:10px;
-}
-.guild-card{
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--r2);padding:14px;
-  display:flex;align-items:center;gap:12px;
-  transition:all .2s;
-}
-.guild-card:hover{border-color:var(--border2);background:var(--card2);}
-.guild-icon{
-  width:44px;height:44px;border-radius:12px;
-  object-fit:cover;flex-shrink:0;
-  background:var(--bg2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:700;color:var(--pa);
-  font-family:var(--display);overflow:hidden;
-}
-.guild-icon img{width:100%;height:100%;object-fit:cover;border-radius:12px;}
-.guild-info{flex:1;min-width:0;}
-.guild-name{font-size:13px;font-weight:600;color:var(--t);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.guild-id{font-size:10px;color:var(--ts);font-family:var(--mono);margin-top:2px;}
-.guild-owner-badge{
-  padding:2px 7px;border-radius:999px;
-  background:rgba(250,166,26,0.12);color:var(--w);
-  font-size:9px;font-weight:700;font-family:var(--mono);
-  border:1px solid rgba(250,166,26,0.2);margin-top:4px;
-  display:inline-block;
-}
+    /* ─── Commands ─── */
+    .cmd-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.2rem;
+    }
+    .cmd-card {
+      background: var(--card-bg); border-radius: 18px;
+      padding: 1.3rem 1.2rem;
+      box-shadow: 0 4px 22px rgba(200,150,220,0.13);
+      border: 1.5px solid rgba(200,170,230,0.2);
+      backdrop-filter: blur(10px);
+      transition: transform .22s;
+      position: relative; overflow: hidden;
+    }
+    .cmd-card:hover { transform: translateY(-4px); }
+    .cmd-icon-wrap { font-size: 1.5rem; margin-bottom: .6rem; }
+    .cmd-name { font-size: .93rem; font-weight: 700; color: var(--text); font-family: 'Kanit', monospace; }
+    .cmd-desc { font-size: .78rem; color: var(--text-soft); margin-top: .3rem; line-height: 1.5; }
+    .cmd-badge {
+      display: inline-block; border-radius: 50px; padding: .18rem .7rem;
+      font-size: .7rem; font-weight: 700; margin-top: .6rem;
+    }
+    .badge-all    { background: #d9f0e6; color: #2e7d5a; }
+    .badge-admin  { background: #dde8ff; color: #3a5fcc; }
+    .badge-owner  { background: #fff0cc; color: #a07000; }
 
-/* PERMISSIONS */
-.perm-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:8px;
-}
-.perm-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:var(--r);
-  border:1px solid var(--border);
-  background:var(--bg3);font-size:12px;
-  transition:all .2s;
-}
-.perm-item.has{border-color:rgba(35,209,139,0.2);background:rgba(35,209,139,0.05);}
-.perm-item.no{opacity:.5;}
-.perm-ico{font-size:14px;flex-shrink:0;}
-.perm-name{flex:1;color:var(--t);}
-.perm-check{font-size:13px;flex-shrink:0;}
+    /* ─── Dev ─── */
+    .dev-card {
+      max-width: 720px; margin: 0 auto;
+      background: var(--card-bg); border-radius: 28px;
+      padding: 2.5rem 2rem; display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap;
+      box-shadow: 0 12px 50px rgba(200,150,220,0.2);
+      border: 1.5px solid rgba(200,170,230,0.25);
+      backdrop-filter: blur(12px);
+    }
+    .dev-avatar-outer { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+    .dev-crown { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 1.6rem; z-index: 2; }
+    .dev-blob-ring, .dev-blob-ring2 {
+      position: absolute; inset: -8px; border-radius: 50%;
+      border: 2px dashed var(--pink); animation: spin 14s linear infinite;
+    }
+    .dev-blob-ring2 { inset: -14px; border-color: var(--purple); animation-direction: reverse; }
+    .dev-img-wrap {
+      width: 130px; height: 130px; border-radius: 50%; overflow: hidden;
+      border: 3px solid #fff; box-shadow: 0 6px 30px rgba(200,140,210,0.3);
+    }
+    .dev-img { width: 100%; height: 100%; object-fit: cover; }
+    .dev-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; color: var(--text-soft); margin-bottom: .3rem; }
+    .dev-name { font-size: 1.5rem; font-weight: 900; color: var(--text); }
+    .dev-role { font-size: .82rem; color: var(--text-soft); margin: .2rem 0 .8rem; }
+    .dev-desc { font-size: .88rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 1.2rem; }
+    .dev-btns { display: flex; flex-wrap: wrap; gap: .8rem; }
 
-/* INVITE LINK */
-.invite-box{
-  background:linear-gradient(135deg,rgba(88,101,242,0.12),rgba(0,212,255,0.08));
-  border:1px solid var(--border2);
-  border-radius:var(--r2);padding:20px;
-}
-.invite-url-row{display:flex;gap:10px;margin-top:12px;}
-.invite-url{
-  flex:1;padding:11px 14px;
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--r);
-  font-family:var(--mono);font-size:12px;color:var(--cyan);
-  outline:none;word-break:break-all;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.btn-copy-inv{
-  padding:11px 18px;border:none;border-radius:var(--r);
-  background:var(--p);color:#fff;
-  font-family:var(--sans);font-size:12px;font-weight:600;
-  cursor:pointer;transition:all .2s;white-space:nowrap;
-}
-.btn-copy-inv:hover{background:#4752c4;}
-.invite-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-.preset-btn{
-  padding:6px 12px;border:1px solid var(--border2);
-  border-radius:999px;background:transparent;
-  color:var(--tm);font-size:11px;font-weight:600;
-  cursor:pointer;font-family:var(--mono);transition:all .2s;
-}
-.preset-btn:hover{border-color:var(--p);color:var(--pa);}
-.preset-btn.active{background:rgba(88,101,242,0.15);border-color:var(--p);color:var(--pa);}
+    /* ─── Footer ─── */
+    footer {
+      position: relative; z-index: 1;
+      background: linear-gradient(135deg, rgba(240,220,255,0.6), rgba(220,235,255,0.6));
+      backdrop-filter: blur(10px);
+      text-align: center; padding: 2.5rem 1rem;
+      border-top: 1.5px solid rgba(200,170,230,0.2);
+    }
+    .footer-logo { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: .8rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .8rem; flex-wrap: wrap; }
+    .footer-links a { text-decoration: none; color: var(--text-soft); font-size: .85rem; font-weight: 600; transition: color .2s; }
+    .footer-links a:hover { color: var(--pink); }
+    .footer-copy { font-size: .78rem; color: var(--text-soft); }
 
-/* AVATAR PANEL */
-.avatar-sizes{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:12px;}
-.avatar-size-box{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-}
-.avatar-size-box img{
-  border-radius:50%;
-  border:2px solid var(--border);
-  background:var(--bg3);
-  object-fit:cover;
-}
-.avatar-size-lbl{font-size:10px;color:var(--ts);font-family:var(--mono);}
+    /* ─── Reveal animation ─── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
 
-/* APPLICATION INFO */
-.app-flags-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;
-}
-.app-flag{
-  padding:10px 14px;border-radius:var(--r);
-  border:1px solid var(--border);background:var(--bg3);
-  display:flex;align-items:center;gap:8px;font-size:12px;
-}
-.app-flag.enabled{border-color:rgba(35,209,139,0.2);background:rgba(35,209,139,0.05);color:var(--s);}
-.app-flag.disabled{opacity:.45;color:var(--tm);}
-
-/* LOADING */
-.loading-overlay{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(8,11,18,0.85);
-  backdrop-filter:blur(8px);
-  z-index:1000;
-  align-items:center;justify-content:center;
-  flex-direction:column;gap:20px;
-}
-.loading-overlay.on{display:flex;}
-.loader{
-  width:60px;height:60px;
-  border:3px solid var(--border);
-  border-top-color:var(--p);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-.loader-txt{
-  font-family:var(--mono);font-size:13px;color:var(--pa);
-  letter-spacing:0.5px;
-}
-
-/* TOAST */
-.toast{
-  position:fixed;bottom:28px;left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:var(--card2);border:1px solid var(--border2);
-  color:var(--t);padding:12px 24px;border-radius:12px;
-  font-size:13px;z-index:9999;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:0 12px 40px rgba(0,0,0,0.5);pointer-events:none;
-}
-.toast.on{transform:translateX(-50%) translateY(0);}
-
-/* RAW JSON */
-.raw-json{
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--r2);padding:16px;
-  font-family:var(--mono);font-size:11px;color:var(--tm);
-  max-height:300px;overflow-y:auto;line-height:1.7;
-  white-space:pre-wrap;word-break:break-all;
-}
-.raw-json::-webkit-scrollbar{width:6px;}
-.raw-json::-webkit-scrollbar-track{background:var(--bg);}
-.raw-json::-webkit-scrollbar-thumb{background:var(--ts);border-radius:3px;}
-
-/* SPIN INLINE */
-.spin{animation:spin .8s linear infinite;display:inline-block;}
-
-/* SECTION CARD */
-.sec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:20px;}
-
-/* EMPTY */
-.empty-guilds{
-  text-align:center;padding:40px;
-  color:var(--ts);font-size:13px;
-}
-.empty-guilds div:first-child{font-size:36px;margin-bottom:10px;}
-
-/* TABS */
-.tabs{display:flex;gap:2px;padding:4px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:18px;}
-.tab{
-  flex:1;padding:9px 12px;border:none;border-radius:var(--r);
-  background:transparent;color:var(--tm);
-  font-family:var(--sans);font-size:12px;font-weight:600;
-  cursor:pointer;transition:all .2s;
-}
-.tab.active{background:var(--card);color:var(--t);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
-.tab-pane{display:none;}
-.tab-pane.active{display:block;}
-
-/* PING METER */
-.ping-bar{
-  height:6px;border-radius:3px;
-  background:var(--bg3);overflow:hidden;margin-top:6px;
-}
-.ping-fill{height:100%;border-radius:3px;transition:width .5s;}
-
-/* CHECKBOX PERMS */
-.perm-scope-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-.scope-chip{
-  padding:5px 12px;border:1.5px solid var(--border);
-  border-radius:999px;background:var(--bg3);
-  color:var(--tm);font-size:11px;font-weight:600;
-  cursor:pointer;font-family:var(--mono);transition:all .2s;
-}
-.scope-chip.on{background:rgba(88,101,242,0.15);border-color:var(--p);color:var(--pa);}
-
-footer{
-  text-align:center;padding:24px;
-  color:var(--ts);font-size:11px;
-  position:relative;z-index:1;
-  font-family:var(--mono);letter-spacing:0.3px;
-}
-</style>
+    /* ─── Responsive ─── */
+    @media(max-width:768px) {
+      nav ul { display: none; }
+      .hero-inner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+      .dev-card { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">
-    <div class="nav-icon">🔍</div>
-    Bot Inspector
-  </div>
-  <div class="nav-sp"></div>
-  <div class="nav-pill">DISCORD API v10</div>
-  <button class="nav-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark</button>
-</nav>
-
-<div class="wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag"><div class="dot-live"></div> LIVE API CHECK</div>
-    <h1>Discord Bot<br><span>Account Inspector</span></h1>
-    <p>เช็คข้อมูลบัญชีบอทแบบเต็มรูปแบบ — โปรไฟล์, สิทธิ์, เซิร์ฟเวอร์, Application flags และทุกอย่าง</p>
-  </div>
-
-  <!-- TOKEN INPUT -->
-  <div class="token-card">
-    <div class="token-label">Bot Token</div>
-    <div class="token-inp-row">
-      <div class="token-wrap">
-        <span class="token-ico">🔑</span>
-        <input type="password" id="tokenInp" class="token-inp"
-          placeholder="Bot Token (MTxxxxxxxxx.xxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxx)"
-          onkeydown="if(event.key==='Enter')checkBot()">
-      </div>
-      <button class="btn-check" id="checkBtn" onclick="checkBot()">
-        <span id="checkBtnTxt">⚡ เช็คเดี๋ยวนี้</span>
-      </button>
-    </div>
-    <div class="status-bar" id="statusBar"></div>
-    <div class="token-hint">
-      🔒 Token ไม่ถูกส่งออกนอกเครื่อง — เรียก Discord API โดยตรงจากเบราว์เซอร์คุณ
-    </div>
-  </div>
-
-  <!-- ADDED BOTS LIST -->
-  <div id="addedBotsSection" style="display:none">
-    <div style="max-width:680px;margin:0 auto 8px;display:flex;align-items:center;justify-content:space-between;padding:0 4px">
-      <span style="font-size:12px;color:var(--tm);font-family:var(--mono)">บอทที่เพิ่มไว้ (<span id="botCountLbl">0</span>)</span>
-      <button onclick="clearAllBots()" style="font-size:11px;color:var(--d);background:none;border:none;cursor:pointer;font-family:var(--sans);padding:4px 8px;">ล้างทั้งหมด</button>
-    </div>
-    <div class="added-bots" id="addedBotsList"></div>
-  </div>
-
-  <!-- RESULT SECTION -->
-  <div id="resultSection">
-    <div class="result-grid">
-
-      <!-- LEFT: PROFILE CARD -->
-      <div>
-        <div class="profile-card">
-          <div class="profile-banner" id="profileBanner">
-          </div>
-          <div class="profile-avatar-wrap">
-            <div class="profile-avatar" id="profileAvatar">🤖</div>
-          </div>
-          <div class="profile-body">
-            <div class="profile-name-row">
-              <span class="profile-name" id="profileName">—</span>
-              <span class="bot-tag">BOT</span>
-              <span class="verified-badge" id="verifiedBadge" style="display:none">✓ VERIFIED</span>
-            </div>
-            <div class="profile-discriminator" id="profileDiscriminator">#0000</div>
-            <div class="profile-flags" id="profileFlags"></div>
-
-            <div class="profile-id-box">
-              <div>
-                <div class="profile-id-label">User ID</div>
-                <div class="profile-id-val" id="profileId">—</div>
-              </div>
-              <button class="copy-btn" onclick="copyText(document.getElementById('profileId').textContent,'ID')">COPY</button>
-            </div>
-
-            <div class="profile-id-box" style="margin-bottom:0">
-              <div>
-                <div class="profile-id-label">สร้างเมื่อ</div>
-                <div class="profile-id-val" id="profileCreated" style="font-family:var(--sans);font-size:12px;color:var(--t)">—</div>
-              </div>
-              <span style="font-size:18px" id="profileCreatedAge"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- AVATAR CARD -->
-        <div class="info-card" style="margin-top:16px">
-          <div class="section-hd">Avatar</div>
-          <div class="avatar-sizes" id="avatarSizes"></div>
-          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap" id="avatarFormatBtns"></div>
-        </div>
-      </div>
-
-      <!-- RIGHT: INFO TABS -->
-      <div class="info-col">
-
-        <div class="tabs" id="mainTabs">
-          <button class="tab active" onclick="switchTab('overview')">📊 ภาพรวม</button>
-          <button class="tab" onclick="switchTab('app')">⚙️ Application</button>
-          <button class="tab" onclick="switchTab('invite')">🔗 ลิงก์เชิญ</button>
-          <button class="tab" onclick="switchTab('raw')">🧬 Raw JSON</button>
-        </div>
-
-        <!-- OVERVIEW TAB -->
-        <div class="tab-pane active" id="tab-overview">
-          <div class="stat-grid" id="statGrid"></div>
-
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd">ข้อมูลพื้นฐาน</div>
-            <div id="basicInfoTable"></div>
-          </div>
-
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd">Public Flags & Badges</div>
-            <div id="flagsDetail"></div>
-          </div>
-        </div>
-
-        <!-- APPLICATION TAB -->
-        <div class="tab-pane" id="tab-app">
-          <div class="sec-card">
-            <div class="section-hd">Application Info</div>
-            <div id="appInfoTable"></div>
-          </div>
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd">Application Flags</div>
-            <div class="app-flags-grid" id="appFlagsGrid"></div>
-          </div>
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd">Bot Settings</div>
-            <div id="botSettings"></div>
-          </div>
-        </div>
-
-        <!-- INVITE TAB -->
-        <div class="tab-pane" id="tab-invite">
-          <div class="invite-box">
-            <div class="section-hd">Generate Invite Link</div>
-            <div style="font-size:12px;color:var(--tm);margin-bottom:10px">เลือก Permissions ที่ต้องการ:</div>
-            <div class="perm-scope-row" id="permScopeRow"></div>
-            <div style="font-size:12px;color:var(--tm);margin-bottom:8px">Scopes:</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="scopeRow"></div>
-            <div class="invite-url-row">
-              <input type="text" class="invite-url" id="inviteUrl" readonly>
-              <button class="btn-copy-inv" onclick="copyInvite()">COPY</button>
-            </div>
-            <div style="margin-top:12px;display:flex;gap:8px">
-              <button class="btn-copy-inv" style="background:var(--s)" onclick="openInvite()">🚀 เปิดลิงก์เชิญ</button>
-              <button class="btn-copy-inv" style="background:transparent;border:1px solid var(--border2);color:var(--tm)" onclick="generateInvite()">🔄 สร้างลิงก์ใหม่</button>
-            </div>
-          </div>
-
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd">Preset Permissions</div>
-            <div class="invite-presets" id="invitePresets"></div>
-          </div>
-        </div>
-
-        <!-- RAW JSON TAB -->
-        <div class="tab-pane" id="tab-raw">
-          <div class="sec-card">
-            <div class="section-hd" style="display:flex;align-items:center;margin-bottom:14px">
-              Raw API Response
-              <div style="flex:1;height:1px;background:var(--border);margin-left:10px"></div>
-              <button class="copy-btn" onclick="copyRaw()" style="margin-left:10px">COPY JSON</button>
-            </div>
-            <div class="raw-json" id="rawJson">// ยังไม่มีข้อมูล</div>
-          </div>
-          <div class="sec-card" style="margin-top:16px">
-            <div class="section-hd" style="display:flex;align-items:center;margin-bottom:14px">
-              Application Raw Data
-              <div style="flex:1;height:1px;background:var(--border);margin-left:10px"></div>
-            </div>
-            <div class="raw-json" id="rawJsonApp">// ยังไม่มีข้อมูล</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-</div><!-- end wrap -->
-
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loader"></div>
-  <div class="loader-txt" id="loaderTxt">กำลังดึงข้อมูลจาก Discord API...</div>
+<div class="bg-shapes">
+  <span></span><span></span><span></span><span></span><span></span>
 </div>
 
-<div class="toast" id="toast"></div>
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="https://i.ibb.co/0jBgdZH/profile.png" class="nav-logo-img"
+         onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+    Ariea
+  </a>
+  <ul>
+    <li><a href="#features">ฟีเจอร์</a></li>
+    <li><a href="#commands">คำสั่ง</a></li>
+    <li><a href="#dev">Developer</a></li>
+  </ul>
+  <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="nav-cta" target="_blank">🤖 เชิญบอท</a>
+</nav>
 
-<footer>Bot Inspector • ทำงานโดยตรงกับ Discord API v10 • Token ไม่ถูกเก็บหรือส่งออก</footer>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar-area">
+      <div class="avatar-wrap">
+        <div class="av-blob-ring"></div>
+        <div class="av-blob-ring2"></div>
+        <div class="av-star">✨</div>
+        <div class="av-star">⭐</div>
+        <div class="av-star">🌟</div>
+        <div class="av-star">💫</div>
+        <div class="avatar-img-wrap">
+          <!-- Profile image (round) -->
+          <img id="profileImg" alt="Ariea" class="avatar-img"/>
+        </div>
+      </div>
+      <div class="avatar-status">
+        <div class="dot-online"></div>
+        Online · Ariea
+      </div>
+    </div>
+
+    <div class="hero-text">
+      <div class="hero-tag">✨ Discord Bot · Thailand 🇹🇭</div>
+      <h1 class="hero-title">
+        <span class="t1">Ariea</span>
+        <span class="t2">Discord Bot 💙</span>
+      </h1>
+      <span id="typed"></span><span class="cursor">|</span>
+      <div class="hero-stats">
+        <div class="stat-pill"><div class="num">24/7</div><div class="lbl">Online</div></div>
+        <div class="stat-pill"><div class="num">v1 & v2</div><div class="lbl">System</div></div>
+        <div class="stat-pill"><div class="num">51</div><div class="lbl">Commands</div></div>
+        <div class="stat-pill"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
+      </div>
+      <div class="hero-btns">
+        <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
+        <a href="https://discord.gg/Gu8KjSH4Bu" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16:9 Banner -->
+<div class="banner-section">
+  <div class="banner-wrap">
+    <img id="bannerImg" alt="Ariea Banner"/>
+  </div>
+</div>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
+  </svg>
+</div>
+
+<section id="features">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🛠️ Bot user manual</div>
+      <h2 class="sec-title">คู่มือการใช้งาน <span class="accent">บอท</span></h2>
+      <p class="sec-sub">คำแนะนำในการใช้งานบอทอย่างละเอียด 🌸</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🛡️</div>
+        <h3>ป้องกันการโจมตีเซิร์ฟเวอร์</h3>
+        <p>ระบบ Anti Nuke</p>
+        <p>• ตรวจจับการทำงานผิดปกติภายในเซิร์ฟ</p>
+        <p>• จัดการคนที่ลบห้อง หรือเตะคนรัวๆ</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🔐</div>
+        <h3>Verify System - CAPTCHA</h3>
+        <p>ระบบ Verify</p>
+        <p>• ใช้ระบบ CAPTCHA ยืนยันตัวตนคนเข้าเซิร์ฟ</p>
+        <p>• ตั้งค่าหน้าต่าง Panel V2 ได้เอง</p>
+        <p>• แจ้งเตือนลงห้อง Log ให้แอดมินทราบ</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🚫</div>
+        <h3>ป้องกันข้อความสแปม</h3>
+        <p>ระบบ Anti Spam</p>
+        <p>• ตรวจจับการพิมพ์ข้อความเร็วเกิน</p>
+        <p>• ป้องกันการแท็ก @everyone / @here</p>
+        <p>• ป้องกันการส่งลิงก์อันตราย</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">⚡</div>
+        <h3>ป้องกันไม่ให้โดนตรวจจับ</h3>
+        <p>ระบบ Whitelist</p>
+        <p>• เพิ่มผู้ใช้/ยศ/ช่อง ให้อยู่ในโหมดปลอดภัย</p>
+        <p>• ดูรายการทั้งหมดได้ผ่านคำสั่ง /whitelist</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">🚪</div>
+        <h3>ป้องกันบอทเข้าเซิร์ฟเวอร์</h3>
+        <p>ระบบ Join Gate</p>
+        <p>• จัดการกลุ่มคนที่เข้ามาพร้อมกันจำนวนมาก</p>
+        <p>• สามารถตั้งค่าให้ เตะ/แบน อัตโนมัติ</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon-wrap">⚙️</div>
+        <h3>คำสั่งที่แอดมินต้องรู้</h3>
+        <p>การตั้งค่าเริ่มต้น</p>
+        <p>• /security panel - ตั้งค่าระบบป้องกันทั้งหมด</p>
+        <p>• /verify panel - ตั้งค่าระบบยืนยันตัวตน</p>
+        <p>• /welcome panel - ตั้งค่าห้องต้อนรับ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 0 480 80 720 40 C960 0 1200 80 1440 40 L1440 80 L0 80 Z" fill="#fdf0f8"/>
+  </svg>
+</div>
+
+<section id="commands">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🎮 Main commands</div>
+      <h2 class="sec-title"><span class="accent">Slash</span> Commands</h2>
+      <p class="sec-sub">คำสั่งหลักๆที่ใช้งาน 🎀</p>
+    </div>
+    <div class="cmd-list">
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">📢</div>
+        <div class="cmd-name">/speak</div>
+        <div class="cmd-desc">ระบบพูดข้อความ</div>
+        <span class="cmd-badge badge-all">ทุกคน</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/security panel</div>
+        <div class="cmd-desc">ตั้งค่าระบบป้องกันทั้งหมด (Anti Nuke, Anti Raid, Logs, Join Gate)</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/whitelist</div>
+        <div class="cmd-desc">จัดการระบบไวท์ลิสต์ (เพิ่ม/ลบ ผู้ใช้, ยศ, ช่อง เพื่อให้ไม่โดนจับผิด)</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🛡️</div>
+        <div class="cmd-name">/anti_webhook</div>
+        <div class="cmd-desc">การป้องกันสแปม เว็ปฮุกทั้งเซิฟเวอร์</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">📦</div>
+        <div class="cmd-name">/verify panel</div>
+        <div class="cmd-desc">สร้างจุดยืนยันตัวตนสำหรับคนเข้าเซิร์ฟใหม่</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🐟</div>
+        <div class="cmd-name">/welcome panel</div>
+        <div class="cmd-desc">ตั้งค่าแบนเนอร์และข้อความต้อนรับคนเข้า</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🎣</div>
+        <div class="cmd-name">/goodbye panel</div>
+        <div class="cmd-desc">ตั้งค่าข้อความบอกลาตอนคนออก</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🍕</div>
+        <div class="cmd-name">/boost panel</div>
+        <div class="cmd-desc">แผงควบคุมระบบแจ้งเตือนบูสต์เซิร์ฟเวอร์</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">🍔</div>
+        <div class="cmd-name">/sticky</div>
+        <div class="cmd-desc">ตั้งค่าระบบปักหมุด</div>
+        <span class="cmd-badge badge-admin">แอดมินเซิร์ฟ</span>
+      </div>
+      <div class="cmd-card reveal">
+        <div class="cmd-icon-wrap">👑</div>
+        <div class="cmd-name">/admin</div>
+        <div class="cmd-desc">แผงควบคุมผู้ดูแลระบบ</div>
+        <span class="cmd-badge badge-owner">Owner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wavy">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C240 80 480 0 720 40 C960 80 1200 0 1440 40 L1440 80 L0 80 Z" fill="#ffffff"/>
+  </svg>
+</div>
+
+<section id="dev">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">🌟 Developer</div>
+      <h2 class="sec-title">About The <span class="accent">Developer</span></h2>
+      <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ 💜</p>
+    </div>
+    <div class="dev-card reveal">
+      <div class="dev-avatar-outer">
+        <div class="dev-crown">👑</div>
+        <div class="dev-blob-ring"></div>
+        <div class="dev-blob-ring2"></div>
+        <div class="dev-img-wrap">
+          <img src="https://i.ibb.co/jvTL9CDv/profile.png" alt="Developer" class="dev-img"
+               onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"/>
+        </div>
+      </div>
+      <div class="dev-info">
+        <div class="dev-label">✦ BOT OWNER</div>
+        <div class="dev-name">! ชอบสาวแว่น</div>
+        <div class="dev-role">Developer · Ariea Bot</div>
+        <p class="dev-desc">
+          ผู้พัฒนา Ariea มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง
+          มีระบบความปลอดภัยแข็งแกร่ง รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙
+        </p>
+        <div class="dev-btns">
+          <a href="https://discord.gg/VEfMATCCGB" class="btn btn-soft" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">💙 Rayzen</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank" style="font-size:.83rem;padding:.5rem 1.2rem;">🤖 เชิญบอท</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Ariea Copyright 2021-2030</div>
+  <div class="footer-links">
+    <a href="https://discord.gg/VEfMATCCGB" target="_blank">Rayzen</a>
+    <a href="https://discord.gg/Gu8KjSH4Bu" target="_blank">SUPPORT</a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" target="_blank">INVITE BOT</a>
+  </div>
+  <div class="footer-copy">© 2026 Rayzen · Ariea · All rights reserved 💙</div>
+</footer>
 
 <script>
-'use strict';
+  // ── Load uploaded images as base64 ──
+  // Profile image (round) — image 1
+  // Banner image (16:9)  — image 2
+  // Since we're in a static HTML file, we embed them via fetch from same-origin or use data URLs.
+  // The images need to be placed next to this HTML file.
+  // Names: profile.png (round) and banner.png (16:9)
+  document.getElementById('profileImg').src = 'profile.png';
+  document.getElementById('bannerImg').src  = 'banner.png';
 
-/* ─── THEME ─── */
-function toggleTheme(){
-  const c=document.documentElement.getAttribute('data-theme');
-  const n=c==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',n);
-  try{localStorage.setItem('bi-theme',n);}catch{}
-  document.getElementById('theme-btn').textContent=n==='dark'?'🌙 Dark':'☀️ Light';
-}
-(function(){
-  const t=(()=>{try{return localStorage.getItem('bi-theme');}catch{return null;}})() || 'dark';
-  document.documentElement.setAttribute('data-theme',t);
-  document.getElementById('theme-btn').textContent=t==='dark'?'🌙 Dark':'☀️ Light';
-})();
-
-/* ─── TABS ─── */
-function switchTab(name){
-  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick')?.includes("'"+name+"'")));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
-}
-
-/* ─── BOTS STORE ─── */
-let bots=[];
-let currentBotId=null;
-let _rawUser=null, _rawApp=null;
-let _permFlags=0;
-let _scopes=['bot'];
-
-/* ─── MAIN CHECK ─── */
-async function checkBot(){
-  const token=document.getElementById('tokenInp').value.trim();
-  if(!token){toast('⚠️ กรุณาใส่ Bot Token');return;}
-  
-  const btn=document.getElementById('checkBtn');
-  btn.disabled=true;
-  document.getElementById('checkBtnTxt').innerHTML='<span class="spin">⏳</span> กำลังเช็ค...';
-  setStatus('checking','<span class="spin">⏳</span> กำลังเชื่อมต่อ Discord API...');
-  showLoader('กำลังดึงข้อมูลบอท...');
-
-  try {
-    // Step 1: Get @me
-    const r1=await fetch('https://discord.com/api/v10/users/@me',{
-      headers:{'Authorization':'Bot '+token,'Content-Type':'application/json'}
-    });
-    if(!r1.ok){
-      const e=await r1.json().catch(()=>({}));
-      throw new Error(`HTTP ${r1.status}: ${e.message||'Unauthorized'}`);
+  // ── Typed text ──
+  const texts = [
+    'มีอะไรให้ Ariea ช่วยมั้ยคะ 💙',
+    'ระบบป้องกันครบ ✨',
+    'ดูแลเซิร์ฟ 24 ชั่วโมง 🛡️',
+    'พร้อมใช้งานทันที 🚀',
+  ];
+  let ti = 0, ci = 0, del = false;
+  const el = document.getElementById('typed');
+  function type() {
+    const cur = texts[ti];
+    if (!del) {
+      el.textContent = cur.slice(0, ++ci);
+      if (ci === cur.length) { del = true; setTimeout(type, 2000); return; }
+    } else {
+      el.textContent = cur.slice(0, --ci);
+      if (ci === 0) { del = false; ti = (ti+1) % texts.length; }
     }
-    const user=await r1.json();
-    _rawUser=user;
-
-    // Step 2: Get Application info
-    setLoader('กำลังดึง Application info...');
-    const r2=await fetch('https://discord.com/api/v10/oauth2/applications/@me',{
-      headers:{'Authorization':'Bot '+token,'Content-Type':'application/json'}
-    });
-    let app=null;
-    if(r2.ok) app=await r2.json();
-    _rawApp=app;
-
-    // Step 3: Build bot entry
-    const bot={
-      id:user.id, token,
-      username:user.username,
-      discriminator:user.discriminator,
-      globalName:user.global_name,
-      avatar:user.avatar,
-      banner:user.banner,
-      accentColor:user.accent_color,
-      publicFlags:user.public_flags||0,
-      flags:user.flags||0,
-      bot:user.bot,
-      system:user.system,
-      mfaEnabled:user.mfa_enabled,
-      verified:user.verified,
-      email:user.email,
-      locale:user.locale,
-      premiumType:user.premium_type,
-      app:app,
-      checkedAt:new Date()
-    };
-
-    // Add or update
-    const existing=bots.find(b=>b.id===user.id);
-    if(!existing) bots.push(bot); else Object.assign(existing,bot);
-    currentBotId=bot.id;
-
-    renderAddedBots();
-    renderResult(bot);
-    
-    setStatus('ok','✅ ดึงข้อมูลสำเร็จ — '+user.username+(user.discriminator&&user.discriminator!=='0'?'#'+user.discriminator:''));
-    toast('✅ เช็คสำเร็จ: '+user.username);
-    document.getElementById('tokenInp').value='';
-
-  } catch(e){
-    setStatus('err','❌ '+e.message);
-    toast('❌ '+e.message);
-    document.getElementById('resultSection').style.display='none';
+    setTimeout(type, del ? 45 : 70);
   }
+  type();
 
-  hideLoader();
-  btn.disabled=false;
-  document.getElementById('checkBtnTxt').innerHTML='⚡ เช็คเดี๋ยวนี้';
-}
-
-/* ─── RENDER ADDED BOTS ─── */
-function renderAddedBots(){
-  const sec=document.getElementById('addedBotsSection');
-  const list=document.getElementById('addedBotsList');
-  const cnt=document.getElementById('botCountLbl');
-  if(!bots.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  cnt.textContent=bots.length;
-  list.innerHTML=bots.map(b=>{
-    const avUrl=b.avatar?`https://cdn.discordapp.com/avatars/${b.id}/${b.avatar}.png?size=64`:'';
-    const tag=b.discriminator&&b.discriminator!=='0'?`#${b.discriminator}`:'';
-    return `<div class="added-bot-row${b.id===currentBotId?' active':''}" onclick="selectBot('${b.id}')">
-      <div class="ab-avatar">${avUrl?`<img src="${avUrl}" alt="" onerror="this.style.display='none'">`:'🤖'}</div>
-      <div class="ab-info">
-        <div class="ab-name">${b.globalName||b.username}${tag?` <span style="color:var(--ts);font-weight:400">${tag}</span>`:''}</div>
-        <div class="ab-id">ID: ${b.id}</div>
-      </div>
-      <span class="ab-badge online">● ONLINE</span>
-      <button class="ab-del" onclick="event.stopPropagation();removeBot('${b.id}')">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function selectBot(id){
-  const b=bots.find(x=>x.id===id);
-  if(!b)return;
-  currentBotId=id;
-  _rawUser=b;
-  _rawApp=b.app;
-  renderAddedBots();
-  renderResult(b);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function removeBot(id){
-  bots=bots.filter(x=>x.id!==id);
-  if(currentBotId===id){
-    currentBotId=null;
-    document.getElementById('resultSection').style.display='none';
-  }
-  renderAddedBots();
-  toast('🗑️ ลบบอทแล้ว');
-}
-
-function clearAllBots(){
-  if(!confirm('ล้างบอททั้งหมด?'))return;
-  bots=[];currentBotId=null;
-  renderAddedBots();
-  document.getElementById('resultSection').style.display='none';
-  toast('🗑️ ล้างทั้งหมดแล้ว');
-}
-
-/* ─── RENDER RESULT ─── */
-function renderResult(b){
-  document.getElementById('resultSection').style.display='block';
-
-  // Profile
-  const avUrl=b.avatar?`https://cdn.discordapp.com/avatars/${b.id}/${b.avatar}.png?size=256`:'';
-  const avEl=document.getElementById('profileAvatar');
-  avEl.innerHTML=avUrl?`<img src="${avUrl}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover" onerror="this.parentNode.innerHTML='🤖'">`:'🤖';
-
-  // Banner
-  const bannerEl=document.getElementById('profileBanner');
-  if(b.banner){
-    const isGif=b.banner.startsWith('a_');
-    const ext=isGif?'gif':'png';
-    bannerEl.innerHTML=`<img class="profile-banner-custom" src="https://cdn.discordapp.com/banners/${b.id}/${b.banner}.${ext}?size=600" alt="" onerror="this.style.display='none'">`;
-  } else if(b.accentColor){
-    bannerEl.style.background=`#${b.accentColor.toString(16).padStart(6,'0')}`;
-  } else {
-    bannerEl.style.background='linear-gradient(135deg,#5865f2 0%,#8b95ff 50%,#00d4ff 100%)';
-  }
-
-  document.getElementById('profileName').textContent=b.globalName||b.username;
-  const discTag=b.discriminator&&b.discriminator!=='0'?`@${b.username}#${b.discriminator}`: `@${b.username}`;
-  document.getElementById('profileDiscriminator').textContent=discTag;
-  document.getElementById('profileId').textContent=b.id;
-
-  // Created at from snowflake
-  const created=snowflakeToDate(b.id);
-  document.getElementById('profileCreated').textContent=created.toLocaleString('th-TH',{dateStyle:'long',timeStyle:'short'});
-  const ageMs=Date.now()-created.getTime();
-  const ageYears=(ageMs/31536e6).toFixed(1);
-  document.getElementById('profileCreatedAge').textContent=`${ageYears}y`;
-
-  // Verified
-  const verBadge=document.getElementById('verifiedBadge');
-  if(b.app?.bot_public!==undefined||b.verified){verBadge.style.display='';} else verBadge.style.display='none';
-
-  // Profile flags (badges)
-  renderProfileFlags(b);
-
-  // Stats
-  renderStats(b);
-
-  // Basic info
-  renderBasicInfo(b);
-
-  // Flags detail
-  renderFlagsDetail(b);
-
-  // App tab
-  renderAppInfo(b);
-
-  // Invite tab
-  _permFlags=0;
-  renderInviteTab(b);
-
-  // Avatar panel
-  renderAvatarPanel(b);
-
-  // Raw JSON
-  document.getElementById('rawJson').textContent=JSON.stringify(_rawUser,null,2);
-  document.getElementById('rawJsonApp').textContent=JSON.stringify(_rawApp,null,2);
-
-  switchTab('overview');
-  setTimeout(()=>document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'start'}),100);
-}
-
-/* ─── SNOWFLAKE ─── */
-function snowflakeToDate(id){
-  return new Date(Number(BigInt(id)>>22n)+1420070400000);
-}
-
-/* ─── FLAGS MAP ─── */
-const USER_FLAGS={
-  1:'Discord Staff',
-  2:'Discord Partner',
-  4:'HypeSquad Events',
-  8:'Bug Hunter Lv1',
-  64:'HypeSquad Bravery',
-  128:'HypeSquad Brilliance',
-  256:'HypeSquad Balance',
-  512:'Early Supporter',
-  1024:'Team User',
-  4096:'Bug Hunter Lv2',
-  16384:'Verified Bot',
-  131072:'Early Verified Bot Dev',
-  262144:'Discord Certified Mod',
-  4194304:'Active Developer',
-};
-const USER_FLAG_EMOJIS={
-  1:'👮',2:'🤝',4:'🎉',8:'🐛',
-  64:'🏠',128:'💡',256:'⚖️',512:'💎',
-  1024:'👥',4096:'🐛',16384:'✅',131072:'🌟',
-  262144:'🛡️',4194304:'💻',
-};
-const USER_FLAG_COLORS={
-  1:'rgba(88,101,242,0.15)',2:'rgba(88,101,242,0.15)',4:'rgba(240,71,71,0.12)',
-  8:'rgba(35,209,139,0.12)',64:'rgba(250,100,50,0.12)',128:'rgba(88,200,242,0.12)',
-  256:'rgba(35,209,139,0.12)',512:'rgba(250,166,26,0.12)',1024:'rgba(120,120,140,0.12)',
-  4096:'rgba(35,209,139,0.12)',16384:'rgba(0,212,255,0.12)',131072:'rgba(250,166,26,0.12)',
-  262144:'rgba(240,71,71,0.12)',4194304:'rgba(88,101,242,0.12)',
-};
-
-function renderProfileFlags(b){
-  const total=(b.publicFlags||0)|(b.flags||0);
-  const el=document.getElementById('profileFlags');
-  let html='';
-  Object.entries(USER_FLAGS).forEach(([bit,name])=>{
-    if(total&Number(bit)){
-      const bg=USER_FLAG_COLORS[bit]||'rgba(88,101,242,0.1)';
-      const ico=USER_FLAG_EMOJIS[bit]||'•';
-      html+=`<span class="flag-badge" style="background:${bg};color:var(--t);border-color:rgba(255,255,255,0.08)">${ico} ${name}</span>`;
-    }
-  });
-  el.innerHTML=html||'<span style="font-size:12px;color:var(--ts)">ไม่มี public flags</span>';
-}
-
-function renderStats(b){
-  const created=snowflakeToDate(b.id);
-  const ageDays=Math.floor((Date.now()-created.getTime())/86400000);
-  const stats=[
-    {ico:'📅',val:ageDays.toLocaleString(),lbl:'วันที่ใช้งาน'},
-    {ico:'🤖',val:b.bot?'YES':'NO',lbl:'เป็นบอท'},
-    {ico:'🔐',val:b.mfaEnabled?'ON':'OFF',lbl:'MFA'},
-    {ico:'✅',val:b.verified?'YES':'NO',lbl:'Verified'},
-  ];
-  document.getElementById('statGrid').innerHTML=stats.map(s=>`
-    <div class="stat-box">
-      <div class="stat-ico">${s.ico}</div>
-      <div class="stat-val">${s.val}</div>
-      <div class="stat-lbl">${s.lbl}</div>
-    </div>`).join('');
-}
-
-function renderBasicInfo(b){
-  const premium=['ไม่มี','Nitro Classic','Nitro','Nitro Basic'][b.premiumType||0]||'ไม่มี';
-  const locale=b.locale||'—';
-  const rows=[
-    ['Username',b.username,'norm'],
-    ['Global Name',b.globalName||'—','norm'],
-    ['Discriminator',b.discriminator&&b.discriminator!=='0'?'#'+b.discriminator:'New Username System',''],
-    ['User ID',b.id,''],
-    ['Bot',b.bot?'✅ ใช่':'❌ ไม่ใช่',b.bot?'green':'red'],
-    ['System',b.system?'✅ ใช่':'❌ ไม่ใช่',b.system?'green':''],
-    ['MFA Enabled',b.mfaEnabled?'✅ เปิด':'❌ ปิด',b.mfaEnabled?'green':'red'],
-    ['Verified',b.verified?'✅ Verified':'❌ ยังไม่ Verify',b.verified?'green':'red'],
-    ['Locale',locale,'norm'],
-    ['Premium Type',premium,'norm'],
-    ['Flags (public)',b.publicFlags||0,''],
-    ['Flags (raw)',b.flags||0,''],
-    ['Accent Color',b.accentColor?('#'+b.accentColor.toString(16).padStart(6,'0')):'—',''],
-  ];
-  document.getElementById('basicInfoTable').innerHTML=rows.map(([k,v,cls])=>`
-    <div class="info-row">
-      <span class="info-key">${k}</span>
-      <span class="info-val ${cls||''}">${v}</span>
-    </div>`).join('');
-}
-
-function renderFlagsDetail(b){
-  const total=(b.publicFlags||0)|(b.flags||0);
-  let html='<div style="display:flex;flex-wrap:wrap;gap:8px">';
-  let hasAny=false;
-  Object.entries(USER_FLAGS).forEach(([bit,name])=>{
-    const has=total&Number(bit);
-    hasAny=true;
-    const bg=has?(USER_FLAG_COLORS[bit]||'rgba(88,101,242,0.1)'):'transparent';
-    const opacity=has?1:0.35;
-    const ico=USER_FLAG_EMOJIS[bit]||'•';
-    html+=`<div style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:${bg};border:1px solid rgba(255,255,255,${has?0.08:0.04});opacity:${opacity};font-size:11px;font-weight:600;color:var(--t);font-family:var(--mono)">
-      ${ico} ${name} ${has?'<span style="color:var(--s)">✓</span>':'<span style="color:var(--ts)">✗</span>'}
-    </div>`;
-  });
-  html+='</div>';
-  if(!hasAny) html='<span style="font-size:12px;color:var(--ts)">ไม่มี flags</span>';
-  document.getElementById('flagsDetail').innerHTML=html;
-}
-
-/* ─── APP INFO ─── */
-const APP_FLAGS={
-  64:'Gateway Presence',
-  128:'Gateway Presence Limited',
-  256:'Gateway Guild Members',
-  512:'Gateway Guild Members Limited',
-  8192:'Verification Pending',
-  16384:'Embedded',
-  32768:'Gateway Message Content',
-  65536:'Gateway Message Content Limited',
-  524288:'Application Commands Badge',
-};
-const APP_FLAG_EMOJIS={
-  64:'👤',128:'👤',256:'👥',512:'👥',
-  8192:'⏳',16384:'🔗',32768:'💬',65536:'💬',524288:'🏅',
-};
-
-function renderAppInfo(b){
-  const app=b.app;
-  if(!app){
-    document.getElementById('appInfoTable').innerHTML='<p style="font-size:12px;color:var(--ts)">ไม่สามารถดึง Application info ได้ (Token อาจไม่มีสิทธิ์)</p>';
-    document.getElementById('appFlagsGrid').innerHTML='';
-    document.getElementById('botSettings').innerHTML='';
-    return;
-  }
-  const rows=[
-    ['App ID',app.id,''],
-    ['App Name',app.name,'norm'],
-    ['Description',app.description||'—','norm'],
-    ['Public Bot',app.bot_public===true?'✅ Public':'❌ Private',app.bot_public?'green':'red'],
-    ['Require Code Grant',app.bot_require_code_grant?'✅ ใช่':'❌ ไม่','norm'],
-    ['Privacy Policy',app.privacy_policy_url||'—','norm'],
-    ['Terms of Service',app.terms_of_service_url||'—','norm'],
-    ['Application Flags',app.flags||0,''],
-    ['Owner ID',app.owner?.id||app.team?.owner_user_id||'—',''],
-    ['Owner Name',app.owner?.username||'—','norm'],
-    ['Team',app.team?`${app.team.name} (${app.team.members?.length||0} members)`:'—','norm'],
-    ['Guild ID',app.guild_id||'—',''],
-    ['Tags',(app.tags||[]).join(', ')||'—','norm'],
-    ['Install Params',app.install_params?`Scopes: ${(app.install_params.scopes||[]).join(', ')}`:'—','norm'],
-  ];
-  document.getElementById('appInfoTable').innerHTML=rows.map(([k,v,cls])=>`
-    <div class="info-row">
-      <span class="info-key">${k}</span>
-      <span class="info-val ${cls||''}">${v}</span>
-    </div>`).join('');
-
-  // App flags
-  const af=app.flags||0;
-  const appFlagsHtml=Object.entries(APP_FLAGS).map(([bit,name])=>{
-    const has=af&Number(bit);
-    const ico=APP_FLAG_EMOJIS[bit]||'⚙️';
-    return `<div class="app-flag ${has?'enabled':'disabled'}">${ico} ${name} ${has?'<span>✓</span>':'<span>✗</span>'}</div>`;
-  }).join('');
-  document.getElementById('appFlagsGrid').innerHTML=appFlagsHtml;
-
-  // Bot Settings
-  const bSettings=[
-    ['Public Bot',app.bot_public===true?'✅ ใช่':'❌ ไม่',app.bot_public?'green':'red'],
-    ['Require OAuth2 Code Grant',app.bot_require_code_grant?'✅ ใช่':'❌ ไม่','norm'],
-    ['Approximate Guild Count',app.approximate_guild_count!=null?app.approximate_guild_count.toLocaleString():'—',''],
-    ['Custom Install URL',app.custom_install_url||'—','norm'],
-  ];
-  document.getElementById('botSettings').innerHTML=bSettings.map(([k,v,cls])=>`
-    <div class="info-row">
-      <span class="info-key">${k}</span>
-      <span class="info-val ${cls||''}">${v}</span>
-    </div>`).join('');
-}
-
-/* ─── INVITE ─── */
-const PERMISSIONS_MAP=[
-  {bit:1n,name:'Create Instant Invite',ico:'📩',cat:'General'},
-  {bit:2n,name:'Kick Members',ico:'👢',cat:'Moderation'},
-  {bit:4n,name:'Ban Members',ico:'🔨',cat:'Moderation'},
-  {bit:8n,name:'Administrator',ico:'👑',cat:'General'},
-  {bit:16n,name:'Manage Channels',ico:'📂',cat:'General'},
-  {bit:32n,name:'Manage Guild',ico:'⚙️',cat:'General'},
-  {bit:64n,name:'Add Reactions',ico:'😀',cat:'Text'},
-  {bit:128n,name:'View Audit Log',ico:'📋',cat:'General'},
-  {bit:512n,name:'View Channel',ico:'👁️',cat:'General'},
-  {bit:2048n,name:'Send Messages',ico:'💬',cat:'Text'},
-  {bit:4096n,name:'Send TTS Messages',ico:'🔊',cat:'Text'},
-  {bit:8192n,name:'Manage Messages',ico:'📝',cat:'Text'},
-  {bit:16384n,name:'Embed Links',ico:'🔗',cat:'Text'},
-  {bit:32768n,name:'Attach Files',ico:'📎',cat:'Text'},
-  {bit:65536n,name:'Read Message History',ico:'📖',cat:'Text'},
-  {bit:131072n,name:'Mention Everyone',ico:'📢',cat:'Text'},
-  {bit:262144n,name:'Use External Emojis',ico:'🎭',cat:'Text'},
-  {bit:524288n,name:'View Guild Insights',ico:'📊',cat:'General'},
-  {bit:1048576n,name:'Connect Voice',ico:'🔌',cat:'Voice'},
-  {bit:2097152n,name:'Speak',ico:'🎙️',cat:'Voice'},
-  {bit:4194304n,name:'Mute Members',ico:'🔇',cat:'Voice'},
-  {bit:8388608n,name:'Deafen Members',ico:'🔕',cat:'Voice'},
-  {bit:16777216n,name:'Move Members',ico:'↔️',cat:'Voice'},
-  {bit:33554432n,name:'Use VAD',ico:'🎤',cat:'Voice'},
-  {bit:67108864n,name:'Change Nickname',ico:'✏️',cat:'General'},
-  {bit:134217728n,name:'Manage Nicknames',ico:'📝',cat:'General'},
-  {bit:268435456n,name:'Manage Roles',ico:'🎨',cat:'General'},
-  {bit:536870912n,name:'Manage Webhooks',ico:'🔗',cat:'General'},
-  {bit:1073741824n,name:'Manage Emojis',ico:'😄',cat:'General'},
-  {bit:2147483648n,name:'Use Slash Commands',ico:'/',cat:'Text'},
-  {bit:4294967296n,name:'Request to Speak',ico:'✋',cat:'Voice'},
-  {bit:8589934592n,name:'Manage Events',ico:'📅',cat:'General'},
-  {bit:17179869184n,name:'Manage Threads',ico:'🧵',cat:'Text'},
-  {bit:34359738368n,name:'Create Public Threads',ico:'🧵',cat:'Text'},
-  {bit:68719476736n,name:'Create Private Threads',ico:'🔒',cat:'Text'},
-  {bit:137438953472n,name:'Use External Stickers',ico:'🎨',cat:'Text'},
-  {bit:274877906944n,name:'Send Messages in Threads',ico:'💬',cat:'Text'},
-  {bit:549755813888n,name:'Use Embedded Activities',ico:'🎮',cat:'General'},
-  {bit:1099511627776n,name:'Moderate Members',ico:'🛡️',cat:'Moderation'},
-];
-
-const PERMISSION_PRESETS=[
-  {name:'⚡ Administrator',flags:8n},
-  {name:'📝 Read & Write',flags:512n|2048n|65536n|16384n|32768n},
-  {name:'🤖 Bot Standard',flags:512n|2048n|65536n|16384n|32768n|64n|131072n|2147483648n},
-  {name:'🛡️ Moderator',flags:2n|4n|8192n|268435456n|134217728n|1099511627776n},
-  {name:'🔊 Voice Bot',flags:1048576n|2097152n|4194304n|8388608n|16777216n|33554432n},
-  {name:'📊 Server Manager',flags:32n|128n|268435456n|536870912n|1073741824n|8589934592n},
-  {name:'0️⃣ ไม่มีสิทธิ์',flags:0n},
-];
-
-function renderInviteTab(b){
-  // Scope chips
-  const allScopes=['bot','applications.commands','identify','email','guilds'];
-  document.getElementById('scopeRow').innerHTML=allScopes.map(s=>`
-    <div class="scope-chip${_scopes.includes(s)?' on':''}" onclick="toggleScope('${s}')">${s}</div>
-  `).join('');
-
-  // Permission chips (grouped)
-  const cats=['General','Moderation','Text','Voice'];
-  let permsHtml='';
-  cats.forEach(cat=>{
-    const perms=PERMISSIONS_MAP.filter(p=>p.cat===cat);
-    permsHtml+=`<div style="margin-bottom:10px"><div style="font-size:10px;color:var(--ts);font-family:var(--mono);font-weight:700;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase">${cat}</div>`;
-    permsHtml+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
-    perms.forEach(p=>{
-      const isOn=(_permFlags&p.bit)===p.bit;
-      permsHtml+=`<div class="scope-chip${isOn?' on':''}" style="font-size:10px" onclick="togglePerm(${p.bit.toString()},this)">${p.ico} ${p.name}</div>`;
-    });
-    permsHtml+='</div></div>';
-  });
-  document.getElementById('permScopeRow').innerHTML=permsHtml;
-
-  // Presets
-  document.getElementById('invitePresets').innerHTML=PERMISSION_PRESETS.map(pr=>`
-    <button class="preset-btn" onclick="applyPreset(${pr.flags.toString()})">${pr.name}</button>
-  `).join('');
-
-  generateInvite();
-}
-
-function toggleScope(s){
-  if(_scopes.includes(s)) _scopes=_scopes.filter(x=>x!==s); else _scopes.push(s);
-  document.querySelectorAll('#scopeRow .scope-chip').forEach(c=>{
-    c.classList.toggle('on',_scopes.includes(c.textContent.trim()));
-  });
-  generateInvite();
-}
-
-function togglePerm(bitStr,el){
-  const bit=BigInt(bitStr);
-  _permFlags=(_permFlags&bit)?(_permFlags&~bit):(_permFlags|bit);
-  el.classList.toggle('on');
-  generateInvite();
-}
-
-function applyPreset(flagsStr){
-  _permFlags=BigInt(flagsStr);
-  document.querySelectorAll('#permScopeRow .scope-chip').forEach(el=>{
-    const match=el.getAttribute('onclick')?.match(/togglePerm\((\d+)/);
-    if(match){
-      const bit=BigInt(match[1]);
-      el.classList.toggle('on',(_permFlags&bit)===bit);
-    }
-  });
-  generateInvite();
-}
-
-function generateInvite(){
-  const bot=bots.find(b=>b.id===currentBotId);
-  if(!bot)return;
-  const scope=_scopes.join('%20');
-  const url=`https://discord.com/api/oauth2/authorize?client_id=${bot.id}&permissions=${_permFlags.toString()}&scope=${scope}`;
-  document.getElementById('inviteUrl').value=url;
-}
-
-function copyInvite(){
-  const url=document.getElementById('inviteUrl').value;
-  if(!url)return;
-  navigator.clipboard.writeText(url).then(()=>toast('📋 คัดลอก Invite Link แล้ว!')).catch(()=>toast('❌ Copy ไม่สำเร็จ'));
-}
-
-function openInvite(){
-  const url=document.getElementById('inviteUrl').value;
-  if(url) window.open(url,'_blank');
-}
-
-/* ─── AVATAR PANEL ─── */
-function renderAvatarPanel(b){
-  if(!b.avatar){
-    document.getElementById('avatarSizes').innerHTML='<span style="font-size:12px;color:var(--ts)">ไม่มี custom avatar (ใช้ default)</span>';
-    document.getElementById('avatarFormatBtns').innerHTML='';
-    return;
-  }
-  const isGif=b.avatar.startsWith('a_');
-  const sizes=[32,64,128,256,512,1024];
-  document.getElementById('avatarSizes').innerHTML=sizes.map(s=>`
-    <div class="avatar-size-box">
-      <img src="https://cdn.discordapp.com/avatars/${b.id}/${b.avatar}.${isGif?'gif':'png'}?size=${s}" alt="" width="${Math.min(s,80)}" height="${Math.min(s,80)}" style="border-radius:50%;border:2px solid var(--border)">
-      <span class="avatar-size-lbl">${s}px</span>
-    </div>`).join('');
-
-  const fmts=['png','jpg','webp',...(isGif?['gif']:[])];
-  document.getElementById('avatarFormatBtns').innerHTML=fmts.map(fmt=>`
-    <button class="copy-btn" onclick="openAvatarUrl('${b.id}','${b.avatar}','${fmt}',1024)">${fmt.toUpperCase()} 1024px</button>
-  `).join('');
-}
-
-function openAvatarUrl(id,hash,fmt,size){
-  window.open(`https://cdn.discordapp.com/avatars/${id}/${hash}.${fmt}?size=${size}`,'_blank');
-}
-
-/* ─── HELPERS ─── */
-function setStatus(cls,msg){
-  const el=document.getElementById('statusBar');
-  el.className='status-bar '+cls;
-  el.innerHTML=msg;
-}
-function showLoader(msg){
-  document.getElementById('loaderTxt').textContent=msg||'กำลังโหลด...';
-  document.getElementById('loadingOverlay').classList.add('on');
-}
-function setLoader(msg){document.getElementById('loaderTxt').textContent=msg;}
-function hideLoader(){document.getElementById('loadingOverlay').classList.remove('on');}
-
-let _tt=null;
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.classList.add('on');
-  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),3000);
-}
-
-function copyText(text,label){
-  navigator.clipboard.writeText(text).then(()=>toast(`📋 คัดลอก ${label} แล้ว!`)).catch(()=>toast('❌ Copy ไม่สำเร็จ'));
-}
-
-function copyRaw(){
-  const t=document.getElementById('rawJson').textContent;
-  navigator.clipboard.writeText(t).then(()=>toast('📋 คัดลอก JSON แล้ว!')).catch(()=>toast('❌ Copy ไม่สำเร็จ'));
-}
+  // ── Reveal on scroll ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done"
-Output
-
-Done
