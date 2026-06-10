@@ -353,24 +353,66 @@
   <div class="foot-copy">© 2026 Ariea· Ariea · All rights reserved 💙</div>
 </footer>
 
+<audio id="bgMusic" autoplay loop>
+    <source src="เจ๊าะๆ.mp3" type="audio/mpeg">
+</audio>
+
 <script>
   // Typed animation
-  const texts = ['มีอะไรให้ Ariea ช่วยมั้ยคะ 💙','ระบบดักข้อความDM ✨','ดาวโหลดคริปTikTok 🛡️','พื้นฐานเบื้องต้นต่างๆ พร้อมใช้งานทันที 🚀'];
+  const texts = [
+    'มีอะไรให้ Ariea ช่วยมั้ยคะ 💙',
+    'ระบบดักข้อความDM ✨',
+    'ดาวโหลดคริปTikTok 🛡️',
+    'พื้นฐานเบื้องต้นต่างๆ พร้อมใช้งานทันที 🚀'
+  ];
+
   let ti=0,ci=0,del=false;
   const el=document.getElementById('typed');
+
   function type(){
     const cur=texts[ti];
-    if(!del){ el.textContent=cur.slice(0,++ci); if(ci===cur.length){del=true;setTimeout(type,2000);return;} }
-    else{ el.textContent=cur.slice(0,--ci); if(ci===0){del=false;ti=(ti+1)%texts.length;} }
+
+    if(!del){
+      el.textContent=cur.slice(0,++ci);
+      if(ci===cur.length){
+        del=true;
+        setTimeout(type,2000);
+        return;
+      }
+    }else{
+      el.textContent=cur.slice(0,--ci);
+      if(ci===0){
+        del=false;
+        ti=(ti+1)%texts.length;
+      }
+    }
+
     setTimeout(type,del?45:70);
   }
+
   type();
 
   // Scroll reveal
   const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+      }
+    });
   },{threshold:0.1});
+
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Auto Music
+  window.addEventListener("load", () => {
+    const music = document.getElementById("bgMusic");
+
+    music.play().catch(() => {
+      document.addEventListener("click", () => {
+        music.play();
+      }, { once: true });
+    });
+  });
 </script>
 </body>
 </html>
