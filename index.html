@@ -4,80 +4,85 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ariea — Discord Bot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --pink: #f2a7c9;
+      --pink-deep: #ec6fb0;
       --purple: #c4a7f2;
+      --purple-deep: #a56ef0;
       --blue: #a7c8f2;
-      --text: #5a3e6b;
-      --text-soft: #9b7db5;
+      --blue-deep: #6fa3f0;
+      --text: #4a3260;
+      --text-soft: #93789f;
+      --paper: #fffaff;
+      --card: rgba(255,255,255,0.78);
+      --card-border: rgba(196,167,242,0.28);
+      --shadow-soft: 0 8px 32px rgba(196,150,220,0.18);
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Kanit', sans-serif;
-      background: linear-gradient(135deg, #fce8f6 0%, #e8f0ff 50%, #f5e8ff 100%);
+      background:
+        radial-gradient(ellipse 900px 500px at 10% -5%, rgba(242,167,201,0.35), transparent 60%),
+        radial-gradient(ellipse 800px 600px at 95% 10%, rgba(167,200,242,0.32), transparent 60%),
+        radial-gradient(ellipse 700px 700px at 50% 100%, rgba(196,167,242,0.28), transparent 60%),
+        linear-gradient(160deg, #fdf3fb 0%, #f2f6ff 45%, #f8f1ff 100%);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Page transition */
-    .page-veil {
-      position: fixed; inset: 0; z-index: 999;
-      background: linear-gradient(135deg, #fce8f6 0%, #e8f0ff 50%, #f5e8ff 100%);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 1; pointer-events: none;
-      transition: opacity .5s ease;
-    }
-    .page-veil.hide { opacity: 0; }
-    .page-veil .loader {
-      width: 46px; height: 46px; border-radius: 50%;
-      border: 3px solid rgba(196,167,242,0.25);
-      border-top-color: var(--pink);
-      animation: spinLoad .8s linear infinite;
-    }
-    @keyframes spinLoad { to { transform: rotate(360deg); } }
-    body.leaving { animation: fadeOutPage .45s ease forwards; }
-    @keyframes fadeOutPage { to { opacity: 0; transform: translateY(-12px); } }
-
     /* BG blobs */
     .blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .blobs span {
-      position: absolute; border-radius: 50%; opacity: 0.12;
+      position: absolute; border-radius: 50%; opacity: 0.14; filter: blur(2px);
       animation: bob 16s ease-in-out infinite;
     }
-    .blobs span:nth-child(1){ width:340px;height:340px;background:#f2a7c9;top:5%;left:3%;animation-delay:0s; }
-    .blobs span:nth-child(2){ width:220px;height:220px;background:#a7c8f2;top:60%;left:78%;animation-delay:-5s; }
-    .blobs span:nth-child(3){ width:280px;height:280px;background:#c4a7f2;top:35%;left:65%;animation-delay:-9s; }
-    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-35px)} }
+    .blobs span:nth-child(1){ width:340px;height:340px;background:radial-gradient(circle,var(--pink),transparent 70%);top:5%;left:3%;animation-delay:0s; }
+    .blobs span:nth-child(2){ width:220px;height:220px;background:radial-gradient(circle,var(--blue),transparent 70%);top:60%;left:78%;animation-delay:-5s; }
+    .blobs span:nth-child(3){ width:280px;height:280px;background:radial-gradient(circle,var(--purple),transparent 70%);top:35%;left:65%;animation-delay:-9s; }
+    .blobs span:nth-child(4){ width:200px;height:200px;background:radial-gradient(circle,var(--pink),transparent 70%);top:80%;left:15%;animation-delay:-12s; }
+    @keyframes bob { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-35px) scale(1.05)} }
 
     /* Nav */
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: .8rem 2rem;
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.72);
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(200,170,230,0.2);
+      border-bottom: 1px solid rgba(200,170,230,0.22);
     }
-    .nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 800; font-size: 1.15rem; color: var(--text); }
+    .nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 800; font-size: 1.15rem; color: var(--text); background:none; border:none; cursor:pointer; font-family:'Kanit',sans-serif; }
     .nav-logo img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--pink); object-fit: cover; }
-    .nav-right { display: flex; align-items: center; gap: .9rem; }
+    .nav-links { display: flex; align-items: center; gap: .3rem; }
     .nav-link {
-      text-decoration: none; color: var(--text-soft); font-size: .85rem; font-weight: 700;
-      transition: color .2s;
+      background: transparent; border: none; cursor: pointer;
+      font-family: 'Kanit', sans-serif; font-size: .87rem; font-weight: 600;
+      color: var(--text-soft); padding: .5rem 1rem; border-radius: 50px;
+      transition: background .2s, color .2s;
     }
-    .nav-link:hover { color: var(--pink); }
+    .nav-link:hover { color: var(--text); background: rgba(196,167,242,0.14); }
+    .nav-link.active { color: #fff; background: linear-gradient(135deg, var(--pink-deep), var(--purple-deep)); }
     .nav-cta {
       background: linear-gradient(135deg, #f27cba, #c47ef2);
       color: #fff; text-decoration: none; border-radius: 50px;
       padding: .5rem 1.4rem; font-size: .88rem; font-weight: 700;
       box-shadow: 0 4px 18px rgba(200,120,200,0.3);
       transition: transform .2s, box-shadow .2s;
+      margin-left: .6rem; white-space: nowrap;
     }
     .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,120,200,0.5); }
+
+    /* Page transition wrapper */
+    .page { animation: pagein .5s ease both; }
+    .page-hidden { display: none !important; }
+    @keyframes pagein { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform:none; } }
 
     /* Hero */
     .hero {
@@ -125,6 +130,7 @@
       display: block; font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 900;
       background: linear-gradient(135deg, #f27cba, #a78cf2, #7cbff2);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -.01em;
     }
     .t2 { display: block; font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 600; color: var(--text-soft); margin-top: .3rem; }
 
@@ -141,7 +147,9 @@
       box-shadow: 0 4px 16px rgba(200,160,220,0.18);
       border: 1.5px solid rgba(200,170,230,0.25);
       min-width: 72px;
+      transition: transform .2s;
     }
+    .stat:hover { transform: translateY(-3px); }
     .stat .num { font-size: 1.1rem; font-weight: 800; color: var(--text); }
     .stat .lbl { font-size: .7rem; color: var(--text-soft); margin-top: .1rem; }
 
@@ -151,6 +159,7 @@
       text-decoration: none; border-radius: 50px; padding: .75rem 1.8rem;
       font-size: .95rem; font-weight: 700; font-family: 'Kanit', sans-serif;
       transition: transform .2s, box-shadow .2s; display: inline-flex; align-items: center; gap: .4rem;
+      border: none; cursor: pointer;
     }
     .btn-primary {
       background: linear-gradient(135deg, #f27cba, #c47ef2);
@@ -174,12 +183,7 @@
     }
     .banner-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Wave */
-    .wave { line-height: 0; position: relative; z-index: 1; }
-    .wave svg { width: 100%; display: block; }
-
-    /* Features */
-    #features { position: relative; z-index: 1; padding: 4rem 2rem; }
+    /* Sections shared */
     .container { max-width: 1100px; margin: 0 auto; }
     .sec-head { text-align: center; margin-bottom: 2.5rem; }
     .sec-tag {
@@ -189,53 +193,16 @@
     }
     .sec-title { font-size: clamp(1.7rem,4vw,2.3rem); font-weight: 900; color: var(--text); }
     .sec-title .acc { background: linear-gradient(135deg,#f27cba,#a78cf2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .sec-sub { font-size: .92rem; color: var(--text-soft); margin-top: .4rem; }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(285px,1fr)); gap: 1.5rem; }
-    .card {
-      background: rgba(255,255,255,0.76); border-radius: 20px;
-      padding: 1.6rem 1.5rem;
-      box-shadow: 0 8px 40px rgba(200,160,220,0.18);
-      border: 1.5px solid rgba(200,170,230,0.2);
-      backdrop-filter: blur(10px);
-      transition: transform .25s, box-shadow .25s;
-    }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(200,150,220,0.3); }
-    .card-icon { font-size: 1.9rem; margin-bottom: .8rem; }
-    .card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
-    .card p { font-size: .83rem; color: var(--text-soft); line-height: 1.65; }
-
-    /* Commands */
-    #commands { position: relative; z-index: 1; padding: 4rem 2rem; background: #fdf0f8; }
-    .cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.2rem; }
-    .cmd {
-      background: rgba(255,255,255,0.78); border-radius: 18px;
-      padding: 1.3rem 1.2rem;
-      box-shadow: 0 4px 22px rgba(200,150,220,0.13);
-      border: 1.5px solid rgba(200,170,230,0.2);
-      backdrop-filter: blur(10px);
-      transition: transform .22s;
-    }
-    .cmd:hover { transform: translateY(-4px); }
-    .cmd-icon { font-size: 1.4rem; margin-bottom: .5rem; }
-    .cmd-name { font-size: .92rem; font-weight: 700; color: var(--text); }
-    .cmd-desc { font-size: .77rem; color: var(--text-soft); margin-top: .3rem; line-height: 1.5; }
-    .badge {
-      display: inline-block; border-radius: 50px; padding: .18rem .7rem;
-      font-size: .68rem; font-weight: 700; margin-top: .55rem;
-    }
-    .b-all   { background: #d9f0e6; color: #2e7d5a; }
-    .b-admin { background: #dde8ff; color: #3a5fcc; }
-    .b-owner { background: #fff0cc; color: #a07000; }
+    .sec-sub { font-size: .92rem; color: var(--text-soft); margin-top: .5rem; max-width: 560px; margin-left:auto; margin-right:auto; line-height:1.7; }
 
     /* Dev */
     #dev { position: relative; z-index: 1; padding: 4rem 2rem; }
     .dev-card {
       max-width: 700px; margin: 0 auto;
-      background: rgba(255,255,255,0.78); border-radius: 28px;
+      background: var(--card); border-radius: 28px;
       padding: 2.5rem 2rem; display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap;
-      box-shadow: 0 12px 50px rgba(200,150,220,0.22);
-      border: 1.5px solid rgba(200,170,230,0.25);
+      box-shadow: var(--shadow-soft);
+      border: 1.5px solid var(--card-border);
       backdrop-filter: blur(12px);
     }
     .dev-av { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
@@ -257,6 +224,102 @@
     .dev-desc { font-size: .87rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 1.2rem; }
     .dev-btns { display: flex; flex-wrap: wrap; gap: .8rem; }
 
+    /* ===== Commands Page ===== */
+    .cmdpage-hero {
+      position: relative; z-index: 1; max-width: 1100px; margin: 0 auto;
+      padding: 3.4rem 2rem 1rem; text-align: center;
+    }
+    .back-pill {
+      display: inline-flex; align-items:center; gap:.4rem;
+      background: rgba(255,255,255,0.85); border: 1.5px solid var(--card-border);
+      border-radius: 50px; padding: .4rem 1rem; font-size: .8rem; font-weight: 600;
+      color: var(--text-soft); cursor: pointer; margin-bottom: 1.6rem;
+      transition: transform .2s, color .2s;
+    }
+    .back-pill:hover { transform: translateX(-3px); color: var(--pink-deep); }
+
+    .prefix-note {
+      max-width: 640px; margin: 1.6rem auto 0;
+      background: linear-gradient(135deg, rgba(242,167,201,0.16), rgba(167,200,242,0.16));
+      border: 1.5px dashed rgba(196,167,242,0.5);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.4rem;
+      font-size: .84rem; color: var(--text-soft); line-height: 1.7;
+    }
+    .prefix-note code {
+      font-family: 'JetBrains Mono', monospace; background: rgba(255,255,255,0.7);
+      padding: .1rem .5rem; border-radius: 6px; color: var(--pink-deep); font-weight: 700;
+    }
+
+    #cmd-list {
+      position: relative; z-index: 1; padding: 2.5rem 2rem 5rem;
+    }
+    .cmd-legend { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom: 2.2rem; }
+    .legend-item { display:flex; align-items:center; gap:.4rem; font-size:.76rem; color:var(--text-soft); font-weight:600; }
+    .legend-dot { width:9px; height:9px; border-radius:50%; }
+
+    .cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px,1fr)); gap: 1.2rem; }
+
+    .cmd-card {
+      position: relative;
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--card); border-radius: var(--radius-md);
+      padding: 1.3rem 1.3rem 1.2rem;
+      box-shadow: 0 6px 26px rgba(200,150,220,0.15);
+      border: 1.5px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .cmd-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 44px rgba(200,150,220,0.28);
+      border-color: rgba(236,111,176,0.4);
+    }
+    .cmd-idx {
+      position: absolute; top: .7rem; right: .9rem;
+      font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 700;
+      color: rgba(147,120,159,0.45); letter-spacing: .05em;
+    }
+    .cmd-glyph {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink-deep), var(--purple-deep));
+      box-shadow: 0 4px 14px rgba(236,111,176,0.35);
+    }
+    .cmd-body { flex: 1; min-width: 0; }
+    .cmd-syntax {
+      font-family: 'JetBrains Mono', monospace; font-size: .86rem; font-weight: 700;
+      color: var(--text); background: rgba(196,167,242,0.12);
+      display: inline-block; padding: .18rem .55rem; border-radius: 7px;
+      margin-bottom: .55rem; word-break: break-word;
+    }
+    .cmd-syntax .arg { color: var(--pink-deep); font-weight: 600; }
+    .cmd-desc { font-size: .82rem; color: var(--text-soft); line-height: 1.6; margin-bottom: .65rem; }
+    .badge {
+      display: inline-block; border-radius: 50px; padding: .2rem .75rem;
+      font-size: .68rem; font-weight: 700;
+    }
+    .b-all   { background: #d9f0e6; color: #2e7d5a; }
+    .b-admin { background: #dde8ff; color: #3a5fcc; }
+    .b-owner { background: #fff0cc; color: #a07000; }
+
+    /* Features (kept, used on commands page as extra context) */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(285px,1fr)); gap: 1.5rem; }
+    .card {
+      background: var(--card); border-radius: 20px;
+      padding: 1.6rem 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1.5px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(200,150,220,0.3); }
+    .card-icon { font-size: 1.9rem; margin-bottom: .8rem; }
+    .card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
+    .card p { font-size: .83rem; color: var(--text-soft); line-height: 1.65; }
+
     /* Footer */
     footer {
       position: relative; z-index: 1;
@@ -266,8 +329,8 @@
     }
     .foot-logo { font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: .7rem; }
     .foot-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .7rem; flex-wrap: wrap; }
-    .foot-links a { text-decoration: none; color: var(--text-soft); font-size: .84rem; font-weight: 600; transition: color .2s; }
-    .foot-links a:hover { color: var(--pink); }
+    .foot-links a, .foot-links button { text-decoration: none; color: var(--text-soft); font-size: .84rem; font-weight: 600; transition: color .2s; background:none; border:none; cursor:pointer; font-family:'Kanit',sans-serif; }
+    .foot-links a:hover, .foot-links button:hover { color: var(--pink); }
     .foot-copy { font-size: .76rem; color: var(--text-soft); }
 
     /* Reveal */
@@ -277,114 +340,262 @@
     @media(max-width:700px) {
       .hero { flex-direction: column; align-items: flex-start; gap: 2rem; }
       .dev-card { flex-direction: column; align-items: center; text-align: center; }
+      .nav-links { display: none; }
     }
-
-    /* ===== โหมดกันดูโค้ด ===== */
-    body, img { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
-    input, textarea { user-select: text; }
-    img { -webkit-user-drag: none; }
   </style>
 </head>
 <body>
 
-<div class="page-veil"><div class="loader"></div></div>
-<div class="blobs"><span></span><span></span><span></span></div>
+<div class="blobs"><span></span><span></span><span></span><span></span></div>
 
 <!-- Nav -->
 <nav>
-  <a href="#" class="nav-logo">
+  <button class="nav-logo" onclick="goPage('home')">
     <img src="https://img1.pic.in.th/images/ChatGPT-Image-30-..-2569-16_54_14.png" alt="Ariea"
          onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
     Ariea
-  </a>
-  <div class="nav-right">
-    <a href="commands.html" class="nav-link" data-transition>📜 คำสั่งทั้งหมด</a>
+  </button>
+  <div class="nav-links">
+    <button class="nav-link" data-nav="home" onclick="goPage('home')">หน้าแรก</button>
+    <button class="nav-link" data-nav="commands" onclick="goPage('commands')">คำสั่งบอท</button>
     <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="nav-cta" target="_blank">🤖 เชิญบอท</a>
   </div>
 </nav>
 
-<!-- Hero -->
-<div class="hero">
-  <div class="avatar-area">
-    <div class="avatar-wrap">
-      <div class="ring1"></div>
-      <div class="ring2"></div>
-      <div class="avatar-img-box">
-        <img src="https://img1.pic.in.th/images/ChatGPT-Image-30-..-2569-16_54_14.png" alt="Ariea"
-             onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-      </div>
-    </div>
-    <div class="status-pill"><div class="dot"></div> Online · Ariea</div>
-  </div>
+<!-- ============ PAGE: HOME ============ -->
+<div id="page-home" class="page">
 
-  <div class="hero-text">
-    <div class="tag">✨ Discord Bot · Thailand 🇹🇭</div>
-    <h1 class="hero-title">
-      <span class="t1">Ariea</span>
-      <span class="t2">Discord Bot 💙</span>
-    </h1>
-    <div class="typed-wrap"><span id="typed"></span><span class="cursor">|</span></div>
-    <div class="stats">
-      <div class="stat"><div class="num">24/7</div><div class="lbl">Online</div></div>
-      <div class="stat"><div class="num">v1 & v2</div><div class="lbl">System</div></div>
-      <div class="stat"><div class="num">7</div><div class="lbl">Commands</div></div>
-      <div class="stat"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
-    </div>
-    <div class="btns">
-      <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
-      <a href="commands.html" class="btn btn-soft" data-transition>📜 ดูคำสั่งทั้งหมด</a>
-      <a href="https://discord.gg/jzXnjDwBZz" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
-    </div>
-  </div>
-</div>
-
-<!-- Banner 16:9 -->
-<div class="banner-section">
-  <div class="banner-frame">
-    <img src="https://img2.pic.in.th/ChatGPT-Image-30-..-2569-16_51_48.png" alt="Ariea Banner"
-         onerror="this.style.background='linear-gradient(135deg,#fce8f6,#e8f0ff)'">
-  </div>
-</div>
-
-<!-- Dev -->
-<section id="dev">
-  <div class="container">
-    <div class="sec-head reveal">
-      <div class="sec-tag">🌟 Developer</div>
-      <h2 class="sec-title">About The <span class="acc">Developer</span></h2>
-      <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ รักเเฟนมาก 🩷</p>
-    </div>
-    <div class="dev-card reveal">
-      <div class="dev-av">
-        <div class="dev-crown">👑</div>
-        <div class="dr1"></div>
-        <div class="dr2"></div>
-        <div class="dev-img-box">
-          <img src="https://img2.pic.in.th/706132266_2067222620872662_760155894884496400_n.jpg" alt="Developer"
+  <!-- Hero -->
+  <div class="hero">
+    <div class="avatar-area">
+      <div class="avatar-wrap">
+        <div class="ring1"></div>
+        <div class="ring2"></div>
+        <div class="avatar-img-box">
+          <img src="https://img1.pic.in.th/images/ChatGPT-Image-30-..-2569-16_54_14.png" alt="Ariea"
                onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
         </div>
       </div>
-      <div>
-        <div class="dev-label">✦ BOT OWNER</div>
-        <div class="dev-name">! รักม่อน</div>
-        <div class="dev-role">Developer · Ariea Bot</div>
-        <p class="dev-desc">ผู้พัฒนา Ariea มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง มีระบบโฮสต์บอท ดักข้อความ ออน VC24/7 รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙</p>
-        <div class="dev-btns">
-          <a href="https://discord.gg/jzXnjDwBZz" class="btn btn-soft" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">🩷 Ariea</a>
-          <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">🤖 เชิญบอท</a>
-        </div>
+      <div class="status-pill"><div class="dot"></div> Online · Ariea</div>
+    </div>
+
+    <div class="hero-text">
+      <div class="tag">✨ Discord Bot · Thailand 🇹🇭</div>
+      <h1 class="hero-title">
+        <span class="t1">Ariea</span>
+        <span class="t2">Discord Bot 💙</span>
+      </h1>
+      <div class="typed-wrap"><span id="typed"></span><span class="cursor">|</span></div>
+      <div class="stats">
+        <div class="stat"><div class="num">24/7</div><div class="lbl">Online</div></div>
+        <div class="stat"><div class="num">v1 & v2</div><div class="lbl">System</div></div>
+        <div class="stat"><div class="num">13</div><div class="lbl">Commands</div></div>
+        <div class="stat"><div class="num">🛡️</div><div class="lbl">Blacklist</div></div>
+      </div>
+      <div class="btns">
+        <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank">🤖 เชิญบอทเข้าเซิร์ฟ</a>
+        <button class="btn btn-soft" onclick="goPage('commands')">📖 ดูคำสั่งทั้งหมด</button>
+        <a href="https://discord.gg/jzXnjDwBZz" class="btn btn-soft" target="_blank">💙 SUPPORT</a>
       </div>
     </div>
   </div>
-</section>
+
+  <!-- Banner 16:9 -->
+  <div class="banner-section">
+    <div class="banner-frame">
+      <img src="https://img2.pic.in.th/ChatGPT-Image-30-..-2569-16_51_48.png" alt="Ariea Banner"
+           onerror="this.style.background='linear-gradient(135deg,#fce8f6,#e8f0ff)'">
+    </div>
+  </div>
+
+  <!-- Dev -->
+  <section id="dev">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-tag">🌟 Developer</div>
+        <h2 class="sec-title">About The <span class="acc">Developer</span></h2>
+        <p class="sec-sub">ผู้อยู่เบื้องหลังบอทตัวนี้ รักเเฟนมาก 🩷</p>
+      </div>
+      <div class="dev-card reveal">
+        <div class="dev-av">
+          <div class="dev-crown">👑</div>
+          <div class="dr1"></div>
+          <div class="dr2"></div>
+          <div class="dev-img-box">
+            <img src="https://img2.pic.in.th/706132266_2067222620872662_760155894884496400_n.jpg" alt="Developer"
+                 onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          </div>
+        </div>
+        <div>
+          <div class="dev-label">✦ BOT OWNER</div>
+          <div class="dev-name">! รักม่อน</div>
+          <div class="dev-role">Developer · Ariea Bot</div>
+          <p class="dev-desc">ผู้พัฒนา Ariea มุ่งเน้นสร้างระบบ Discord ที่ทันสมัย เสถียรสูง มีระบบโฮสต์บอท ดักข้อความ ออน VC24/7 รองรับหลายเซิร์ฟเวอร์พร้อมกัน 💙</p>
+          <div class="dev-btns">
+            <a href="https://discord.gg/jzXnjDwBZz" class="btn btn-soft" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">🩷 Ariea</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" class="btn btn-primary" target="_blank" style="font-size:.82rem;padding:.5rem 1.1rem;">🤖 เชิญบอท</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ PAGE: COMMANDS ============ -->
+<div id="page-commands" class="page page-hidden">
+
+  <div class="cmdpage-hero">
+    <button class="back-pill" onclick="goPage('home')">← กลับหน้าแรก</button>
+    <div class="sec-tag">📖 Command Guide</div>
+    <h2 class="sec-title">วิธีใช้คำสั่ง <span class="acc">Ariea</span></h2>
+    <p class="sec-sub">รวมคำสั่งทั้งหมด 13 คำสั่งของ Ariea พร้อมคำอธิบายว่าใช้ทำอะไร และใครใช้ได้บ้าง</p>
+    <div class="prefix-note">
+      💡 ทุกคำสั่งของ Ariea เป็น <b>Slash Command</b> — แค่พิมพ์ <code>/</code> ในช่องแชท แล้วเลือกชื่อคำสั่งจากรายการที่ Discord แสดงขึ้นมา ไม่ต้องจำ prefix ใดๆ ทั้งสิ้น
+    </div>
+  </div>
+
+  <section id="cmd-list">
+    <div class="container">
+
+      <div class="cmd-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#2e7d5a"></span> ใช้ได้ทุกคน</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#3a5fcc"></span> ต้องเป็นแอดมิน</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#a07000"></span> เจ้าของบอทเท่านั้น</div>
+      </div>
+
+      <div class="cmd-grid">
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 01</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/help</div>
+            <p class="cmd-desc">แสดงรายการคำสั่งทั้งหมดของ Ariea พร้อมคำอธิบายแบบย่อ ใช้เมื่อจำคำสั่งไม่ได้หรืออยากรู้ว่าบอทใช้ทำอะไรได้บ้าง</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 02</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/invite</div>
+            <p class="cmd-desc">รับลิงก์เชิญ Ariea ไปใช้งานในเซิร์ฟเวอร์อื่นได้ทันที ไม่ต้องออกไปหาลิงก์จากเว็บ</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 03</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/ping</div>
+            <p class="cmd-desc">เช็คความหน่วง (latency) ของบอทในหน่วยมิลลิวินาที ใช้ดูว่าตอนนี้บอทตอบสนองไวแค่ไหน</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 04</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/tiktok <span class="arg">&lt;ลิงก์&gt;</span></div>
+            <p class="cmd-desc">วางลิงก์คลิป TikTok แล้วบอทจะดาวน์โหลดวิดีโอแบบไม่มีลายน้ำส่งเข้าแชทให้ทันที</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 05</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/dmwatch <span class="arg">&lt;on/off&gt;</span></div>
+            <p class="cmd-desc">เปิด-ปิดระบบดักข้อความ DM เมื่อมีคนทักหาบอทโดยตรง Ariea จะส่งข้อความนั้นแจ้งเตือนเข้าห้องที่กำหนดในเซิร์ฟเวอร์</p>
+            <span class="badge b-admin">ต้องเป็นแอดมิน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 06</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/vc247 <span class="arg">&lt;join/leave&gt;</span></div>
+            <p class="cmd-desc">สั่งให้ Ariea เข้าไปอยู่ในห้องเสียงที่เลือกและออนไลน์ต่อเนื่อง 24 ชั่วโมง หรือสั่งให้ออกจากห้องเมื่อไม่ต้องการแล้ว</p>
+            <span class="badge b-admin">ต้องเป็นแอดมิน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 07</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/blacklist add <span class="arg">&lt;user&gt;</span></div>
+            <p class="cmd-desc">เพิ่มผู้ใช้ที่ระบุเข้าบัญชีดำของเซิร์ฟเวอร์ ทำให้คนนั้นใช้คำสั่งของ Ariea ในเซิร์ฟเวอร์นี้ไม่ได้อีก</p>
+            <span class="badge b-admin">ต้องเป็นแอดมิน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 08</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/blacklist remove <span class="arg">&lt;user&gt;</span></div>
+            <p class="cmd-desc">ปลดผู้ใช้ที่ระบุออกจากบัญชีดำ ทำให้กลับมาใช้คำสั่งของ Ariea ได้ตามปกติ</p>
+            <span class="badge b-admin">ต้องเป็นแอดมิน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 09</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/blacklist list</div>
+            <p class="cmd-desc">แสดงรายชื่อผู้ใช้ทั้งหมดที่อยู่ในบัญชีดำของเซิร์ฟเวอร์นี้ ใช้ตรวจสอบว่าใครถูกแบนไว้บ้าง</p>
+            <span class="badge b-admin">ต้องเป็นแอดมิน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 10</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/serverinfo</div>
+            <p class="cmd-desc">แสดงข้อมูลของเซิร์ฟเวอร์ เช่น จำนวนสมาชิกทั้งหมด วันที่สร้างเซิร์ฟเวอร์ และจำนวนห้องต่างๆ</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 11</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/userinfo <span class="arg">&lt;@user&gt;</span></div>
+            <p class="cmd-desc">แสดงข้อมูลของผู้ใช้ที่ระบุ เช่น วันที่เข้าร่วมเซิร์ฟเวอร์ วันที่สร้างบัญชี และ role ที่มี</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 12</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/avatar <span class="arg">&lt;@user&gt;</span></div>
+            <p class="cmd-desc">ดึงรูปโปรไฟล์ของผู้ใช้ที่ระบุมาแสดงแบบขนาดเต็ม ไม่ระบุ user จะเป็นการดึงรูปโปรไฟล์ของตัวเอง</p>
+            <span class="badge b-all">ใช้ได้ทุกคน</span>
+          </div>
+        </div>
+
+        <div class="cmd-card"><span class="cmd-idx">CMD 13</span>
+          <div class="cmd-glyph">/</div>
+          <div class="cmd-body">
+            <div class="cmd-syntax">/stats</div>
+            <p class="cmd-desc">แสดงสถิติการทำงานของ Ariea เช่น เวลาที่ออนไลน์ต่อเนื่อง (uptime) และจำนวนเซิร์ฟเวอร์ที่กำลังใช้งานบอทอยู่</p>
+            <span class="badge b-owner">เจ้าของบอทเท่านั้น</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <footer>
   <div class="foot-logo">Ariea Copyright 2021–2030</div>
   <div class="foot-links">
-    <a href="commands.html" data-transition>คำสั่งทั้งหมด</a>
     <a href="https://discord.gg/VEfMATCCGB" target="_blank">Ariea</a>
     <a href="https://discord.gg/Gu8KjSH4Bu" target="_blank">SUPPORT</a>
     <a href="https://discord.com/oauth2/authorize?client_id=1492736918776184922&permissions=8&integration_type=0&scope=bot" target="_blank">INVITE BOT</a>
+    <button onclick="goPage('commands')">คำสั่งบอท</button>
   </div>
   <div class="foot-copy">© 2026 Ariea· Ariea · All rights reserved 💙</div>
 </footer>
@@ -394,6 +605,32 @@
 </audio>
 
 <script>
+  // ---- Page router (home / commands) ----
+  function goPage(name){
+    const home = document.getElementById('page-home');
+    const cmds = document.getElementById('page-commands');
+    const navHome = document.querySelector('.nav-link[data-nav="home"]');
+    const navCmds = document.querySelector('.nav-link[data-nav="commands"]');
+
+    if(name === 'commands'){
+      home.classList.add('page-hidden');
+      cmds.classList.remove('page-hidden');
+      cmds.classList.remove('page'); void cmds.offsetWidth; cmds.classList.add('page');
+      navCmds.classList.add('active'); navHome.classList.remove('active');
+      history.replaceState(null,'', '#commands');
+    } else {
+      cmds.classList.add('page-hidden');
+      home.classList.remove('page-hidden');
+      home.classList.remove('page'); void home.offsetWidth; home.classList.add('page');
+      navHome.classList.add('active'); navCmds.classList.remove('active');
+      history.replaceState(null,'', '#home');
+    }
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  // Land on the right page if URL already has #commands
+  if(location.hash === '#commands'){ goPage('commands'); } else { goPage('home'); }
+
   // Typed animation
   const texts = [
     'มีอะไรให้ Ariea ช่วยมั้ยคะ 💙',
@@ -439,39 +676,6 @@
 
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-  // Auto Music
-  window.addEventListener("load", () => {
-    const music = document.getElementById("bgMusic");
-
-    music.play().catch(() => {
-      document.addEventListener("click", () => {
-        music.play();
-      }, { once: true });
-    });
-  });
-
-  // ===== Page transition (fade) =====
-  window.addEventListener('DOMContentLoaded', () => {
-    const veil = document.querySelector('.page-veil');
-    setTimeout(() => veil.classList.add('hide'), 250);
-  });
-
-  document.querySelectorAll('[data-transition]').forEach(link => {
-    link.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (!href || href.startsWith('http')) return;
-      e.preventDefault();
-      document.body.classList.add('leaving');
-      setTimeout(() => { window.location.href = href; }, 420);
-    });
-  });
-
-  /* =========================================================
-     ระบบป้องกันการดูโค้ด (client-side deterrents)
-     หมายเหตุ: วิธีเหล่านี้กัน "คนทั่วไป" เท่านั้น ไม่สามารถกัน
-     ผู้ที่มีความรู้จริง ๆ ได้ 100% เพราะเบราว์เซอร์ต้องโหลด
-     โค้ดมารันบนเครื่องผู้ใช้เสมอ ห้ามฝาก API key/ความลับไว้ในนี้
-     ========================================================= */
   (function protect() {
     // 1) ปิดคลิกขวา (context menu) — เงียบ ไม่มีข้อความใดๆ
     document.addEventListener('contextmenu', e => e.preventDefault());
